@@ -4,64 +4,65 @@ MAINTAINER gjhurlbu@gmail.com
 # Setup base system
 RUN apt-get update && apt-get install -y \
 	-o Dpkg::Options::="--force-overwrite" \
-	build-essential \
-	git \
-	make \
-	libqt5webkit5-dev \
-	libqt5gui5 \
-	libqt5core5a \
-	libqt5dbus5 \
-	qttools5-dev \
-	qttools5-dev-tools \
-	libprotobuf-dev \
-	protobuf-compiler \
-	build-essential \
-	libboost-dev \
-	libboost-all-dev \
-	libboost-system-dev \
-	libboost-filesystem-dev \
-	libboost-program-options-dev \
-	libboost-thread-dev libssl-dev \
-	libdb++-dev \
-	libminiupnpc-dev \
-	libevent-dev \
-	libcurl4-openssl-dev \
-	libpng-dev \
-	qrencode \
-	libqrencode-dev \
 	autoconf \
 	automake \
-	libtool \
+	autopoint \
 	bash \
 	bison \
+	build-essential \
+	build-essential \
 	bzip2 \
 	cmake \
 	flex \
-	gettext \
 	g++ \
+	gettext \
+	git \
+	g++-multilib libc6-dev-i386 \
+	gperf \
 	intltool \
+	libboost-all-dev \
+	libboost-dev \
+	libboost-filesystem-dev \
+	libboost-program-options-dev \
+	libboost-system-dev \
+	libboost-thread-dev libssl-dev \
+	libcurl4-openssl-dev \
+	libdb++-dev \
+	libevent-dev \
 	libffi-dev \
+	libgdk-pixbuf2.0-dev \
 	libltdl-dev \
+	libminiupnpc-dev \
+	libpng-dev \
+	libprotobuf-dev \
+	libqrencode-dev \
+	libqt5core5a \
+	libqt5dbus5 \
+	libqt5gui5 \
+	libqt5webkit5-dev \
 	libssl-dev \
+	libtool \
+	libtool-bin \
 	libxml-parser-perl \
+	make \
 	openssl \
+	p7zip-full \
 	patch \
 	perl \
-	python3 \
 	pkg-config \
+	protobuf-compiler \
+	python3 \
+	qrencode \
+	qttools5-dev \
+	qttools5-dev-tools \
+	rsync \
+	ruby \
 	scons \
 	sed \
 	unzip \
-	zip \
 	wget \
 	xz-utils \
-	autopoint \
-	gperf \
-	ruby \
-	p7zip-full \
-	libtool-bin \
-	libgdk-pixbuf2.0-dev \
-	g++-multilib libc6-dev-i386
+	zip
 	
 # Install MXE
 WORKDIR /opt
@@ -111,6 +112,8 @@ RUN make install
 # User creation
 WORKDIR /
 RUN useradd -m -c "Coin Builder" -d /home/coinbld coinbld
+RUN mkdir -p /home/coinbld/src /home/coinbld/artifacts
+RUN chown -R coinbld /home/coinbld
 
 # Cleanup
 RUN rm -rf /tmp /opt/mxe/pkg /opt/mxe/src
