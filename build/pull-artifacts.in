@@ -1,0 +1,2 @@
+chown -v -R @ID@:@GROUP@ /home/coinbld/artifacts
+rsync -avt /home/coinbld/artifacts/ /artifacts/
