@@ -1,0 +1,14 @@
+{
+  "rpcport": 18462,
+  "coinname": "MudCoin",
+  "daemon": "MudCoind",
+  "explorerport": 3001,
+  "symbol": "MUD",
+  "confirmations": 40,
+  "cointype": "Hybrid",
+  "genesistx": "",
+  "genesisblock": "",
+  "coinbase": "GETINFO",
+  "nethash": "getnetworkhashps",
+  "nethashunits": "G"
+}

@@ -1,0 +1,2 @@
+use explorerdb
+db.createUser({user: "iquidus", pwd: "exp10d3r", roles: ["readWrite"]})
