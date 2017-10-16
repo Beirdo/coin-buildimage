@@ -1,6 +1,6 @@
 all:
 
-COINS := mudcoin peercoin flappycoin
+COINS := mudcoin peercoin flappycoin buzzcash
 
 pull-artifacts:	pull-artifacts.in
 	sed -e 's/@ID@/'$(shell id -u)'/g' -e 's/@GROUP@/'$(shell id -g)'/' \
