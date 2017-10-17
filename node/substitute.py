@@ -31,6 +31,13 @@ def substituteFile(infile, outfile, subst):
         f.write(text)
 
 
+def copyfile(coin, infile, outfile=None):
+    if not outfile:
+        outfile = infile
+    outfile = os.path.join(coin, outfile)
+    shutil.copyfile(infile, outfile)
+
+
 parser = argparse.ArgumentParser(description="Substitute in variables")
 parser.add_argument('--coin', '-c', required=True, help="Which coin")
 args = parser.parse_args()
@@ -91,24 +98,18 @@ substituteFile(infile, outfile, subst)
 
 # Copy over the daemon
 infile = os.path.join("..", "build", "artifacts", "linux", config['daemon'])
-outfile = os.path.join(args.coin, config['daemon'])
-shutil.copyfile(infile, outfile)
+copyfile(args.coin, infile, config['daemon'])
 
 # Copy over the mongo init script and the crontab for explorer
-infile = "explorer.mongo"
-outfile = os.path.join(args.coin, infile)
-shutil.copyfile(infile, outfile)
+copyfile(args.coin, "explorer.mongo")
 
-infile = "explorer-crontab"
-outfile = os.path.join(args.coin, infile)
-shutil.copyfile(infile, outfile)
+copyfile(args.coin, "explorer-crontab")
 
 # Copy the sudoers.d file
-infile = "sudoers-coinnode"
-outfile = os.path.join(args.coin, infile)
-shutil.copyfile(infile, outfile)
+copyfile(args.coin, "sudoers-coinnode")
 
 # Copy the coin-cli script
-infile = "coin-cli"
-outfile = os.path.join(args.coin, infile)
-shutil.copyfile(infile, outfile)
+copyfile(args.coin, "coin-cli")
+
+# Copy the nodejs archive
+copyfile(args.coin, "node-v8.7.0-linux-x64.tar.xz")

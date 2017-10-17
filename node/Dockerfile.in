@@ -1,5 +1,6 @@
 FROM ubuntu:17.04
 MAINTAINER gjhurlbu@gmail.com
+USER root
 
 # Setup base system
 RUN apt-get update && apt-get install -y \
@@ -16,6 +17,7 @@ RUN apt-get update && apt-get install -y \
 	build-essential \
 	bzip2 \
 	cmake \
+	curl \
 	flex \
 	g++ \
         gdb \
@@ -37,6 +39,7 @@ RUN apt-get update && apt-get install -y \
 	libgdk-pixbuf2.0-dev \
 	libgmp-dev \
 	libjansson-dev \
+	libkrb5-dev \
 	libltdl-dev \
 	libminiupnpc-dev \
 	libncurses5-dev \
@@ -53,8 +56,6 @@ RUN apt-get update && apt-get install -y \
 	libxml-parser-perl \
 	make \
 	mongodb \
-	nodejs \
-	npm \
 	openssl \
 	p7zip-full \
 	patch \
@@ -78,8 +79,23 @@ RUN apt-get update && apt-get install -y \
 	zip \
 	zlib1g-dev
 
+# User creation
+WORKDIR /
+RUN useradd -m -c "Coin Node" -d /home/coinnode coinnode
+RUN mkdir -p /home/coinnode/src
+
 # Setup environment
 ENV srcDir /home/coinnode/src
+ENV NVM_DIR "/home/coinnode/.nvm"
+ENV PATH /home/coinnode/bin:${PATH}
+ENV USER root
+
+# Install NodeJS & npm
+WORKDIR /tmp
+ADD node-v8.7.0-linux-x64.tar.xz /tmp/
+RUN rsync -a /tmp/node-v8.7.0-linux-x64/ /usr/local/
+RUN rm /usr/local/CHANGELOG.md /usr/local/LICENSE /usr/local/README.md
+RUN node -v
 	
 # Install cpuminer
 ARG CACHE_DATE=never
@@ -98,7 +114,7 @@ RUN chmod 755 /usr/local/bin/@DAEMON@
 # Install iquidus explorer
 RUN git clone https://github.com/iquidus/explorer ${srcDir}/explorer
 WORKDIR ${srcDir}/explorer
-RUN npm install --production
+RUN npm install --production --unsafe
 ADD explorer.mongo /tmp/explorer.mongo
 ADD explorer-settings.json ${srcDir}/explorer/settings.json
 ADD explorer-crontab ${srcDir}/explorer/crontab
@@ -111,10 +127,7 @@ RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
 ADD coin-cli /usr/local/bin/coin-cli
 RUN chmod 755 /usr/local/bin/coin-cli
 
-# User creation
-WORKDIR /
-RUN useradd -m -c "Coin Node" -d /home/coinnode coinnode
-RUN mkdir -p /home/coinnode/src
+# Fix permissions for coinnode
 RUN chown -R coinnode /home/coinnode
 
 # Cleanup

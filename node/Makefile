@@ -15,9 +15,13 @@ coindir-%: .PHONY
 	mkdir -p ${@:coindir-=}
 
 ${DOCKERFILES}::
+	[ -f node-v8.7.0-linux-x64.tar.xz ] || \
+		wget https://nodejs.org/dist/v8.7.0/node-v8.7.0-linux-x64.tar.xz
 	./substitute.py --coin ${@:/Dockerfile=} < Dockerfile.in
 
 ${NODEDOCKERFILES}::
+	[ -f node-v8.7.0-linux-x64.tar.xz ] || \
+		wget https://nodejs.org/dist/v8.7.0/node-v8.7.0-linux-x64.tar.xz
 	./substitute.py --coin ${@:/Dockerfile.node=} < Dockerfile.in
 
 ${COINS}:: %: %/Dockerfile | coindir-%
