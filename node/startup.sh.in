@@ -1,0 +1,17 @@
+# /bin/bash
+
+# Start the coin daemon
+/usr/local/bin/@COINNAME@d --daemon
+
+# Start mongodb and the explorer (if using the explorer)
+if [ "@USEEXPLORER@" = "1" ] ; then
+    cd /home/coinnode/src/explorer
+    sudo /etc/init.d/mongodb start
+    mongo < explorer.mongo
+    sudo /etc/init.d/cron start
+    screen coinnode npm start
+    crontab -u coinnode explorer.crontab
+fi
+
+cd /home/coinnode
+/bin/bash

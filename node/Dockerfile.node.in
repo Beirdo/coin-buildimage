@@ -1,0 +1,17 @@
+FROM beirdo/coinnode:@TARGET@
+MAINTAINER gjhurlbu@gmail.com
+USER coinnode
+
+# Setup environment
+ENV srcDir /home/coinnode/src
+ENV TERM screen
+
+# Expose the ports
+EXPOSE @RPCPORT@
+#EXPOSE @EXPLORERPORT@
+
+# If there is a backup file, add it
+#ADD backup.tar.gz /home/coinnode/.@COINNAME@
+
+WORKDIR /home/coinnode
+ENTRYPOINT /usr/bin/script /dev/null -c "/usr/bin/screen -s /bin/bash /home/coinnode/startup.sh @USEEXPLORER@"

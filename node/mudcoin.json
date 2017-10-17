@@ -1,4 +1,5 @@
 {
+  "target": "mudcoin",
   "rpcport": 18462,
   "coinname": "MudCoin",
   "daemon": "MudCoind",
@@ -10,5 +11,6 @@
   "genesisblock": "",
   "coinbase": "GETINFO",
   "nethash": "getnetworkhashps",
-  "nethashunits": "G"
+  "nethashunits": "G",
+  "useexplorer": 0
 }

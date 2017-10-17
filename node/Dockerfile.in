@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
 	cmake \
 	flex \
 	g++ \
+        gdb \
 	gettext \
 	git \
 	g++-multilib libc6-dev-i386 \
@@ -63,7 +64,9 @@ RUN apt-get update && apt-get install -y \
 	rsync \
 	ruby \
 	scons \
+	screen \
 	sed \
+	sudo \
 	unzip \
 	wget \
 	xz-utils \
@@ -94,6 +97,10 @@ RUN npm install --production
 ADD explorer.mongo /tmp/explorer.mongo
 ADD explorer-settings.json ${srcDir}/explorer/settings.json
 ADD explorer-crontab ${srcDir}/explorer/crontab
+ADD startup.sh /home/coinnode/startup.sh
+RUN chmod 755 /home/coinnode/startup.sh
+ADD sudoers-coinnode /etc/sudoers.d/sudoers-coinnode
+RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
 
 # User creation
 WORKDIR /

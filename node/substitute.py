@@ -9,11 +9,26 @@ import uuid
 import shutil
 import sys
 
+
 def convertConfig(config):
     keys = list(map(lambda x: re.compile(r"@%s@" % x, re.I), config.keys()))
     values = list(config.values())
     subst = dict(zip(keys, values))
     return subst
+
+
+def substituteFile(infile, outfile, subst):
+    if infile == "stdin":
+        text = sys.stdin.read()
+    else:
+        with open(infile, "r") as f:
+            text = f.read()
+
+    for (regex, repl) in subst.items():
+        text = regex.sub(str(repl), text)
+
+    with open(outfile, "w") as f:
+        f.write(text)
 
 
 parser = argparse.ArgumentParser(description="Substitute in variables")
@@ -56,27 +71,23 @@ with open(conffile, "w") as f:
             f.write("%s=%s\n" % (key, value))
 
 # Create the Dockerfile
-dockertext = sys.stdin.read()
 outfile = os.path.join(args.coin, "Dockerfile")
+substituteFile("stdin", outfile, subst)
 
-for (regex, repl) in subst.items():
-    dockertext = regex.sub(str(repl), dockertext)
+# Create the node run Dockerfile
+infile = "Dockerfile.node.in"
+outfile = os.path.join(args.coin, "Dockerfile.node")
+substituteFile(infile, outfile, subst)
 
-with open(outfile, "w") as f:
-    f.write(dockertext)
+# Create the startup script
+infile = "startup.sh.in"
+outfile = os.path.join(args.coin, "startup.sh")
+substituteFile(infile, outfile, subst)
 
 # Create the Explorer settings file
 infile = "explorer-settings.json.in"
 outfile = os.path.join(args.coin, "explorer-settings.json")
-
-with open(infile, "r") as f:
-    settings = f.read()
-
-for (regex, repl) in subst.items():
-    settings = regex.sub(str(repl), settings)
-
-with open(outfile, "w") as f:
-    f.write(settings)
+substituteFile(infile, outfile, subst)
 
 # Copy over the daemon
 infile = os.path.join("..", "build", "artifacts", "linux", config['daemon'])
@@ -92,3 +103,7 @@ infile = "explorer-crontab"
 outfile = os.path.join(args.coin, infile)
 shutil.copyfile(infile, outfile)
 
+# Copy the sudoers.d file
+infile = "sudoers-coinnode"
+outfile = os.path.join(args.coin, infile)
+shutil.copyfile(infile, outfile)
