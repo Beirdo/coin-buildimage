@@ -1,0 +1,4 @@
+#!/bin/bash
+COIN=$1
+shift
+bitcoin-cli --conf=../.${COIN}/${COIN}.conf "$@"

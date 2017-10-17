@@ -3,6 +3,9 @@ MAINTAINER gjhurlbu@gmail.com
 
 # Setup base system
 RUN apt-get update && apt-get install -y \
+	software-properties-common
+RUN add-apt-repository ppa:bitcoin/bitcoin
+RUN apt-get update && apt-get install -y \
 	-o Dpkg::Options::="--force-overwrite" \
 	autoconf \
 	automake \
@@ -27,7 +30,7 @@ RUN apt-get update && apt-get install -y \
 	libboost-system-dev \
 	libboost-thread-dev libssl-dev \
 	libcurl4-openssl-dev \
-	libdb++-dev \
+	libdb4.8++-dev \
 	libevent-dev \
 	libffi-dev \
 	libgdk-pixbuf2.0-dev \

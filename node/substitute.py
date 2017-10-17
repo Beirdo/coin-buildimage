@@ -107,3 +107,8 @@ shutil.copyfile(infile, outfile)
 infile = "sudoers-coinnode"
 outfile = os.path.join(args.coin, infile)
 shutil.copyfile(infile, outfile)
+
+# Copy the coin-cli script
+infile = "coin-cli"
+outfile = os.path.join(args.coin, infile)
+shutil.copyfile(infile, outfile)

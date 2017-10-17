@@ -23,15 +23,18 @@ ${NODEDOCKERFILES}::
 ${COINS}:: %: %/Dockerfile | coindir-%
 
 ${COINS}:: FORCE
-	docker build -t beirdo/coinnode:$@ ${CACHE} $@
+	docker build --build-arg CACHE_DATE="$(shell date)" \
+		-t beirdo/coinnode:$@ ${CACHE} $@
 	docker push beirdo/coinnode:$@
 
 ${NODES}:: COIN = ${@:-node=}
 ${NODES}:: %-node: %/Dockerfile.node
 
 ${NODES}:: FORCE
-	docker build -t node:${COIN} ${CACHE} -f ${COIN}/Dockerfile.node ${COIN}
-	docker run -d -i -t --ulimit core=99999999 --name node_${COIN} node:${COIN} /bin/bash
+	docker build -t node:${COIN}  ${CACHE} -f ${COIN}/Dockerfile.node \
+		${COIN}
+	docker run -d -i -t --ulimit core=999999999 --name node_${COIN} \
+		node:${COIN} /bin/bash
 
 
 ${KILLNODES}:: COIN = ${@:-node-kill=}

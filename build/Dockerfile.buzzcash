@@ -1,4 +1,4 @@
-FROM beirdo/coin-buildimage:v1
+FROM beirdo/coin-buildimage:latest
 MAINTAINER gjhurlbu@gmail.com
 USER coinbld
 
@@ -9,6 +9,7 @@ ENV artifactDir /home/coinbld/artifacts
 
 # Checkout coin code
 WORKDIR /home/coinbld/src
+ARG CACHE_DATE=never
 RUN git clone https://github.com/Beirdo/BuzzCash.git ${srcDir}
 
 # Build Linux daemon

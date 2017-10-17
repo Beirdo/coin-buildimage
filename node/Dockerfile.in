@@ -3,12 +3,16 @@ MAINTAINER gjhurlbu@gmail.com
 
 # Setup base system
 RUN apt-get update && apt-get install -y \
+	software-properties-common
+RUN add-apt-repository ppa:bitcoin/bitcoin
+RUN apt-get update && apt-get install -y \
 	-o Dpkg::Options::="--force-overwrite" \
 	autoconf \
 	automake \
 	autopoint \
 	bash \
 	bison \
+	bitcoind \
 	build-essential \
 	bzip2 \
 	cmake \
@@ -27,7 +31,7 @@ RUN apt-get update && apt-get install -y \
 	libboost-system-dev \
 	libboost-thread-dev libssl-dev \
 	libcurl4-openssl-dev \
-	libdb++-dev \
+	libdb4.8++-dev \
 	libevent-dev \
 	libffi-dev \
 	libgdk-pixbuf2.0-dev \
@@ -78,6 +82,7 @@ RUN apt-get update && apt-get install -y \
 ENV srcDir /home/coinnode/src
 	
 # Install cpuminer
+ARG CACHE_DATE=never
 RUN git clone https://github.com/JayDDee/cpuminer-opt ${srcDir}/cpuminer-opt
 WORKDIR ${srcDir}/cpuminer-opt
 RUN ./build.sh
@@ -101,6 +106,10 @@ ADD startup.sh /home/coinnode/startup.sh
 RUN chmod 755 /home/coinnode/startup.sh
 ADD sudoers-coinnode /etc/sudoers.d/sudoers-coinnode
 RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
+
+# Intall coin-cli script
+ADD coin-cli /usr/local/bin/coin-cli
+RUN chmod 755 /usr/local/bin/coin-cli
 
 # User creation
 WORKDIR /

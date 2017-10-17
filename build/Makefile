@@ -7,7 +7,8 @@ pull-artifacts:	pull-artifacts.in
 		pull-artifacts.in > pull-artifacts
 
 ${COINS}:	pull-artifacts
-	docker build -f Dockerfile.$@ -t $@:latest ${CACHE} .
+	docker build --build-arg CACHE_DATE="$(shell date)" -f Dockerfile.$@ \
+		-t $@:latest ${CACHE} .
 	mkdir -p artifacts
 	docker run --rm -i -v ${PWD}/artifacts:/artifacts $@:latest \
 		bash -s < pull-artifacts
