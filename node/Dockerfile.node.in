@@ -7,7 +7,7 @@ ENV srcDir /home/coinnode/src
 ENV TERM screen
 
 # Expose the ports
-EXPOSE @RPCPORT@
+EXPOSE @P2PPORT@
 #EXPOSE @EXPLORERPORT@
 
 # If there is a backup file, add it

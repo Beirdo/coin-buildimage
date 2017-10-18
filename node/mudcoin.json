@@ -1,6 +1,7 @@
 {
   "target": "mudcoin",
   "rpcport": 18462,
+  "p2pport": 8462,
   "coinname": "MudCoin",
   "daemon": "MudCoind",
   "explorerport": 3001,
