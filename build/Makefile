@@ -7,16 +7,16 @@ DOCKERFILES = $(addsuffix /Dockerfile, ${COINS})
 
 ${DOCKERFILES}:: Dockerfile.in
 
-coindir-%: .PHONY
-	mkdir -p ${@:coindir-=}
+${COINS}:: FORCE
+	mkdir -p $@
 
 ${DOCKERFILES}::
 	./substitute.py --coin ${@:/Dockerfile=} < Dockerfile.in
 
-${COINS}:: %: %/Dockerfile | coindir-%
+${COINS}:: %: %/Dockerfile
 
 ${COINS}:: FORCE
-	docker build --build-arg CACHE_DATE="$(shell date)" -f Dockerfile.$@ \
+	docker build --build-arg CACHE_DATE="$(shell date)" -f $@/Dockerfile \
 		-t $@:latest ${CACHE} .
 	mkdir -p artifacts
 	docker run --rm -i -v ${PWD}/artifacts:/artifacts $@:latest \
