@@ -1,4 +1,4 @@
-mkdir -p /home/coinbld/artifacts/linux-libs
+mkdir -p /home/coinbld/artifacts/@COINNAME@/linux-libs
 for i in /home/coinbld/artifacts/@COINNAME@/linux/* ; do
     ldd $i | tr "\t" " " | grep '=>' | cut -d " " -f 2,4 > /tmp/libs.$$
     while read filename origfile ; do

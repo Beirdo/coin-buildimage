@@ -13,15 +13,16 @@ RUN apt-get update && apt-get install -y \
 	bash \
 	bison \
 	build-essential \
-	build-essential \
 	bzip2 \
 	cmake \
 	flex \
 	g++ \
+	gawk \
 	gettext \
 	git \
 	g++-multilib libc6-dev-i386 \
 	gperf \
+	help2man \
 	intltool \
 	libboost-all-dev \
 	libboost-dev \
@@ -137,6 +138,5 @@ RUN chown -R coinbld /home/coinbld
 
 # Cleanup
 RUN rm -rf /tmp /opt/mxe/pkg /opt/mxe/src
-RUN mkdir /tmp
-RUN chmod 1777 /tmp
+RUN mkdir /tmp ; chmod 1777 /tmp
 RUN apt-get clean

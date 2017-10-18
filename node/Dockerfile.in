@@ -74,6 +74,7 @@ RUN apt-get update && apt-get install -y \
 	sed \
 	sudo \
 	unzip \
+	vim-tiny \
 	wget \
 	xz-utils \
 	yasm \
@@ -98,19 +99,33 @@ RUN rsync -a /tmp/node-v8.7.0-linux-x64/ /usr/local/
 RUN rm /usr/local/CHANGELOG.md /usr/local/LICENSE /usr/local/README.md
 RUN node -v
 	
-# Install cpuminer
+# Install cpuminer-opt
 ARG CACHE_DATE=never
 RUN git clone https://github.com/JayDDee/cpuminer-opt ${srcDir}/cpuminer-opt
 WORKDIR ${srcDir}/cpuminer-opt
-RUN ./build.sh
+RUN ./autogen.sh
+RUN CFLAGS="-O3 -march=corei7-avx -Wall" CXXFLAGS="-O3 -march=corei7-avx -Wall -std=gnu++11" ./configure --with-curl
+RUN make -j4
+RUN strip -s cpuminer
 RUN make install
-RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-aesni
+#RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-aesni
 
-RUN git clean -xfd && git reset --hard
-RUN git fetch origin legacy && git checkout legacy && git pull
-RUN ./build.sh
+#RUN git clean -xfd && git reset --hard
+#RUN git fetch origin legacy && git checkout legacy && git pull
+#RUN ./autogen.sh
+#RUN CFLAGS="-O3 -march=corei7-avx -Wall" CXXFLAGS="-O3 -march=corei7-avx -Wall -std=gnu++11" ./configure --with-curl
+#RUN make -j4
+#RUN strip -s cpuminer
+#RUN make install
+#RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-noaesni
+
+# Install minerd (cpuminer)
+RUN git clone https://github.com/pooler/cpuminer ${srcDir}/cpuminer
+WORKDIR ${srcDir}/cpuminer
+RUN ./autogen.sh
+RUN ./configure CFLAGS="-O3"
+RUN make -j4
 RUN make install
-RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-noaesni
 
 # Install config file
 ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
@@ -139,5 +154,5 @@ RUN chmod 755 /usr/local/bin/coin-cli
 RUN chown -R coinnode /home/coinnode
 
 # Cleanup
-RUN rm -rf /tmp ; mkdir /tmp ; chmod 755 /tmp
+RUN rm -rf /tmp ; mkdir /tmp ; chmod 1777 /tmp
 RUN apt-get clean
