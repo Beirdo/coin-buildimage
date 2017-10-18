@@ -74,7 +74,7 @@ WORKDIR /opt/mxe
 RUN make -j4 MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' \
 	gcc zlib qtbase qtimageformats qttools libpng miniupnpc boost
 
-ENV PATH=${PATH}:/opt/mxe/usr/bin
+ENV PATH=${PATH}:/opt/mxe/usr/bin:/opt/cross/bin:/opt/cross/x-tools/arm-unknown-linux-gnueabi/bin
 
 # Build Berkeley DB 4.8 for MXE
 WORKDIR /tmp/src
@@ -99,18 +99,34 @@ RUN wget http://fukuchi.org/works/qrencode/qrencode-3.4.4.tar.gz
 RUN tar -xvf qrencode-3.4.4.tar.gz
 RUN cp -prv qrencode-3.4.4 qrencode-3.4.4-32
 RUN cp -prv qrencode-3.4.4 qrencode-3.4.4-64
+
 WORKDIR /tmp/src/qrencode-3.4.4-32
 RUN ./configure --host=i686-w64-mingw32.static \
 	--prefix=/opt/mxe/usr/i686-w64-mingw32.static --enable-static \
 	--disable-shared --without-tools
 RUN make -j4
 RUN make install
+
 WORKDIR /tmp/src/qrencode-3.4.4-64
 RUN ./configure --host=x86_64-w64-mingw32.static \
 	--prefix=/opt/mxe/usr/x86_64-w64-mingw32.static --enable-static \
 	--disable-shared --without-tools
 RUN make -j4
 RUN make install
+
+# Setup crosstool-ng for the Raspberry Pi
+WORKDIR /tmp/src
+RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.23.0.tar.xz
+RUN tar -xzvf crosstool-ng-1.23.0
+WORKDIR /tmp/src/crosstool-ng-1.23.0
+RUN ./configure --prefix=/opt/cross
+RUN make -j4
+RUN make install
+
+# Setup crosstool-ng for Raspberry Pi
+WORKDIR /tmp/src/crosstool-pi
+ADD crosstool-ng-config-pi .config
+RUN ct-ng build
 
 # User creation
 WORKDIR /
