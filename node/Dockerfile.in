@@ -106,8 +106,8 @@ RUN ./build.sh
 RUN make install
 RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-aesni
 
-RUN git clean -xfd
-RUN git checkout legacy ; git pull
+RUN git clean -xfd && git reset --hard
+RUN git fetch origin legacy && git checkout legacy && git pull
 RUN ./build.sh
 RUN make install
 RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-noaesni
