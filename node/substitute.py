@@ -48,7 +48,7 @@ args = parser.parse_args()
 with open("%s.json" % args.coin, "r") as f:
     config = json.load(f)
 
-config = {key.lower: value for (key, value) in config.items()}
+config = {key.lower(): value for (key, value) in config.items()}
 
 subst = convertConfig(config)
 
