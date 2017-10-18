@@ -1,6 +1,6 @@
 #! /bin/bash
 
 cd /home/ubuntu/src/coin-buildimage/node
-git pull
-make mudcoin-node
+sudo -u ubuntu git pull
+sudo -u ubuntu make mudcoin-node
 
