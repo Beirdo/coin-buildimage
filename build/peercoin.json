@@ -1,0 +1,7 @@
+{
+  "coinname": "ppcoin",
+  "giturl": "https://github.com/BeirdoMud/peercoin.git",
+  "branch": "master",
+  "qtwin32": "bitcoin-qt-mxe32.pro",
+  "qtwin64": "bitcoin-qt-mxe64.pro"
+}

@@ -1,0 +1,34 @@
+FROM beirdo/coin-buildimage:latest
+MAINTAINER gjhurlbu@gmail.com
+USER coinbld
+
+# Setup environment
+ENV srcDir /home/coinbld/src/@COINNAME@
+ENV artifactDir /home/coinbld/artifacts/@COINNAME@
+
+# Checkout coin code
+WORKDIR /home/coinbld/src
+ARG CACHE_DATE=never
+RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
+
+# Build Linux daemon
+WORKDIR ${srcDir}/src
+RUN make -j4 -f makefile.unix
+RUN install -D @COINNAME@d ${artifactDir}/linux/@COINNAME@d
+
+# Build Win32 exe
+WORKDIR ${srcDir}
+RUN git clean -xdf
+RUN i686-w64-mingw32.static-qmake-qt5 @QTWIN32@
+RUN make -j4
+RUN install -D release/@COINNAME@-qt.exe ${artifactDir}/win32/@COINNAME@-qt.exe
+
+# Build Win64 exe
+WORKDIR ${srcDir}
+RUN git clean -xdf
+RUN x86_64-w64-mingw32.static-qmake-qt5 @QTWIN64@
+RUN make -j4
+RUN install -D release/MudCoin-qt.exe ${artifactDir}/win64/@COINNAME@-qt.exe
+
+# Reset user to root
+USER root

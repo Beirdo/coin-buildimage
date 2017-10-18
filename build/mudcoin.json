@@ -1,0 +1,7 @@
+{
+  "coinname": "MudCoin",
+  "giturl": "https://github.com/BeirdoMud/MudCoin.git",
+  "branch": "master",
+  "qtwin32": "MudCoin-qt-mxe32.pro",
+  "qtwin64": "MudCoin-qt-mxe64.pro"
+}

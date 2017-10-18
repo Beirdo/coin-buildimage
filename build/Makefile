@@ -1,12 +1,21 @@
 all:
 
+.PHONY: FORCE
+
 COINS := mudcoin peercoin flappycoin buzzcash
+DOCKERFILES = $(addsuffix /Dockerfile, ${COINS})
 
-pull-artifacts:	pull-artifacts.in
-	sed -e 's/@ID@/'$(shell id -u)'/g' -e 's/@GROUP@/'$(shell id -g)'/' \
-		pull-artifacts.in > pull-artifacts
+${DOCKERFILES}:: Dockerfile.in
 
-${COINS}:	pull-artifacts
+coindir-%: .PHONY
+	mkdir -p ${@:coindir-=}
+
+${DOCKERFILES}::
+	./substitute.py --coin ${@:/Dockerfile=} < Dockerfile.in
+
+${COINS}:: %: %/Dockerfile | coindir-%
+
+${COINS}:: FORCE
 	docker build --build-arg CACHE_DATE="$(shell date)" -f Dockerfile.$@ \
 		-t $@:latest ${CACHE} .
 	mkdir -p artifacts
