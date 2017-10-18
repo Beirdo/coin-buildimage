@@ -40,7 +40,8 @@ ${NODES}:: %-node: %/Dockerfile.node
 ${NODES}:: FORCE
 	docker build -t node:${COIN}  ${CACHE} -f ${COIN}/Dockerfile.node \
 		${COIN}
-	docker run -d -i -t -P --ulimit core=999999999 --name node_${COIN} \
+	docker run -d -i -t $(shell cat ${COIN}/ports.txt) \
+		--ulimit core=999999999 --name node_${COIN} \
 		node:${COIN} /bin/bash
 
 

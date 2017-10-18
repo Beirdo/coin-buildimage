@@ -48,6 +48,8 @@ args = parser.parse_args()
 with open("%s.json" % args.coin, "r") as f:
     config = json.load(f)
 
+config = {key.lower: value for (key, value) in config.items()}
+
 subst = convertConfig(config)
 
 # Create a config file
@@ -98,6 +100,22 @@ infile = "explorer-settings.json.in"
 outfile = os.path.join(args.coin, "explorer-settings.json")
 substituteFile(infile, outfile, subst)
 
+# Create the ports file
+ports = []
+port = config.get('p2pport', None)
+if port:
+    ports.append(port)
+port = config.get('explorerport', None)
+useexplorer = config.get('useexplorer', None)
+if port and useexplorer:
+    ports.append(port)
+
+ports = list(map(lambda x: "-p %s:%s" % (x, x), ports))
+ports = " ".join(ports)
+outfile = os.path.join(args.coin, "ports.txt")
+with open(outfile, "w") as f:
+    f.write(ports)
+
 # Copy over the daemon
 if args.daemon:
     infile = os.path.join("..", "build", "artifacts", "linux", config['daemon'])
@@ -105,7 +123,6 @@ if args.daemon:
 
 # Copy over the mongo init script and the crontab for explorer
 copyfile(args.coin, "explorer.mongo")
-
 copyfile(args.coin, "explorer-crontab")
 
 # Copy the sudoers.d file
