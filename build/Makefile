@@ -20,4 +20,4 @@ ${COINS}:: FORCE
 		-t $@:latest ${CACHE} .
 	mkdir -p artifacts
 	docker run --rm -i -v ${PWD}/artifacts:/artifacts $@:latest \
-		bash -s < pull-artifacts
+		bash -s < $@/pull-artifacts

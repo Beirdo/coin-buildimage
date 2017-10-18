@@ -62,6 +62,7 @@ RUN apt-get update && apt-get install -y \
 	ruby \
 	scons \
 	sed \
+	texinfo \
 	unzip \
 	wget \
 	xz-utils \
@@ -117,7 +118,7 @@ RUN make install
 # Setup crosstool-ng for the Raspberry Pi
 WORKDIR /tmp/src
 RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.23.0.tar.xz
-RUN tar -xzvf crosstool-ng-1.23.0
+RUN tar -xvf crosstool-ng-1.23.0.tar.xz
 WORKDIR /tmp/src/crosstool-ng-1.23.0
 RUN ./configure --prefix=/opt/cross
 RUN make -j4

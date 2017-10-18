@@ -1,12 +1,12 @@
 mkdir -p /home/coinbld/artifacts/linux-libs
-for i in /home/coinbld/artifacts/linux/* ; do
+for i in /home/coinbld/artifacts/@COINNAME@/linux/* ; do
     ldd $i | tr "\t" " " | grep '=>' | cut -d " " -f 2,4 > /tmp/libs.$$
     while read filename origfile ; do
         if [ -n "${origfile}" ] && [ -f "${origfile}" ] ; then
-            rsync -avLt ${origfile} /home/coinbld/artifacts/linux-libs/${filename}
+            rsync -avLt ${origfile} /home/coinbld/artifacts/@COINNAME@/linux-libs/${filename}
         fi
     done < /tmp/libs.$$
 done
 
-chown -v -R @ID@:@GROUP@ /home/coinbld/artifacts
-rsync -avt /home/coinbld/artifacts/ /artifacts/
+chown -v -R @ID@:@GROUP@ /home/coinbld/artifacts/@COINNAME@
+rsync -avt /home/coinbld/artifacts/@COINNAME@/ /artifacts/@COINNAME@/
