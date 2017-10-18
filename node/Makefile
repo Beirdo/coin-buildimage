@@ -11,8 +11,8 @@ KILLNODES = $(addsuffix -node-kill, ${COINS})
 ${DOCKERFILES}:: Dockerfile.in
 ${NODEDOCKERFILES}:: Dockerfile.node.in
 
-coindir-%: .PHONY
-	mkdir -p ${@:coindir-=}
+${COINS}:: FORCE
+	mkdir -p $@
 
 ${DOCKERFILES}::
 	[ -f node-v8.7.0-linux-x64.tar.xz ] || \
@@ -22,9 +22,9 @@ ${DOCKERFILES}::
 ${NODEDOCKERFILES}::
 	[ -f node-v8.7.0-linux-x64.tar.xz ] || \
 		wget https://nodejs.org/dist/v8.7.0/node-v8.7.0-linux-x64.tar.xz
-	./substitute.py --coin ${@:/Dockerfile.node=} < Dockerfile.in
+	./substitute.py --coin ${@:/Dockerfile.node=} --nodaemon < Dockerfile.in
 
-${COINS}:: %: %/Dockerfile | coindir-%
+${COINS}:: %: %/Dockerfile
 
 ${COINS}:: FORCE
 	docker build --build-arg CACHE_DATE="$(shell date)" \
@@ -32,6 +32,9 @@ ${COINS}:: FORCE
 	docker push beirdo/coinnode:$@
 
 ${NODES}:: COIN = ${@:-node=}
+${NODES}:: FORCE
+	mkdir -p ${COIN}
+
 ${NODES}:: %-node: %/Dockerfile.node
 
 ${NODES}:: FORCE

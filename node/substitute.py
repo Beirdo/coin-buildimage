@@ -40,6 +40,8 @@ def copyfile(coin, infile, outfile=None):
 
 parser = argparse.ArgumentParser(description="Substitute in variables")
 parser.add_argument('--coin', '-c', required=True, help="Which coin")
+parser.add_argument('--nodaemon', '-D', action="store_false", dest="daemon",
+                    help="Don't copy daemon")
 args = parser.parse_args()
 
 # First read the config file
@@ -97,8 +99,9 @@ outfile = os.path.join(args.coin, "explorer-settings.json")
 substituteFile(infile, outfile, subst)
 
 # Copy over the daemon
-infile = os.path.join("..", "build", "artifacts", "linux", config['daemon'])
-copyfile(args.coin, infile, config['daemon'])
+if args.daemon:
+    infile = os.path.join("..", "build", "artifacts", "linux", config['daemon'])
+    copyfile(args.coin, infile, config['daemon'])
 
 # Copy over the mongo init script and the crontab for explorer
 copyfile(args.coin, "explorer.mongo")
