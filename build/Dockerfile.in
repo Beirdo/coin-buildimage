@@ -30,5 +30,12 @@ RUN x86_64-w64-mingw32.static-qmake-qt5 @QTWIN64@
 RUN make -j4
 RUN install -D release/MudCoin-qt.exe ${artifactDir}/win64/@COINNAME@-qt.exe
 
+## Build Raspberry Pi daemon
+#WORKDIR ${srcDir}
+#RUN git clean -xdf
+#WORKDIR ${srcDir}/src
+#RUN make -j4 -f makefile.rpi
+#RUN install -D @COINNAME@d ${artifactDir}/raspberry-pi/@COINNAME@d
+
 # Reset user to root
 USER root

@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y \
 	libgdk-pixbuf2.0-dev \
 	libltdl-dev \
 	libminiupnpc-dev \
+	libncurses5-dev \
 	libpng-dev \
 	libprotobuf-dev \
 	libqrencode-dev \
@@ -56,6 +57,7 @@ RUN apt-get update && apt-get install -y \
 	pkg-config \
 	protobuf-compiler \
 	python3 \
+	python3-dev \
 	qrencode \
 	qttools5-dev \
 	qttools5-dev-tools \
@@ -76,7 +78,7 @@ WORKDIR /opt/mxe
 RUN make -j4 MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' \
 	gcc zlib qtbase qtimageformats qttools libpng miniupnpc boost
 
-ENV PATH=${PATH}:/opt/mxe/usr/bin:/opt/cross/bin:/opt/cross/x-tools/arm-unknown-linux-gnueabi/bin
+ENV PATH=${PATH}:/opt/mxe/usr/bin:/opt/cross/bin:/opt/x-tools/pi-crosstool-ng/arm-unknown-linux-gnueabi/bin
 
 # Build Berkeley DB 4.8 for MXE
 WORKDIR /tmp/src
@@ -125,16 +127,26 @@ RUN ./configure --prefix=/opt/cross
 RUN make -j4
 RUN make install
 
-# Setup crosstool-ng for Raspberry Pi
-WORKDIR /tmp/src/crosstool-pi
-ADD crosstool-ng-config-pi .config
-RUN ct-ng build
-
 # User creation
 WORKDIR /
 RUN useradd -m -c "Coin Builder" -d /home/coinbld coinbld
 RUN mkdir -p /home/coinbld/src /home/coinbld/artifacts
 RUN chown -R coinbld /home/coinbld
+
+# Setup crosstool-ng for Raspberry Pi
+WORKDIR /tmp/src/crosstool-pi
+ADD crosstool-ng-config-pi .config
+RUN ct-ng oldconfig
+RUN ct-ng build
+
+# Setup boost for Raspberry Pi
+WORKDIR /tmp/src
+RUN wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
+RUN tar -xvf boost_1_65_1.tar.bz2
+WORKDIR /tmp/src/boost_1_65_1
+RUN ./bootstrap.sh
+ADD boost-project-config.jam project-config.jam
+RUN ./bjam install toolset=gcc-arm --prefix=/opt/x-tools/pi-boost link=static variant=release threading=multi -a -q --reconfigure
 
 # Cleanup
 RUN rm -rf /tmp /opt/mxe/pkg /opt/mxe/src

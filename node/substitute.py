@@ -118,7 +118,8 @@ with open(outfile, "w") as f:
 
 # Copy over the daemon
 if args.daemon:
-    infile = os.path.join("..", "build", "artifacts", "linux", config['daemon'])
+    infile = os.path.join("..", "build", "artifacts", config["coinname"],
+                          "linux", config['daemon'])
     copyfile(args.coin, infile, config['daemon'])
 
 # Copy over the mongo init script and the crontab for explorer
