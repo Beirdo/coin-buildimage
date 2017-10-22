@@ -1,8 +1,10 @@
 #! /bin/bash
 
-./shutdown.sh
-docker rmi beirdo/coinnode:mudcoin
+COIN=${1:-mudcoin}
+
+./shutdown.sh ${COIN}
+docker rmi beirdo/coinnode:${COIN}
 cd /home/ubuntu/src/coin-buildimage/node
 sudo -u ubuntu git pull
-sudo -u ubuntu make mudcoin-node
+sudo -u ubuntu make ${COIN}-node
 

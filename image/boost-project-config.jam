@@ -18,7 +18,7 @@ project : default-build <toolset>gcc ;
 import python ;
 if ! [ python.configured ]
 {
-    using python : 3.5 : /usr ;
+    using python : 3.6 : /usr ;
 }
 
 # List of --with-<library> and --without-<library>

@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y \
 	libncurses5-dev \
 	libpng-dev \
 	libprotobuf-dev \
+	libpython3.6-dev \
 	libqrencode-dev \
 	libqt5core5a \
 	libqt5dbus5 \
@@ -146,9 +147,42 @@ RUN tar -xvf boost_1_65_1.tar.bz2
 WORKDIR /tmp/src/boost_1_65_1
 RUN ./bootstrap.sh
 ADD boost-project-config.jam project-config.jam
-RUN ./bjam install toolset=gcc-arm --prefix=/opt/x-tools/pi-boost link=static variant=release threading=multi -a -q --reconfigure
+RUN ./bjam install toolset=gcc-arm --prefix=/opt/x-tools/pi-boost link=static \
+	variant=release threading=multi -a -q --reconfigure --without-python
+
+# Build Berkeley DB 4.8 for Raspberry Pi
+WORKDIR /tmp/src/db-4.8.30.NC/rpi-build
+RUN ../dist/configure --host=arm-unknown-linux-gnueabi \
+	--prefix=/opt/x-tools/pi-db --disable-shared \
+	--disable-replication --enable-cxx
+RUN make -j4
+RUN make install
+
+# Build openssl for Raspberry Pi
+WORKDIR /tmp/src
+RUN wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
+RUN tar -xvf openssl-1.0.2l.tar.gz
+WORKDIR /tmp/src/openssl-1.0.2l
+ENV CROSS_COMPILE arm-unknown-linux-gnueabi-
+RUN ./Configure --cross-compile-prefix=arm-unknown-linux-gnueabi- \
+	--prefix=/opt/x-tools/pi-openssl linux-armv4
+RUN make -j4
+RUN make install
+
+# Build zlib for Raspberry Pi
+WORKDIR /tmp/src
+RUN wget https://zlib.net/zlib-1.2.11.tar.gz
+RUN tar -xvf zlib-1.2.11.tar.gz
+WORKDIR /tmp/src/zlib-1.2.11
+RUN TARGETMACH=arm-none-linux-gnueabi BUILDMACH=i686-pc-linux-gnu \
+	CROSS=arm-none-linux-gnueabi CC=${CROSS_COMPILE}gcc \
+	LD=${CROSS_COMPILE}ld AS=${CROSS_COMPILE}-as \
+	./configure --prefix=/opt/x-tools/pi-zlib
+RUN make -j4
+RUN make install
 
 # Cleanup
+WORKDIR /
 RUN rm -rf /tmp /opt/mxe/pkg /opt/mxe/src
 RUN mkdir /tmp ; chmod 1777 /tmp
 RUN apt-get clean

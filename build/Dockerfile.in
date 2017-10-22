@@ -28,7 +28,7 @@ WORKDIR ${srcDir}
 RUN git clean -xdf
 RUN x86_64-w64-mingw32.static-qmake-qt5 @QTWIN64@
 RUN make -j4
-RUN install -D release/MudCoin-qt.exe ${artifactDir}/win64/@COINNAME@-qt.exe
+RUN install -D release/@COINNAME@-qt.exe ${artifactDir}/win64/@COINNAME@-qt.exe
 
 ## Build Raspberry Pi daemon
 #WORKDIR ${srcDir}

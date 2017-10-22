@@ -2,7 +2,7 @@ all:
 
 .PHONY: FORCE
 
-COINS := mudcoin peercoin flappycoin buzzcash
+COINS := mudcoin peercoin flappycoin buzzcash alexandrite
 DOCKERFILES = $(addsuffix /Dockerfile, ${COINS})
 NODEDOCKERFILES = $(addsuffix /Dockerfile.node, ${COINS})
 NODES = $(addsuffix -node, ${COINS})
