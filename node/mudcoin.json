@@ -2,6 +2,7 @@
   "target": "mudcoin",
   "rpcport": 18462,
   "p2pport": 8462,
+  "p2poolport": 28462,
   "coinname": "MudCoin",
   "daemon": "MudCoind",
   "explorerport": 3001,
@@ -13,5 +14,6 @@
   "coinbase": "GETINFO",
   "nethash": "getnetworkhashps",
   "nethashunits": "G",
-  "useexplorer": 0
+  "useexplorer": 0,
+  "usep2pool": 1
 }

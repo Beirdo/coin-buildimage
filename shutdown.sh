@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -x
 
 COIN=${1:-mudcoin}
 

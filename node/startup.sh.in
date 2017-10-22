@@ -9,8 +9,14 @@ if [ "@USEEXPLORER@" = "1" ] ; then
     sudo /etc/init.d/mongodb start
     mongo < explorer.mongo
     sudo /etc/init.d/cron start
-    screen coinnode npm start
+    screen npm start
     crontab -u coinnode explorer.crontab
+fi
+
+# Startup p2pool
+if [ "@USEP2POOL@" = "1" ] ; then
+    cd /home/coinnode/src/p2pool
+    screen ./run_p2pool.py --net @COINNAME@ --disable-upn
 fi
 
 cd /home/coinnode

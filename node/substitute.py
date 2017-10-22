@@ -109,6 +109,10 @@ port = config.get('explorerport', None)
 useexplorer = config.get('useexplorer', None)
 if port and useexplorer:
     ports.append(port)
+port = config.get('p2poolport', None)
+usep2pool = config.get('usep2pool', None)
+if port and usep2pool:
+    ports.append(port)
 
 ports = list(map(lambda x: "-p %s:%s" % (x, x), ports))
 ports = " ".join(ports)
