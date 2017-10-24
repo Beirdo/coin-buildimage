@@ -1,0 +1,8 @@
+{
+  "coinname": "GainCoin",
+  "giturl": "https://github.com/Beirdo/gaincoin.git",
+  "branch": "master",
+  "qtwin32": "GainCoin-qt-mxe32.pro",
+  "qtwin64": "GainCoin-qt-mxe64.pro"
+  "qtlinux": "GainCoin-qt.pro"
+}

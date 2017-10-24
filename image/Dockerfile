@@ -60,6 +60,7 @@ RUN apt-get update && apt-get install -y \
 	python3 \
 	python3-dev \
 	qrencode \
+	qt5-default \
 	qttools5-dev \
 	qttools5-dev-tools \
 	rsync \

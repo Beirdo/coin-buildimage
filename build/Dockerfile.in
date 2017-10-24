@@ -16,6 +16,13 @@ WORKDIR ${srcDir}/src
 RUN make -j4 -f makefile.unix
 RUN install -D @COINNAME@d ${artifactDir}/linux/@COINNAME@d
 
+# Build Linux Qt
+WORKDIR ${srcDir}
+RUN git clean -xdf
+RUN qmake @QTLINUX@
+RUN make -j4
+RUN install -D @COINNAME@-qt ${artifactDir}/linux/@COINNAME@-qt
+
 # Build Win32 exe
 WORKDIR ${srcDir}
 RUN git clean -xdf

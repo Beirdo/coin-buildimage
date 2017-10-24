@@ -2,7 +2,7 @@ all:
 
 .PHONY: FORCE
 
-COINS := mudcoin peercoin flappycoin buzzcash alexandrite
+COINS := mudcoin peercoin flappycoin buzzcash alexandrite gaincoin
 DOCKERFILES = $(addsuffix /Dockerfile, ${COINS})
 
 ${DOCKERFILES}:: Dockerfile.in

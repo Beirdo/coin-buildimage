@@ -1,5 +1,10 @@
 # /bin/bash
 
+# Download the wallet
+mkdir -p /home/coinnode/.@COINNAME@
+aws s3 cp @WALLETBUCKET@/@COINNAME@/wallet.dat \
+	/home/coinnode/.@COINNAME@/wallet.dat
+
 # Start the coin daemon
 /usr/local/bin/@COINNAME@d --daemon
 
@@ -16,7 +21,7 @@ fi
 # Startup p2pool
 if [ "@USEP2POOL@" = "1" ] ; then
     cd /home/coinnode/src/p2pool
-    screen ./run_p2pool.py --net @COINNAME@ --disable-upn
+    screen ./run_p2pool.py --net @COINNAME@ --disable-upnp --address @P2PADDRESS@
 fi
 
 cd /home/coinnode
