@@ -3,5 +3,6 @@
   "giturl": "https://github.com/Beirdo/alexandrite.git",
   "branch": "master",
   "qtwin32": "Alexandrite-qt-mxe32.pro",
-  "qtwin64": "Alexandrite-qt-mxe64.pro"
+  "qtwin64": "Alexandrite-qt-mxe64.pro",
+  "qtlinux": "Alexandrite-qt.pro"
 }

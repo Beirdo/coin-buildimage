@@ -3,5 +3,6 @@
   "giturl": "https://github.com/Beirdo/BuzzCash.git",
   "branch": "master",
   "qtwin32": "buzzcash-qt-mxe32.pro",
-  "qtwin64": "buzzcash-qt-mxe64.pro"
+  "qtwin64": "buzzcash-qt-mxe64.pro",
+  "qtlinux": "buzzcash-qt.pro"
 }

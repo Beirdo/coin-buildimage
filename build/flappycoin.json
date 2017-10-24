@@ -3,5 +3,6 @@
   "giturl": "https://github.com/Beirdo/Flaps.git",
   "branch": "master",
   "qtwin32": "flappycoin-qt-mxe32.pro",
-  "qtwin64": "flappycoin-qt-mxe64.pro"
+  "qtwin64": "flappycoin-qt-mxe64.pro",
+  "qtlinux": "flappycoin-qt.pro"
 }
