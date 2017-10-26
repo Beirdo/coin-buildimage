@@ -3,12 +3,14 @@ all:
 .PHONY: FORCE
 
 COINS := mudcoin peercoin flappycoin buzzcash alexandrite gaincoin saturn2coin
+COINS += satori
+
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 
 ${DOCKERFILES}:: Dockerfile.in
 
 ${COINS}:: FORCE
-	mkdir -p $@
+	mkdir -p build/$@
 
 ${DOCKERFILES}::
 	./substitute.py --coin $(@:build/%/Dockerfile=%) < Dockerfile.in

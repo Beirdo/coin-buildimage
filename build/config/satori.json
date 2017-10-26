@@ -1,0 +1,8 @@
+{
+  "coinname": "Satori",
+  "giturl": "https://github.com/MyCryptoCoins/Satori.git",
+  "branch": "master",
+  "qtwin32": "Satori-qt-mxe32.pro",
+  "qtwin64": "Satori-qt-mxe64.pro",
+  "qtlinux": "Satori-qt.pro"
+}
