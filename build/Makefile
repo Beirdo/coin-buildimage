@@ -2,8 +2,8 @@ all:
 
 .PHONY: FORCE
 
-COINS := mudcoin peercoin flappycoin buzzcash alexandrite gaincoin
-DOCKERFILES = $(addsuffix /Dockerfile, ${COINS})
+COINS := mudcoin peercoin flappycoin buzzcash alexandrite gaincoin saturn2coin
+DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 
 ${DOCKERFILES}:: Dockerfile.in
 
@@ -11,13 +11,13 @@ ${COINS}:: FORCE
 	mkdir -p $@
 
 ${DOCKERFILES}::
-	./substitute.py --coin ${@:/Dockerfile=} < Dockerfile.in
+	./substitute.py --coin $(@:build/%/Dockerfile=%) < Dockerfile.in
 
-${COINS}:: %: %/Dockerfile
+${COINS}:: %: build/%/Dockerfile
 
 ${COINS}:: FORCE
-	docker build --build-arg CACHE_DATE="$(shell date)" -f $@/Dockerfile \
-		-t $@:latest ${CACHE} .
+	docker build --build-arg CACHE_DATE="$(shell date)" \
+		-f build/$@/Dockerfile -t $@:latest ${CACHE} .
 	mkdir -p artifacts
 	docker run --rm -i -v ${PWD}/artifacts:/artifacts $@:latest \
-		bash -s < $@/pull-artifacts
+		bash -s < build/$@/pull-artifacts

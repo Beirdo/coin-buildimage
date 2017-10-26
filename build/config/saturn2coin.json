@@ -1,0 +1,9 @@
+{
+  "coinname": "Saturn2Coin",
+  "giturl": "https://github.com/MyCryptoCoins/SAT2.git",
+  "branch": "master",
+  "qtwin32": "Saturn2Coin-qt-mxe32.pro",
+  "qtwin64": "Saturn2Coin-qt-mxe64.pro",
+  "qtlinux": "Saturn2Coin-qt.pro",
+  "rpidaemon": 0
+}
