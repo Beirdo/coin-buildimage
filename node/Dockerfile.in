@@ -146,11 +146,13 @@ RUN npm install --production --unsafe
 ADD explorer.mongo /tmp/explorer.mongo
 ADD explorer-settings.json ${srcDir}/explorer/settings.json
 ADD explorer-crontab ${srcDir}/explorer/crontab
+=%
+
+# Startup script and sudo
 ADD startup.sh /home/coinnode/startup.sh
 RUN chmod 755 /home/coinnode/startup.sh
 ADD sudoers-coinnode /etc/sudoers.d/sudoers-coinnode
 RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
-=%
 
 # Inxtall coin-cli script
 ADD coin-cli /usr/local/bin/coin-cli

@@ -5,15 +5,15 @@
 mkdir -p /home/coinnode/.@COINNAME@
 aws s3 cp @WALLETBUCKET@/@COINNAME@/wallet.dat \
 	/home/coinnode/.@COINNAME@/wallet.dat
-
 =%
 %=- GRABSNAPSHOT 1
 # Download the wallet
 mkdir -p /home/coinnode/.@COINNAME@
 aws s3 cp @WALLETBUCKET@/@COINNAME@/snapshot.zip /tmp/snapshot-@COINNAME@.zip
-pushd /home/coinnode/.@COINNAME@
+cd /home/coinnode/.@COINNAME@
 unzip -ao /tmp/snapshot-@COINNAME@.zip
-popd
+cd /home/coinnode
+rm /tmp/snapshot-@COINNAME@.zip
 
 =%
 # Start the coin daemon
@@ -27,7 +27,6 @@ mongo < explorer.mongo
 sudo /etc/init.d/cron start
 screen npm start
 crontab -u coinnode explorer.crontab
-
 =%
 %=- USEP2POOL 1
 # Startup p2pool

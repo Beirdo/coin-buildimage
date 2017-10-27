@@ -18,6 +18,6 @@
   "usep2pool": 0,
   "p2paddress": "MNTKhbbrucGZuUMphTghUMvHYy8dqHJfPd",
   "walletbucket": "s3://beirdo-coin-wallets",
-  "grabwallet": 0,
-  "grabsnapshot": 0
+  "grabwallet": 1,
+  "grabsnapshot": 1
 }
