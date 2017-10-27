@@ -10,10 +10,16 @@ import shutil
 import sys
 
 
+filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+?)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
+
+
 def convertConfig(config):
-    keys = list(map(lambda x: re.compile(r"@%s@" % x, re.I), config.keys()))
+    keys = list(config.keys())
+    regexes = list(map(lambda x: re.compile(r"@%s@" % x, re.I), keys))
     values = list(config.values())
-    subst = dict(zip(keys, values))
+    subst = zip(keys, regexes, values)
+    subst = {key: {'regex': regex, 'value': value}
+             for (key, regex, value) in subst}
     return subst
 
 
@@ -24,8 +30,24 @@ def substituteFile(infile, outfile, subst):
         with open(infile, "r") as f:
             text = f.read()
 
-    for (regex, repl) in subst.items():
+    for item in subst.values():
+        regex = item.get('regex', None)
+        repl = item.get('value', None)
+        if regex is None or repl is None:
+            continue
         text = regex.sub(str(repl), text)
+
+    blocks = filterRe.findall(text)
+    for (block, mode, label, value, section) in blocks:
+        subvalue = subst.get(label.lower(), {}).get('value', None)
+        print(mode, label, value, subvalue)
+        if mode == '+' or mode == '':
+            if subvalue is not None and str(subvalue) != value:
+                section = ""
+        elif mode == '-':
+            if subvalue is None or str(subvalue) != value:
+                section = ""
+        text = text.replace(block, section)
 
     with open(outfile, "w") as f:
         f.write(text)
@@ -34,7 +56,7 @@ def substituteFile(infile, outfile, subst):
 def copyfile(coin, infile, outfile=None):
     if not outfile:
         outfile = infile
-    outfile = os.path.join(coin, outfile)
+    outfile = os.path.join("build", coin, outfile)
     shutil.copyfile(infile, outfile)
 
 
@@ -45,7 +67,7 @@ parser.add_argument('--nodaemon', '-D', action="store_false", dest="daemon",
 args = parser.parse_args()
 
 # First read the config file
-with open("%s.json" % args.coin, "r") as f:
+with open("config/%s.json" % args.coin, "r") as f:
     config = json.load(f)
 
 config = {key.lower(): value for (key, value) in config.items()}
@@ -73,7 +95,9 @@ if addnodes:
 # Add the config setting to the mapping
 subst.update(convertConfig(outconfig))
 
-conffile = os.path.join(args.coin, "%s.conf" % config['coinname'])
+buildDir = os.path.join("build", args.coin)
+
+conffile = os.path.join(buildDir, "%s.conf" % config['coinname'])
 with open(conffile, "w") as f:
     for (key, values) in sorted(outconfig.items()):
         if not isinstance(values, list):
@@ -82,22 +106,22 @@ with open(conffile, "w") as f:
             f.write("%s=%s\n" % (key, value))
 
 # Create the Dockerfile
-outfile = os.path.join(args.coin, "Dockerfile")
+outfile = os.path.join(buildDir, "Dockerfile")
 substituteFile("stdin", outfile, subst)
 
 # Create the node run Dockerfile
 infile = "Dockerfile.node.in"
-outfile = os.path.join(args.coin, "Dockerfile.node")
+outfile = os.path.join(buildDir, "Dockerfile.node")
 substituteFile(infile, outfile, subst)
 
 # Create the startup script
 infile = "startup.sh.in"
-outfile = os.path.join(args.coin, "startup.sh")
+outfile = os.path.join(buildDir, "startup.sh")
 substituteFile(infile, outfile, subst)
 
 # Create the Explorer settings file
 infile = "explorer-settings.json.in"
-outfile = os.path.join(args.coin, "explorer-settings.json")
+outfile = os.path.join(buildDir, "explorer-settings.json")
 substituteFile(infile, outfile, subst)
 
 # Create the ports file
@@ -116,7 +140,7 @@ if port and usep2pool:
 
 ports = list(map(lambda x: "-p %s:%s" % (x, x), ports))
 ports = " ".join(ports)
-outfile = os.path.join(args.coin, "ports.txt")
+outfile = os.path.join(buildDir, "ports.txt")
 with open(outfile, "w") as f:
     f.write(ports)
 

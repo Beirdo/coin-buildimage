@@ -8,8 +8,12 @@ ENV TERM screen
 
 # Expose the ports
 EXPOSE @P2PPORT@
+%=- USEEXPLORER 1
 EXPOSE @EXPLORERPORT@
+=%
+%=- USEP2POOL 1
 EXPOSE @P2POOLPORT@
+=%
 
 # If there is a backup file, add it
 #ADD backup.tar.gz /home/coinnode/.@COINNAME@

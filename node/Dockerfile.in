@@ -94,12 +94,14 @@ ENV NVM_DIR "/home/coinnode/.nvm"
 ENV PATH /home/coinnode/bin:${PATH}
 ENV USER root
 
+%=- USEEXPLORER 1
 # Install NodeJS & npm
 WORKDIR /tmp
 ADD node-v8.7.0-linux-x64.tar.xz /tmp/
 RUN rsync -a /tmp/node-v8.7.0-linux-x64/ /usr/local/
 RUN rm /usr/local/CHANGELOG.md /usr/local/LICENSE /usr/local/README.md
 RUN node -v
+=%
 	
 # Install cpuminer-opt
 ARG CACHE_DATE=never
@@ -136,6 +138,7 @@ ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
 ADD @DAEMON@ /usr/local/bin/@DAEMON@
 RUN chmod 755 /usr/local/bin/@DAEMON@
 
+%=- USEEXPLORER 1
 # Install iquidus explorer
 RUN git clone https://github.com/iquidus/explorer ${srcDir}/explorer
 WORKDIR ${srcDir}/explorer
@@ -147,16 +150,19 @@ ADD startup.sh /home/coinnode/startup.sh
 RUN chmod 755 /home/coinnode/startup.sh
 ADD sudoers-coinnode /etc/sudoers.d/sudoers-coinnode
 RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
+=%
 
 # Inxtall coin-cli script
 ADD coin-cli /usr/local/bin/coin-cli
 RUN chmod 755 /usr/local/bin/coin-cli
 
+%=- USEP2POOL 1
 # Install p2pool
 RUN git clone https://github.com/Beirdo/p2pool ${srcDir}/p2pool -b @COINNAME@
 WORKDIR ${srcDir}/p2pool
 RUN pip install -r requirements.txt
 RUN pip install service_identity
+=%
 
 # Fix permissions for coinnode
 RUN chown -R coinnode /home/coinnode
