@@ -34,7 +34,7 @@ ${COINS}:: FORCE
 
 ${NODES}:: COIN = ${@:-node=}
 ${NODES}:: FORCE
-	mkdir -p ${COIN}
+	mkdir -p build/${COIN}
 
 ${NODES}:: %-node: build/%/Dockerfile.node
 
