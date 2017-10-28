@@ -1,5 +1,5 @@
 {
-  "coinname": "Satori",
+  "coinname": "SatoriCoin",
   "giturl": "https://github.com/MyCryptoCoins/Satori.git",
   "branch": "master",
   "qtwin32": "Satori-qt-mxe32.pro",

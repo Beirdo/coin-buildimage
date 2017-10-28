@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 	gawk \
 	gettext \
 	git \
-	g++-multilib libc6-dev-i386 \
+	g++-multilib \
 	gperf \
 	help2man \
 	intltool \
@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y \
 	libboost-program-options-dev \
 	libboost-system-dev \
 	libboost-thread-dev libssl-dev \
+	libc6-dev-i386 \
 	libcurl4-openssl-dev \
 	libdb4.8++-dev \
 	libevent-dev \
@@ -57,6 +58,7 @@ RUN apt-get update && apt-get install -y \
 	perl \
 	pkg-config \
 	protobuf-compiler \
+	psmisc \
 	python3 \
 	python3-dev \
 	qrencode \
