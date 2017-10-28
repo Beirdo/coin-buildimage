@@ -166,6 +166,14 @@ RUN pip install -r requirements.txt
 RUN pip install service_identity
 =%
 
+%=- USEOPRETURN 1
+# Install the opreturn tools
+RUN git clone https://github.com/Beirdo/python-OP_RETURN \
+	${srcDir}/python-OP_RETURN
+WORKDIR ${srcDir}/python-OP_RETURN
+RUN pip install -r requirements.txt
+=%
+
 # Fix permissions for coinnode
 RUN chown -R coinnode /home/coinnode
 

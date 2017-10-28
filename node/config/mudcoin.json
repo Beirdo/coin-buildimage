@@ -19,5 +19,6 @@
   "p2paddress": "MNTKhbbrucGZuUMphTghUMvHYy8dqHJfPd",
   "walletbucket": "s3://beirdo-coin-wallets",
   "grabwallet": 1,
-  "grabsnapshot": 1
+  "grabsnapshot": 1,
+  "useopreturn": 1
 }
