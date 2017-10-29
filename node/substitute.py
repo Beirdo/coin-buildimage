@@ -76,6 +76,7 @@ subst = convertConfig(config)
 
 # Create a config file
 outconfig = {
+    "daemon": 1,
     "dns": 1,
     "server": 1,
     "listen": 1,
