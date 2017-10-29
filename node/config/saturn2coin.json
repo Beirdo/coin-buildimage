@@ -8,7 +8,7 @@
   "useexplorer": 0,
   "usep2pool": 0,
   "walletbucket": "s3://flapmin-coin-wallets",
-  "grabwallet": 1,
+  "grabwallet": 0,
   "grabsnapshot": 1,
   "useopreturn": 0,
   "backupfile": 0,
