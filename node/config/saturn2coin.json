@@ -10,5 +10,6 @@
   "walletbucket": "s3://beirdo-coin-wallets",
   "grabwallet": 0,
   "grabsnapshot": 0,
-  "useopreturn": 0
+  "useopreturn": 0,
+  "backupfile": 1
 }

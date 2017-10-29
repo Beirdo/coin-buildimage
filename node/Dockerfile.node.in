@@ -16,8 +16,10 @@ EXPOSE @EXPLORERPORT@
 EXPOSE @P2POOLPORT@
 =%
 
+%=- BACKUPFILE 1
 # If there is a backup file, add it
-#ADD backup.tar.gz /home/coinnode/.@COINNAME@
+ADD backup.tar.gz /home/coinnode/.@COINNAME@
+=%
 
 WORKDIR /home/coinnode
 ENTRYPOINT /usr/bin/script /dev/null -c "/usr/bin/screen -s /bin/bash /home/coinnode/startup.sh @USEEXPLORER@"
