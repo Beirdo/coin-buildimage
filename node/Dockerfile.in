@@ -135,8 +135,8 @@ RUN make install
 ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
 
 # Install the daemon
-ADD @DAEMON@ /usr/local/bin/@DAEMON@
-RUN chmod 755 /usr/local/bin/@DAEMON@
+ADD @DAEMONNAME@ /usr/local/bin/@DAEMONNAME@
+RUN chmod 755 /usr/local/bin/@DAEMONNAME@
 
 %=- USEEXPLORER 1
 # Install iquidus explorer

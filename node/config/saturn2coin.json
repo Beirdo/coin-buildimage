@@ -3,7 +3,7 @@
   "rpcport": 10018,
   "p2pport": 10017,
   "coinname": "Saturn2Coin",
-  "daemon": "Saturn2Coind",
+  "daemonname": "Saturn2Coind",
   "symbol": "SAT2",
   "useexplorer": 0,
   "usep2pool": 0,

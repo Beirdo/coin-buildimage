@@ -4,7 +4,7 @@
   "p2pport": 8462,
   "p2poolport": 28462,
   "coinname": "MudCoin",
-  "daemon": "MudCoind",
+  "daemonname": "MudCoind",
   "explorerport": 3001,
   "symbol": "MUD",
   "confirmations": 40,

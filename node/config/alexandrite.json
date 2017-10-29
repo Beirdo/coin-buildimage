@@ -3,7 +3,7 @@
   "rpcport": 19530,
   "p2pport": 19531,
   "coinname": "Alexandrite",
-  "daemon": "Alexandrited",
+  "daemonname": "Alexandrited",
   "explorerport": 3002,
   "symbol": "ALEX",
   "confirmations": 60,

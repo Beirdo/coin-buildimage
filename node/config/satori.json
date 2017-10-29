@@ -3,7 +3,7 @@
   "rpcport": 14553,
   "p2pport": 14552,
   "coinname": "SatoriCoin",
-  "daemon": "SatoriCoind",
+  "daemonname": "SatoriCoind",
   "symbol": "SATO",
   "useexplorer": 0,
   "usep2pool": 0,
