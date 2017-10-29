@@ -1,0 +1,13 @@
+{
+  "coinname": "Nimbus",
+  "giturl": "https://github.com/MyCryptoCoins/Nimbus.git",
+  "branch": "master",
+  "qtwin32": "Nimbus-qt-mxe32.pro",
+  "qtwin64": "Nimbus-qt-mxe64.pro",
+  "qtlinux": "Nimbus-qt.pro",
+  "win32qt": 1,
+  "win64qt": 1,
+  "rpidaemon": 1,
+  "linuxdaemon": 1,
+  "linuxqt": 1
+}

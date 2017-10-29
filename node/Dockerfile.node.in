@@ -8,6 +8,7 @@ ENV TERM screen
 
 # Expose the ports
 EXPOSE @P2PPORT@
+EXPOSE @RPCPORT@
 %=- USEEXPLORER 1
 EXPOSE @EXPLORERPORT@
 =%
