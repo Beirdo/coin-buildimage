@@ -1,7 +1,7 @@
 {
   "target": "saturn2coin",
   "rpcport": 10018,
-  "p2pport": 10017,
+  "p2pport": 12788,
   "coinname": "Saturn2Coin",
   "daemonname": "Saturn2Coind",
   "symbol": "SAT2",
