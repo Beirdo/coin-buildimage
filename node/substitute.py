@@ -54,6 +54,8 @@ def substituteFile(infile, outfile, subst):
 
 
 def copyfile(coin, infile, outfile=None):
+    if not os.path.exists(infile):
+        return
     if not outfile:
         outfile = infile
     outfile = os.path.join("build", coin, outfile)
@@ -163,3 +165,7 @@ copyfile(args.coin, "coin-cli")
 
 # Copy the nodejs archive
 copyfile(args.coin, "node-v8.7.0-linux-x64.tar.xz")
+
+if config.get('copyawscreds', False):
+    copyfile(args.coin, os.path.expanduser("~/.aws/credentials"),
+             "aws-credentials")

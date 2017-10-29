@@ -90,12 +90,12 @@ RUN mkdir -p /home/coinnode/src
 
 # Setup environment
 ENV srcDir /home/coinnode/src
-ENV NVM_DIR "/home/coinnode/.nvm"
 ENV PATH /home/coinnode/bin:${PATH}
 ENV USER root
 
 %=- USEEXPLORER 1
 # Install NodeJS & npm
+ENV NVM_DIR "/home/coinnode/.nvm"
 WORKDIR /tmp
 ADD node-v8.7.0-linux-x64.tar.xz /tmp/
 RUN rsync -a /tmp/node-v8.7.0-linux-x64/ /usr/local/

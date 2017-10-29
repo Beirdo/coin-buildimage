@@ -21,5 +21,9 @@ EXPOSE @P2POOLPORT@
 ADD backup.tar.gz /home/coinnode/.@COINNAME@
 =%
 
+%=- COPYAWSCREDS 1
+ADD aws-credentials /home/coinnode/.aws/credentials
+=%
+
 WORKDIR /home/coinnode
 ENTRYPOINT /usr/bin/script /dev/null -c "/usr/bin/screen -s /bin/bash /home/coinnode/startup.sh @USEEXPLORER@"
