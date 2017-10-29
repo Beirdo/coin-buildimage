@@ -1,7 +1,7 @@
 {
   "target": "saturn2coin",
-  "rpcport": 22789,
-  "p2pport": 22788,
+  "rpcport": 10018,
+  "p2pport": 10017,
   "coinname": "Saturn2Coin",
   "daemon": "Saturn2Coind",
   "symbol": "SAT2",
@@ -11,5 +11,7 @@
   "grabwallet": 1,
   "grabsnapshot": 1,
   "useopreturn": 0,
-  "backupfile": 0
+  "backupfile": 0,
+  "addnodes": ["165.227.51.119", "45.55.142.171", "138.68.136.38",
+               "138.197.168.162", "72.231.171.115"]
 }
