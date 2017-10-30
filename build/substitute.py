@@ -11,6 +11,8 @@ import sys
 
 filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+?)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
 
+builds = ["linuxdaemon", "linuxqt", "win32qt", "win64qt", "rpidaemon"]
+
 
 def convertConfig(config):
     keys = list(config.keys())
@@ -70,14 +72,25 @@ with open("config/%s.json" % args.coin, "r") as f:
 subst = convertConfig(config)
 subst.update(convertConfig({ "id": os.geteuid(), "group": os.getegid() }))
 
+builds = [key for key in builds if config.get(key, True)]
+print("Builds: %s" % builds)
+subst.update(convertConfig({ "builds": " ".join(builds) }))
+
 buildDir = os.path.join("build", args.coin)
 
-# Create the Dockerfile
-outfile = os.path.join(buildDir, "Dockerfile")
-substituteFile("stdin", outfile, subst)
+# Create the Dockerfiles
+for build in builds:
+    infile = "Dockerfile.%s.in" % build
+    outfile = os.path.join(buildDir, "Dockerfile.%s" % build)
+    substituteFile(infile, outfile, subst)
 
 # Create the pull-artifacts script
 infile = "pull-artifacts.in"
 outfile = os.path.join(buildDir, "pull-artifacts")
+substituteFile(infile, outfile, subst)
+
+# Create the build makefile
+infile = "Makefile-build.in"
+outfile = os.path.join(buildDir, "Makefile")
 substituteFile(infile, outfile, subst)
 

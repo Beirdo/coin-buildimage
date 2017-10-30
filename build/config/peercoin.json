@@ -1,4 +1,5 @@
 {
+  "target": "ppcoin",
   "coinname": "ppcoin",
   "giturl": "https://github.com/Beirdo/peercoin.git",
   "branch": "master",

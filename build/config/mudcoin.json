@@ -1,4 +1,5 @@
 {
+  "target": "mudcoin",
   "coinname": "MudCoin",
   "giturl": "https://github.com/BeirdoMud/MudCoin.git",
   "branch": "master",

@@ -1,4 +1,5 @@
 {
+  "target": "gaincoin",
   "coinname": "GainCoin",
   "giturl": "https://github.com/Beirdo/gaincoin.git",
   "branch": "master",

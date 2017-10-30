@@ -1,4 +1,5 @@
 {
+  "target": "saturn2coin",
   "coinname": "Saturn2Coin",
   "giturl": "https://github.com/MyCryptoCoins/SAT2.git",
   "branch": "master",

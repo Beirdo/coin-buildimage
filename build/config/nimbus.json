@@ -1,4 +1,5 @@
 {
+  "target": "nimbus",
   "coinname": "Nimbus",
   "giturl": "https://github.com/MyCryptoCoins/Nimbus.git",
   "branch": "master",

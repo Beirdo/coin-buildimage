@@ -1,4 +1,5 @@
 {
+  "target": "buzzcash",
   "coinname": "BuzzCash",
   "giturl": "https://github.com/Beirdo/BuzzCash.git",
   "branch": "master",

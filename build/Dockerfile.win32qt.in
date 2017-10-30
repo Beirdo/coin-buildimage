@@ -1,0 +1,22 @@
+FROM beirdo/coin-buildimage:mxe
+MAINTAINER gjhurlbu@gmail.com
+
+# Setup environment
+USER coinbld
+ENV srcDir /home/coinbld/src/@COINNAME@
+ENV artifactDir /home/coinbld/artifacts/@COINNAME@
+
+# Checkout coin code
+WORKDIR /home/coinbld/src
+ARG CACHE_DATE=never
+RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
+
+# Build Win32 exe
+WORKDIR ${srcDir}
+RUN git clean -xdf
+RUN i686-w64-mingw32.static-qmake-qt5 @QTWIN32@
+RUN make -j4
+RUN install -D release/@COINNAME@-qt.exe ${artifactDir}/win32/@COINNAME@-qt.exe
+
+# Reset user to root
+USER root

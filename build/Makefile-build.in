@@ -1,0 +1,14 @@
+BUILDS = @BUILDS@
+ARTIFACTDIR = $(shell cd ../.. ; pwd)/artifacts
+
+all::
+	mkdir -p ${ARTIFACTDIR}
+
+all::	${BUILDS}
+
+${BUILDS}:
+	docker build --build-arg CACHE_DATE="$(shell date)" \
+		-f Dockerfile.$@ -t @TARGET@-$@:latest ${CACHE} .
+	docker run --rm -i -v ${ARTIFACTDIR}:/artifacts @TARGET@-$@:latest \
+		bash -s < pull-artifacts
+

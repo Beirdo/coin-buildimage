@@ -1,4 +1,5 @@
 {
+  "target": "satori",
   "coinname": "SatoriCoin",
   "giturl": "https://github.com/MyCryptoCoins/Satori.git",
   "branch": "master",

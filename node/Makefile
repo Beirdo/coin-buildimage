@@ -18,7 +18,7 @@ ${COINS}:: FORCE
 
 ${DOCKERFILES} ${NODEDOCKERFILES}::
 	[ -f node-v8.7.0-linux-x64.tar.xz ] || \
-		wget https://nodejs.org/dist/v8.7.0/node-v8.7.0-linux-x64.tar.xz
+		wget http://build-artifacts.mycryptocoins.net/node-v8.7.0-linux-x64.tar.xz
 
 ${DOCKERFILES}::
 	./substitute.py --coin ${@:build/%/Dockerfile=%} < Dockerfile.in

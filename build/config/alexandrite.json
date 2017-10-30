@@ -1,4 +1,5 @@
 {
+  "target": "alexandrite",
   "coinname": "Alexandrite",
   "giturl": "https://github.com/Beirdo/alexandrite.git",
   "branch": "master",

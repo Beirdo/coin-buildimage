@@ -1,4 +1,5 @@
 {
+  "target": "flappycoin",
   "coinname": "flappycoin",
   "giturl": "https://github.com/Beirdo/Flaps.git",
   "branch": "master",
