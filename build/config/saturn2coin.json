@@ -5,6 +5,5 @@
   "branch": "master",
   "qtwin32": "Saturn2Coin-qt-mxe32.pro",
   "qtwin64": "Saturn2Coin-qt-mxe64.pro",
-  "qtlinux": "Saturn2Coin-qt.pro",
-  "rpidaemon": 0
+  "qtlinux": "Saturn2Coin-qt.pro"
 }
