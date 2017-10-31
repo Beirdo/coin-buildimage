@@ -2,9 +2,11 @@
 
 # Grab pool config
 aws s3 cp @WALLETBUCKET@/@COINNAME@/pool-config.zip /tmp/pool-config.zip
+aws s3 cp @WALLETBUCKET@/@COINNAME@/pool-icons.zip /tmp/pool-icons.zip
 cd /home/coinnode/src/CoiniumServ
 unzip -ao /tmp/pool-config.zip
-rm /tmp/pool-config.zip
+unzip -ao /tmp/pool-icons.zip
+rm /tmp/pool-config.zip /tmp/pool-icons.zip
 
 # Grab MySQL DB snapshot and start mysql
 aws s3 cp @WALLETBUCKET@/@COINNAME@/mysql-db.zip /tmp/mysql-db.zip
