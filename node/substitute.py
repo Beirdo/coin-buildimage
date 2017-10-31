@@ -128,7 +128,10 @@ substituteFile(infile, outfile, subst)
 
 # Create the node run Dockerfile
 infile = "Dockerfile.node.in"
-outfile = os.path.join(buildDir, "Dockerfile.node")
+if args.pool:
+    outfile = os.path.join(buildDir, "Dockerfile.pool")
+else:
+    outfile = os.path.join(buildDir, "Dockerfile.node")
 substituteFile(infile, outfile, subst)
 
 # Create the startup script
