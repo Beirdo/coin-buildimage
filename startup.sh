@@ -1,10 +1,13 @@
 #! /bin/bash -x
+if [ "${EUID}" = "0" ] ; then
+    umount /mnt
+    export USER=ubuntu
+fi
 
-COIN=${1:-mudcoin}
-
-./shutdown.sh ${COIN}
-docker rmi beirdo/coinnode:${COIN}
-cd ${HOME}/src/coin-buildimage/node
+cd ${HOME}/src/coin-buildimage
 sudo -u ${USER} git pull
-sudo -u ${USER} make ${COIN}-node
+for i in `cat poolnodes.txt` ; do
+    sudo -u ${USER} /startup-poolnode.sh $i
+done
+sudo -u ${USER} ./startup-pool.sh
 
