@@ -21,12 +21,12 @@ EXPOSE @P2POOLPORT@
 EXPOSE @COINIUMSERVPORT@
 =%
 
-%=+ ISPOOL 0
+%=+ POOLNODE 0
 # Update the config
 ADD startup-node.sh /home/coinnode/startup.sh
 =%
 
-%=- ISPOOL 1
+%=- POOLNODE 1
 ADD startup-pool.sh /home/coinnode/startup.sh
 =%
 

@@ -79,7 +79,7 @@ with open("config/%s.json" % args.coin, "r") as f:
 
 config = {key.lower(): value for (key, value) in config.items()}
 if args.pool:
-    config["grabpoolwallet"] = 1
+    config["poolnode"] = 1
     config.pop("grabwallet", None)
 
 subst = convertConfig(config)
