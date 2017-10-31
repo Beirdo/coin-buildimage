@@ -24,8 +24,8 @@ RUN wget http://build-artifacts.mycryptocoins.net/boost_1_65_1.tar.bz2
 RUN tar -xvf boost_1_65_1.tar.bz2
 WORKDIR /tmp/src/boost_1_65_1
 RUN ./bootstrap.sh
-ADD boost-project-config.jam project-config.jam
-RUN ./bjam install toolset=gcc-arm --prefix=/opt/x-tools/pi-boost link=static \
+ADD boost-project-config-rpi.jam project-config.jam
+RUN ./bjam install toolset=gcc-arm --prefix=/opt/x-tools/rpi link=static \
 	variant=release threading=multi -a -q --reconfigure --without-python
 
 # Build Berkeley DB 4.8 for Raspberry Pi
@@ -34,7 +34,7 @@ RUN wget http://build-artifacts.mycryptocoins.net/db-4.8.30.NC.tar.gz
 RUN tar -xvf db-4.8.30.NC.tar.gz
 WORKDIR /tmp/src/db-4.8.30.NC/rpi-build
 RUN ../dist/configure --host=arm-unknown-linux-gnueabi \
-	--prefix=/opt/x-tools/pi-db --disable-shared \
+	--prefix=/opt/x-tools/rpi --disable-shared \
 	--disable-replication --enable-cxx
 RUN make -j4
 RUN make install
@@ -46,7 +46,7 @@ RUN tar -xvf openssl-1.0.2l.tar.gz
 WORKDIR /tmp/src/openssl-1.0.2l
 ENV CROSS_COMPILE arm-unknown-linux-gnueabi-
 RUN ./Configure --cross-compile-prefix=arm-unknown-linux-gnueabi- \
-	--prefix=/opt/x-tools/pi-openssl linux-armv4
+	--prefix=/opt/x-tools/rpi linux-armv4
 RUN make -j4
 RUN make install
 
@@ -58,7 +58,7 @@ WORKDIR /tmp/src/zlib-1.2.11
 RUN TARGETMACH=arm-none-linux-gnueabi BUILDMACH=i686-pc-linux-gnu \
 	CROSS=arm-none-linux-gnueabi CC=${CROSS_COMPILE}gcc \
 	LD=${CROSS_COMPILE}ld AS=${CROSS_COMPILE}-as \
-	./configure --prefix=/opt/x-tools/pi-zlib
+	./configure --prefix=/opt/x-tools/rpi
 RUN make -j4
 RUN make install
 
@@ -68,7 +68,7 @@ RUN wget http://build-artifacts.mycryptocoins.net/miniupnpc-1.9.20140610.tar.gz
 RUN tar -xvvf miniupnpc-1.9.20140610.tar.gz
 WORKDIR /tmp/src/miniupnpc-1.9.20140610
 RUN CC=${CROSS_COMPILE}gcc make -j4
-RUN INSTALLPREFIX=/opt/x-tools/pi-upnpc make install
+RUN INSTALLPREFIX=/opt/x-tools/rpi make install
 
 # Cleanup
 WORKDIR /

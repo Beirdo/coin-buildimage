@@ -8,6 +8,7 @@ import os
 import uuid
 import shutil
 import sys
+import requests
 
 
 filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+?)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
@@ -66,51 +67,64 @@ parser = argparse.ArgumentParser(description="Substitute in variables")
 parser.add_argument('--coin', '-c', required=True, help="Which coin")
 parser.add_argument('--nodaemon', '-D', action="store_false", dest="daemon",
                     help="Don't copy daemon")
+parser.add_argument('--pool', '-p', action="store_true",
+                    help="Grab pool wallet")
 args = parser.parse_args()
+
+buildDir = os.path.join("build", args.coin)
 
 # First read the config file
 with open("config/%s.json" % args.coin, "r") as f:
     config = json.load(f)
 
 config = {key.lower(): value for (key, value) in config.items()}
+if args.pool:
+    config["grabpoolwallet"] = 1
+    config.pop("grabwallet", None)
 
 subst = convertConfig(config)
 
-# Create a config file
-outconfig = {
-    "daemon": 1,
-    "dns": 1,
-    "server": 1,
-    "listen": 1,
-    "rpcport": config['rpcport'],
-    "rpcallowip": "127.0.0.1",
-    "rpcuser": "%srpc" % config['coinname'],
-    "rpcpassword": str(uuid.uuid4()),
-}
+if args.coin == 'coiniumserv':
+    result = requests.get("http://169.254.169.254/latest/meta-data/local-ipv4")
+    subst.update(convertConfig({"hostip": result.text}))
+else:
+    # Create a config file
+    outconfig = {
+        "daemon": 1,
+        "dns": 1,
+        "server": 1,
+        "listen": 1,
+        "rpcport": config['rpcport'],
+        "rpcallowip": "127.0.0.1",
+        "rpcuser": "%srpc" % config['coinname'],
+        "rpcpassword": str(uuid.uuid4()),
+    }
 
-addnodes = config.get('addnodes', [])
-if not isinstance(addnodes, list):
-    addnodes = [addnodes]
+    addnodes = config.get('addnodes', [])
+    if not isinstance(addnodes, list):
+        addnodes = [addnodes]
 
-if addnodes:
-    outconfig['addnode'] = addnodes
+    if addnodes:
+        outconfig['addnode'] = addnodes
 
-# Add the config setting to the mapping
-subst.update(convertConfig(outconfig))
+    # Add the config setting to the mapping
+    subst.update(convertConfig(outconfig))
 
-buildDir = os.path.join("build", args.coin)
-
-conffile = os.path.join(buildDir, "%s.conf" % config['coinname'])
-with open(conffile, "w") as f:
-    for (key, values) in sorted(outconfig.items()):
-        if not isinstance(values, list):
-            values = [values]
-        for value in values:
-            f.write("%s=%s\n" % (key, value))
+    conffile = os.path.join(buildDir, "%s.conf" % config['coinname'])
+    with open(conffile, "w") as f:
+        for (key, values) in sorted(outconfig.items()):
+            if not isinstance(values, list):
+                values = [values]
+            for value in values:
+                f.write("%s=%s\n" % (key, value))
 
 # Create the Dockerfile
+if args.coin == 'coiniumserv':
+    infile = "Dockerfile.coiniumserv.in"
+else:
+    infile = "Dockerfile.in"
 outfile = os.path.join(buildDir, "Dockerfile")
-substituteFile("stdin", outfile, subst)
+substituteFile(infile, outfile, subst)
 
 # Create the node run Dockerfile
 infile = "Dockerfile.node.in"
@@ -118,13 +132,11 @@ outfile = os.path.join(buildDir, "Dockerfile.node")
 substituteFile(infile, outfile, subst)
 
 # Create the startup script
-infile = "startup.sh.in"
+if args.coin == 'coiniumserv':
+    infile = "startup.sh-coiniumserv.in"
+else:
+    infile = "startup.sh.in"
 outfile = os.path.join(buildDir, "startup.sh")
-substituteFile(infile, outfile, subst)
-
-# Create the Explorer settings file
-infile = "explorer-settings.json.in"
-outfile = os.path.join(buildDir, "explorer-settings.json")
 substituteFile(infile, outfile, subst)
 
 # Create the ports file
@@ -132,13 +144,19 @@ ports = []
 port = config.get('p2pport', None)
 if port:
     ports.append(port)
+
 port = config.get('explorerport', None)
 useexplorer = config.get('useexplorer', None)
 if port and useexplorer:
     ports.append(port)
+
 port = config.get('p2poolport', None)
 usep2pool = config.get('usep2pool', None)
 if port and usep2pool:
+    ports.append(port)
+
+port = config.get('coiniumservport', None)
+if port:
     ports.append(port)
 
 ports = list(map(lambda x: "-p %s:%s" % (x, x), ports))
@@ -148,23 +166,29 @@ with open(outfile, "w") as f:
     f.write(ports)
 
 # Copy over the daemon
-if args.daemon:
+if args.daemon and args.coin != 'coiniumserv':
     infile = os.path.join("..", "build", "artifacts", config["coinname"],
                           "linux", config['daemonname'])
     copyfile(args.coin, infile, config['daemonname'])
 
-# Copy over the mongo init script and the crontab for explorer
-copyfile(args.coin, "explorer.mongo")
-copyfile(args.coin, "explorer-crontab")
+if config.get('useexplorer', False):
+    # Create the Explorer settings file
+    infile = "explorer-settings.json.in"
+    outfile = os.path.join(buildDir, "explorer-settings.json")
+    substituteFile(infile, outfile, subst)
+
+    # Copy over the mongo init script and the crontab for explorer
+    copyfile(args.coin, "explorer.mongo")
+    copyfile(args.coin, "explorer-crontab")
+
+    ## Copy the nodejs archive
+    #copyfile(args.coin, "node-v8.7.0-linux-x64.tar.xz")
 
 # Copy the sudoers.d file
 copyfile(args.coin, "sudoers-coinnode")
 
 # Copy the coin-cli script
 copyfile(args.coin, "coin-cli")
-
-# Copy the nodejs archive
-copyfile(args.coin, "node-v8.7.0-linux-x64.tar.xz")
 
 if config.get('copyawscreds', False):
     copyfile(args.coin, os.path.expanduser("~/.aws/credentials"),

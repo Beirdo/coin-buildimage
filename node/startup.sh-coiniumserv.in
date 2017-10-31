@@ -1,0 +1,39 @@
+# /bin/bash
+
+# Grab pool config
+aws s3 cp @WALLETBUCKET@/@COINNAME@/pool-config.zip /tmp/pool-config.zip
+cd /home/coinnode/src/CoiniumServ
+unzip -ao /tmp/pool-config.zip
+rm /tmp/pool-config.zip
+
+# Grab MySQL DB snapshot and start mysql
+aws s3 cp @WALLETBUCKET@/@COINNAME@/mysql-db.zip /tmp/mysql-db.zip
+cd /
+sudo unzip -ao /tmp/mysql-db.zip
+sudo /etc/init.d/mysql start
+
+# Grab Redis DB snapshot and start redis
+aws s3 cp @WALLETBUCKET@/@COINNAME@/redis-db.zip /tmp/redis-db.zip
+if [ -s /tmp/redis-db.zip ] ; then
+    cd /
+    sudo unzip -ao /tmp/redis-db.zip
+fi
+sudo /etc/init.d/redis-server start
+
+# Start the pool
+cd /home/coinnode/src/CoiniumServ
+mono bin/Release/CoiniumServ.exe
+
+# Update the Redis DB snapshot
+sudo /etc/init.d/redis-server stop
+cd /
+sudo zip -ru /tmp/redis-db.zip /var/lib/redis
+if [ -s /tmp/redis-db/zip ] ; then
+    aws s3 cp /tmp/redis-db.zip @WALLETBUCKET@/@COINNAME@/redis-db.zip
+fi
+
+# Update the MySQL DB snapshot
+sudo /etc/init.d/mysql stop
+cd /
+sudo zip -ru /tmp/mysql-db.zip /var/lib/mysql
+aws s3 cp /tmp/mysql-db.zip @WALLETBUCKET@/@COINNAME@/mysql-db.zip

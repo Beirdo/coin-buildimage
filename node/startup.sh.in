@@ -1,5 +1,11 @@
 # /bin/bash
 
+%=- GRABPOOLWALLET 1
+# Download the pool wallet
+mkdir -p /home/coinnode/.@COINNAME@
+aws s3 cp @WALLETBUCKET@/@COINNAME@/pool-wallet.dat \
+	/home/coinnode/.@COINNAME@/wallet.dat
+=%
 %=- GRABWALLET 1
 # Download the wallet
 mkdir -p /home/coinnode/.@COINNAME@

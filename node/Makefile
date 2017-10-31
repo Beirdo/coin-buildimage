@@ -2,30 +2,39 @@ all:
 
 .PHONY: FORCE
 
-COINS := mudcoin peercoin flappycoin buzzcash alexandrite saturn2coin
-COINS += satori
+COINS := coiniumserv mudcoin peercoin flappycoin buzzcash alexandrite
+COINS += satori saturn2coin
 
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 NODEDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.node, ${COINS}))
+POOLDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.pool, ${COINS}))
 NODES = $(addsuffix -node, ${COINS})
+POOLNODES = $(addsuffix -node-pool, ${COINS})
 KILLNODES = $(addsuffix -node-kill, ${COINS})
 
 ${DOCKERFILES}:: Dockerfile.in
 ${NODEDOCKERFILES}:: Dockerfile.node.in
+${POOLDOCKERFILES}:: Dockerfile.node.in
 
 ${COINS}:: FORCE
-	mkdir -p build/$@
+	mkdir -p build/$@ build/cache
 
-${DOCKERFILES} ${NODEDOCKERFILES}::
-	[ -f node-v8.7.0-linux-x64.tar.xz ] || \
-		wget http://build-artifacts.mycryptocoins.net/node-v8.7.0-linux-x64.tar.xz
+NODEJS = node-v8.7.0-linux-x64.tar.xz
+
+build/cache/${NODEJS}:
+	wget http://build-artifacts.mycryptocoins.net/${NODEJS} \
+		-O build/cache/${NODEJS}
+
+${DOCKERFILES}:: build/cache/${NODEJS}
 
 ${DOCKERFILES}::
-	./substitute.py --coin ${@:build/%/Dockerfile=%} < Dockerfile.in
+	./substitute.py --coin ${@:build/%/Dockerfile=%}
+
+${POOLDOCKERFILES}::
+	./substitute.py --coin ${@:build/%/Dockerfile.pool=%} --nodaemon --pool
 
 ${NODEDOCKERFILES}::
-	./substitute.py --coin ${@:build/%/Dockerfile.node=%} \
-		--nodaemon < Dockerfile.in
+	./substitute.py --coin ${@:build/%/Dockerfile.node=%} --nodaemon
 
 ${COINS}:: %: build/%/Dockerfile
 
@@ -47,8 +56,21 @@ ${NODES}:: FORCE
 		--ulimit core=999999999 --name node_${COIN} \
 		node:${COIN} /bin/bash
 
+${POOLNODES}:: COIN = ${@:-node-pool=}
+${POOLNODES}:: FORCE
+	mkdir -p build/${COIN}
+
+${POOLNODES}:: %-node: build/%/Dockerfile.pool
+
+${POOLNODES}:: FORCE
+	docker build -t pool:${COIN}  ${CACHE} \
+		-f build/${COIN}/Dockerfile.pool build/${COIN}
+	docker run -d -i -t $(shell cat build/${COIN}/ports.txt) \
+		--ulimit core=999999999 --name pool_${COIN} \
+		pool:${COIN} /bin/bash
 
 ${KILLNODES}:: COIN = ${@:-node-kill=}
 ${KILLNODES}:: FORCE
-	-docker kill node_${COIN}
-	-docker rm node_${COIN}
+	-docker kill node_${COIN} pool_${COIN}
+	-docker rm node_${COIN} pool_${COIN}
+

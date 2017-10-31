@@ -98,7 +98,7 @@ ENV USER root
 # Install NodeJS & npm
 ENV NVM_DIR "/home/coinnode/.nvm"
 WORKDIR /tmp
-ADD node-v8.7.0-linux-x64.tar.xz /tmp/
+ADD ../cache/node-v8.7.0-linux-x64.tar.xz /tmp/
 RUN rsync -a /tmp/node-v8.7.0-linux-x64/ /usr/local/
 RUN rm /usr/local/CHANGELOG.md /usr/local/LICENSE /usr/local/README.md
 RUN node -v
