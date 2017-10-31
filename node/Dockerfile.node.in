@@ -23,7 +23,11 @@ EXPOSE @COINIUMSERVPORT@
 
 %=+ ISPOOL 0
 # Update the config
-ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
+ADD startup-node.sh /home/coinnode/startup.sh
+=%
+
+%=- ISPOOL 1
+ADD startup-pool.sh /home/coinnode/startup.sh
 =%
 
 %=- BACKUPFILE 1

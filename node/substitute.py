@@ -145,9 +145,11 @@ substituteFile(infile, outfile, subst)
 # Create the startup script
 if args.coin == 'coiniumserv':
     infile = "startup.sh-coiniumserv.in"
+    suffix = "-pool.sh"
 else:
     infile = "startup.sh.in"
-outfile = os.path.join(buildDir, "startup.sh")
+    suffix = "-node.sh"
+outfile = os.path.join(buildDir, "startup%s" % suffix)
 substituteFile(infile, outfile, subst)
 
 # Create the ports file
