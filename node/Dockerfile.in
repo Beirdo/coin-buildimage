@@ -64,6 +64,7 @@ RUN apt-get update && apt-get install -y \
 	perl \
 	pkg-config \
 	protobuf-compiler \
+	psmisc \
 	psutils \
 	python3 \
 	python-pip \

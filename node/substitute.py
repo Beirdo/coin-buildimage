@@ -95,10 +95,16 @@ else:
         "server": 1,
         "listen": 1,
         "rpcport": config['rpcport'],
-        "rpcallowip": "127.0.0.1",
         "rpcuser": "%srpc" % config['coinname'],
-        "rpcpassword": str(uuid.uuid4()),
     }
+
+    if not args.pool:
+        outconfig["rpcallowip"] = "127.0.0.1"
+        rpcpassword = str(uuid.uuid4())
+    else:
+        rpcpassword = "pool-%s" % args.coin
+
+    outconfig["rpcpassword"] = rpcpassword
 
     addnodes = config.get('addnodes', [])
     if not isinstance(addnodes, list):

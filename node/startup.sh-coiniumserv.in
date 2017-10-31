@@ -9,14 +9,15 @@ rm /tmp/pool-config.zip
 # Grab MySQL DB snapshot and start mysql
 aws s3 cp @WALLETBUCKET@/@COINNAME@/mysql-db.zip /tmp/mysql-db.zip
 cd /
-sudo unzip -ao /tmp/mysql-db.zip
+sudo unzip -o /tmp/mysql-db.zip
+sudo chown -R mysql.mysql /var/lib/mysql
 sudo /etc/init.d/mysql start
 
 # Grab Redis DB snapshot and start redis
 aws s3 cp @WALLETBUCKET@/@COINNAME@/redis-db.zip /tmp/redis-db.zip
 if [ -s /tmp/redis-db.zip ] ; then
     cd /
-    sudo unzip -ao /tmp/redis-db.zip
+    sudo unzip -o /tmp/redis-db.zip
 fi
 sudo /etc/init.d/redis-server start
 
