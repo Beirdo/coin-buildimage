@@ -4,6 +4,6 @@
   "coinname": "CoiniumServ",
   "walletbucket": "s3://beirdo-coin-wallets",
   "ispool": 1,
-  "links": ["node_mudcoin"]
+  "links": ["pool_mudcoin"]
 }
 
