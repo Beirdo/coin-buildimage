@@ -58,6 +58,7 @@ RUN apt-get update && apt-get install -y \
 	make \
 	mongodb \
 	net-tools \
+	netcat \
 	openssl \
 	p7zip-full \
 	patch \
