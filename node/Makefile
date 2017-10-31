@@ -60,7 +60,7 @@ ${POOLNODES}:: COIN = ${@:-node-pool=}
 ${POOLNODES}:: FORCE
 	mkdir -p build/${COIN}
 
-${POOLNODES}:: %-node: build/%/Dockerfile.pool
+${POOLNODES}:: %-node-pool: build/%/Dockerfile.pool
 
 ${POOLNODES}:: FORCE
 	docker build -t pool:${COIN}  ${CACHE} \
