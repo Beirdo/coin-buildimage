@@ -7,13 +7,18 @@ ENV srcDir /home/coinnode/src
 ENV TERM screen
 
 # Expose the ports
+%=+ ISPOOL 0
 EXPOSE @P2PPORT@
 EXPOSE @RPCPORT@
+=%
 %=- USEEXPLORER 1
 EXPOSE @EXPLORERPORT@
 =%
 %=- USEP2POOL 1
 EXPOSE @P2POOLPORT@
+=%
+%=- ISPOOL 1
+EXPOSE @COINIUMSERVPORT@
 =%
 
 %=- BACKUPFILE 1
