@@ -27,6 +27,8 @@ ADD startup-node.sh /home/coinnode/startup.sh
 =%
 
 %=- POOLNODE 1
+# Update the config
+ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
 ADD startup-pool.sh /home/coinnode/startup.sh
 =%
 
