@@ -21,6 +21,8 @@ EXPOSE @P2POOLPORT@
 EXPOSE @COINIUMSERVPORT@
 =%
 
+ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
+
 %=- BACKUPFILE 1
 # If there is a backup file, add it
 ADD backup.tar.gz /home/coinnode/.@COINNAME@
