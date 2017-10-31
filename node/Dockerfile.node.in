@@ -30,6 +30,8 @@ ADD startup-node.sh /home/coinnode/startup.sh
 ADD startup-pool.sh /home/coinnode/startup.sh
 =%
 
+RUN chmod 755 /home/coinnode/startup.sh
+
 %=- BACKUPFILE 1
 # If there is a backup file, add it
 ADD backup.tar.gz /home/coinnode/.@COINNAME@
