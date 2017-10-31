@@ -1,6 +1,6 @@
 {
   "target": "coiniumserv",
-  "coiniumservport": 8088,
+  "coiniumservport": 80,
   "coinname": "CoiniumServ",
   "walletbucket": "s3://beirdo-coin-wallets",
   "ispool": 1,
