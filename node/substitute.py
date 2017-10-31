@@ -99,11 +99,13 @@ else:
     }
 
     if not args.pool:
-        outconfig["rpcallowip"] = "127.0.0.1"
+        rpcallowip = "127.0.0.1"
         rpcpassword = str(uuid.uuid4())
     else:
+        rpcallowip = ["127.0.0.1", "172.17.0.*"]
         rpcpassword = "pool-%s" % args.coin
 
+    outconfig["rpcallowip"] = rpcallowip
     outconfig["rpcpassword"] = rpcpassword
 
     addnodes = config.get('addnodes', [])
