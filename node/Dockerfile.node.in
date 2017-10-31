@@ -30,7 +30,9 @@ ADD startup-node.sh /home/coinnode/startup.sh
 ADD startup-pool.sh /home/coinnode/startup.sh
 =%
 
+USER root
 RUN chmod 755 /home/coinnode/startup.sh
+USER coinnode
 
 %=- BACKUPFILE 1
 # If there is a backup file, add it
