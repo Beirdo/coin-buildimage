@@ -169,6 +169,12 @@ if port:
     ports.append(port)
 
 ports = list(map(lambda x: "-p %s:%s" % (x, x), ports))
+
+links = config.get('links', None)
+if links:
+    links = list(map(lambda x: "--link %s" % x, links))
+    ports.extend(links)
+
 ports = " ".join(ports)
 outfile = os.path.join(buildDir, "ports.txt")
 with open(outfile, "w") as f:

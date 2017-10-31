@@ -31,8 +31,9 @@ ENV PATH /home/coinnode/bin:${PATH}
 ENV USER root
 
 # Install CoiniumServ
-RUN git clone --recursive https://github.com/CoiniumServ/CoiniumServ.git \
-	${srcDir}/CoiniumServ
+ARG CACHE_DATE=never
+RUN git clone --recursive https://github.com/MyCryptoCoins/CoiniumServ.git \
+	${srcDir}/CoiniumServ -b bonesoul-master
 WORKDIR ${srcDir}/CoiniumServ/build/release
 RUN ./build.sh
 
@@ -55,4 +56,3 @@ RUN apt-get clean
 
 WORKDIR /home/coinnode
 USER coinnode
-ARG CACHE_DATE=never
