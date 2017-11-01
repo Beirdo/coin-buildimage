@@ -5,9 +5,11 @@ all:
 COINS := mudcoin peercoin flappycoin buzzcash alexandrite gaincoin saturn2coin
 COINS += satori nimbus
 
-${COINS}:: FORCE
+DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
+
+${DOCKERFILES}:: FORCE
 	mkdir -p build/$@
-	./substitute.py --coin $@
+	./substitute.py --coin ${@:build/%/Dockerfile=%}
 
 ${COINS}:: %: build/%/Dockerfile
 

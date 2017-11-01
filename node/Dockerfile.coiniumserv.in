@@ -39,7 +39,7 @@ WORKDIR ${srcDir}/CoiniumServ/build/release
 RUN ./build.sh
 
 # Startup script and sudo
-ADD startup.sh /home/coinnode/startup.sh
+ADD startup-node.sh /home/coinnode/startup.sh
 RUN chmod 755 /home/coinnode/startup.sh
 ADD sudoers-coinnode /etc/sudoers.d/sudoers-coinnode
 RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
