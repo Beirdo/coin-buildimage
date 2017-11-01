@@ -31,7 +31,7 @@ mono bin/Release/CoiniumServ.exe
 sudo /etc/init.d/redis-server stop
 cd /
 sudo zip -ru /tmp/redis-db.zip /var/lib/redis
-if [ -s /tmp/redis-db/zip ] ; then
+if [ -s /tmp/redis-db.zip ] ; then
     aws s3 cp /tmp/redis-db.zip @WALLETBUCKET@/@COINNAME@/redis-db.zip
 fi
 
