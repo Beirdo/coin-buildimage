@@ -12,6 +12,7 @@ import requests
 
 
 filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+?)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
+subItemRe = re.compile(r'@_@')
 
 
 def convertConfig(config):
@@ -48,7 +49,19 @@ def substituteFile(infile, outfile, subst):
         elif mode == '-':
             if subvalue is None or str(subvalue) != value:
                 section = ""
-        text = text.replace(block, section)
+        elif mode == '?':
+            if subvalue is None:
+                section = ""
+        elif mode == '!':
+            if subvalue is not None:
+                section = ""
+
+        sections = ''
+        if not isinstance(subvalue, list):
+            subvalue = [subvalue]
+        for subval in subvalue:
+            sections += subItemRe.sub(str(subval), section)
+        text = text.replace(block, sections)
 
     with open(outfile, "w") as f:
         f.write(text)
@@ -175,6 +188,12 @@ if port and usep2pool:
 port = config.get('coiniumservport', None)
 if port:
     ports.append(port)
+
+poolports = config.get('stratumports', None)
+if poolports:
+    if not isinstance(poolports, list):
+        poolports = [poolports]
+    ports.extend(poolports)
 
 ports = list(map(lambda x: "-p %s:%s" % (x, x), ports))
 
