@@ -8,7 +8,7 @@ COINS += satori nimbus
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 
 ${DOCKERFILES}:: FORCE
-	mkdir -p build/$@
+	mkdir -p ${@:/Dockerfile=}
 	./substitute.py --coin ${@:build/%/Dockerfile=%}
 
 ${COINS}:: %: build/%/Dockerfile
