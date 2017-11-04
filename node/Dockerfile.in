@@ -108,9 +108,9 @@ RUN rm /usr/local/CHANGELOG.md /usr/local/LICENSE /usr/local/README.md
 RUN node -v
 =%
 	
+ARG CACHE_DATE=never
 %=- CPUMINER cpuminer-opt
 # Install cpuminer-opt
-ARG CACHE_DATE=never
 RUN git clone https://github.com/JayDDee/cpuminer-opt ${srcDir}/cpuminer-opt
 WORKDIR ${srcDir}/cpuminer-opt
 RUN ./autogen.sh
@@ -142,7 +142,7 @@ RUN make install
 
 %=- CPUMINER cpuminer-blake2s
 # Install minerd (cpuminer)
-RUN git clone https://github.com/MyCryptoCoins/cpuminer-blakes ${srcDir}/cpuminer
+RUN git clone https://github.com/MyCryptoCoins/cpuminer-blake2s.git ${srcDir}/cpuminer
 WORKDIR ${srcDir}/cpuminer
 RUN ./autogen.sh
 RUN ./configure CFLAGS="-O3"
