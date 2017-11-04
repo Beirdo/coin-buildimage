@@ -1,0 +1,14 @@
+{
+  "target": "she421",
+  "coinname": "She421",
+  "giturl": "https://github.com/MyCryptoCoins/421.git",
+  "branch": "fixes",
+  "qtwin32": "She421-qt-mxe32.pro",
+  "qtwin64": "She421-qt-mxe64.pro",
+  "qtlinux": "She421-qt.pro",
+  "win32qt": 0,
+  "win64qt": 0,
+  "linuxqt": 0,
+  "linuxdaemon": 0,
+  "rpidaemon": 1
+}

@@ -11,7 +11,7 @@ import sys
 import requests
 
 
-filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+?)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
+filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
 subItemRe = re.compile(r'@_@')
 
 

@@ -6,9 +6,9 @@
   "qtwin32": "Satori-qt-mxe32.pro",
   "qtwin64": "Satori-qt-mxe64.pro",
   "qtlinux": "Satori-qt.pro",
-  "win32qt": 1,
+  "win32qt": 0,
   "win64qt": 0,
   "linuxqt": 0,
-  "linuxdaemon": 0,
+  "linuxdaemon": 1,
   "rpidaemon": 0
 }

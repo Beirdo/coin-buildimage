@@ -56,7 +56,9 @@ RUN apt-get update && apt-get install -y \
 	libtool-bin \
 	libxml-parser-perl \
 	make \
+%=- USEEXPLORER 1
 	mongodb \
+=%
 	net-tools \
 	netcat \
 	openssl \
@@ -106,6 +108,7 @@ RUN rm /usr/local/CHANGELOG.md /usr/local/LICENSE /usr/local/README.md
 RUN node -v
 =%
 	
+%=- CPUMINER cpuminer-opt
 # Install cpuminer-opt
 ARG CACHE_DATE=never
 RUN git clone https://github.com/JayDDee/cpuminer-opt ${srcDir}/cpuminer-opt
@@ -115,17 +118,19 @@ RUN CFLAGS="-O3 -march=corei7-avx -Wall" CXXFLAGS="-O3 -march=corei7-avx -Wall -
 RUN make -j4
 RUN strip -s cpuminer
 RUN make install
-#RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-aesni
+=%
 
-#RUN git clean -xfd && git reset --hard
-#RUN git fetch origin legacy && git checkout legacy && git pull
-#RUN ./autogen.sh
-#RUN CFLAGS="-O3 -march=corei7-avx -Wall" CXXFLAGS="-O3 -march=corei7-avx -Wall -std=gnu++11" ./configure --with-curl
-#RUN make -j4
-#RUN strip -s cpuminer
-#RUN make install
-#RUN mv /usr/local/bin/cpuminer /usr/local/bin/cpuminer-noaesni
+%=- CPUMINER cpuminer-opt-legacy
+RUN git clean -xfd && git reset --hard
+RUN git fetch origin legacy && git checkout legacy && git pull
+RUN ./autogen.sh
+RUN CFLAGS="-O3 -march=corei7-avx -Wall" CXXFLAGS="-O3 -march=corei7-avx -Wall -std=gnu++11" ./configure --with-curl
+RUN make -j4
+RUN strip -s cpuminer
+RUN make install
+=%
 
+%=- CPUMINER cpuminer-pooler
 # Install minerd (cpuminer)
 RUN git clone https://github.com/pooler/cpuminer ${srcDir}/cpuminer
 WORKDIR ${srcDir}/cpuminer
@@ -133,6 +138,17 @@ RUN ./autogen.sh
 RUN ./configure CFLAGS="-O3"
 RUN make -j4
 RUN make install
+=%
+
+%=- CPUMINER cpuminer-blake2s
+# Install minerd (cpuminer)
+RUN git clone https://github.com/MyCryptoCoins/cpuminer-blakes ${srcDir}/cpuminer
+WORKDIR ${srcDir}/cpuminer
+RUN ./autogen.sh
+RUN ./configure CFLAGS="-O3"
+RUN make -j4
+RUN make install
+=%
 
 # Install config file
 ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
@@ -152,7 +168,7 @@ ADD explorer-crontab ${srcDir}/explorer/crontab
 =%
 
 # Startup script and sudo
-ADD startup.sh /home/coinnode/startup.sh
+ADD startup-node.sh /home/coinnode/startup.sh
 RUN chmod 755 /home/coinnode/startup.sh
 ADD sudoers-coinnode /etc/sudoers.d/sudoers-coinnode
 RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
