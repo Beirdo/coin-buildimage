@@ -32,6 +32,7 @@ def substituteFile(infile, outfile, subst):
         with open(infile, "r") as f:
             text = f.read()
 
+    print("Subtituting from %s to %s" % (infile, outfile))
     for item in subst.values():
         regex = item.get('regex', None)
         repl = item.get('value', None)
@@ -73,6 +74,7 @@ def copyfile(coin, infile, outfile=None):
     if not outfile:
         outfile = infile
     outfile = os.path.join("build", coin, outfile)
+    print("Copying %s to %s" % (infile, outfile))
     shutil.copyfile(infile, outfile)
 
 
@@ -224,7 +226,8 @@ if config.get('useexplorer', False):
     copyfile(args.coin, "explorer-crontab")
 
     ## Copy the nodejs archive
-    #copyfile(args.coin, "node-v8.7.0-linux-x64.tar.xz")
+    copyfile(args.coin, "build/cache/node-v8.7.0-linux-x64.tar.xz",
+             "node-v8.7.0-linux-x64.tar.xz")
 
 # Copy the sudoers.d file
 copyfile(args.coin, "sudoers-coinnode")
