@@ -29,11 +29,10 @@ rm /tmp/snapshot-@COINNAME@.zip
 # Start mongodb and the explorer (if using the explorer)
 cd /home/coinnode/src/explorer
 sudo /etc/init.d/mongodb start
-mongo < /tmp/explorer.mongo
+mongo < explorer.mongo
 sudo /etc/init.d/cron start
 screen npm start
 crontab -u coinnode crontab
-rm /tmp/explorer.mongo
 =%
 %=- USEP2POOL 1
 # Startup p2pool

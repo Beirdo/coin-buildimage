@@ -164,7 +164,7 @@ RUN chmod 755 /usr/local/bin/@DAEMONNAME@
 RUN git clone https://github.com/iquidus/explorer ${srcDir}/explorer
 WORKDIR ${srcDir}/explorer
 RUN npm install --production --unsafe
-ADD explorer.mongo /tmp/explorer.mongo
+ADD explorer.mongo ${srcDir}/explorer.mongo
 ADD explorer-settings.json ${srcDir}/explorer/settings.json
 ADD explorer-crontab ${srcDir}/explorer/crontab
 =%
