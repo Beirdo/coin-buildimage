@@ -25,9 +25,14 @@ rm /tmp/snapshot-@COINNAME@.zip
 # Start the coin daemon
 /usr/local/bin/@COINNAME@d --daemon
 
+%=- GRABLOGO 1
+aws s3 cp @WALLETBUCKET@/@COINNAME@/logo.png \
+	/home/coinnode/src/explorer/public/images/logo.png
+=%
 %=- USEEXPLORER 1
 # Start mongodb and the explorer (if using the explorer)
 cd /home/coinnode/src/explorer
+
 while true ; do
     sudo /etc/init.d/mongodb start
     retCode=$?
@@ -36,7 +41,16 @@ while true ; do
     fi
     sleep 5
 done
-mongo < explorer.mongo
+
+while true ; do
+    mongo < explorer.mongo
+    retCode=$?
+    if [ $retCode -eq 0 ] ; then
+	break
+    fi
+    sleep 5
+done
+
 sudo /etc/init.d/cron start
 screen npm start
 crontab -u coinnode crontab
