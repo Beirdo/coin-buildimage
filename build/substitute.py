@@ -9,7 +9,7 @@ import uuid
 import shutil
 import sys
 
-filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+?)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
+filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
 
 builds = ["linuxdaemon", "linuxqt", "win32qt", "win64qt", "rpidaemon"]
 
