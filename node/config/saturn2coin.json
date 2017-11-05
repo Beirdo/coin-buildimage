@@ -14,5 +14,7 @@
   "nethash": "getnetworkhashps",
   "nethashunits": "M",
   "explorerport": 8088,
-  "explorerserver": "explorer.saturn2coin.mycryptocoins.net"
+  "explorerserver": "explorer.saturn2coin.mycryptocoins.net",
+  "walletbucket": "s3://beirdo-coin-wallets",
+  "grabsnapshot": 1
 }
