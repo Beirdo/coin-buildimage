@@ -49,7 +49,7 @@
     "host": "localhost",
     "port": @RPCPORT@,
     "user": "@RPCUSER@",
-    "pass": "@RPCPASSWD@"
+    "pass": "@RPCPASSWORD@"
   },
 
   // confirmations
