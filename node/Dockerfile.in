@@ -56,9 +56,6 @@ RUN apt-get update && apt-get install -y \
 	libtool-bin \
 	libxml-parser-perl \
 	make \
-%=- USEEXPLORER 1
-	mongodb \
-=%
 	net-tools \
 	netcat \
 	openssl \
@@ -99,6 +96,11 @@ ENV PATH /home/coinnode/bin:${PATH}
 ENV USER root
 
 %=- USEEXPLORER 1
+# Install mongodb
+RUN apt-get install -y \
+	-o Dpkg::Options::="--force-overwrite" \
+	mongodb
+
 # Install NodeJS & npm
 ENV NVM_DIR "/home/coinnode/.nvm"
 WORKDIR /tmp
