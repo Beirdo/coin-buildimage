@@ -7,7 +7,7 @@
   // name your instance!
   "title": "@COINNAME@ Explorer",
 
-  "address": "127.0.0.1:@EXPLORERPORT@",
+  "address": "@EXPLORERSERVER@",
 
   // coin name
   "coin": "@COINNAME@",
@@ -29,7 +29,7 @@
   "theme": "Cyborg",
 
   // port to listen for requests on.
-  "port" : 3001,
+  "port" : @EXPLORERPORT@,
 
   // database settings (MongoDB)
   "dbsettings": {

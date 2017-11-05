@@ -14,9 +14,5 @@
   "nethash": "getnetworkhashps",
   "nethashunits": "M",
   "explorerport": 8088,
-  "usep2pool": 0,
-  "walletbucket": "s3://flapmin-coin-wallets",
-  "grabwallet": 1,
-  "grabsnapshot": 1,
-  "useopreturn": 0
+  "explorerserver": "explorer.saturn2coin.mycryptocoins.net"
 }
