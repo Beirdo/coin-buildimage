@@ -29,6 +29,7 @@ rm /tmp/snapshot-@COINNAME@.zip
 # Start mongodb and the explorer (if using the explorer)
 cd /home/coinnode/src/explorer
 sudo /etc/init.d/mongodb start
+sleep 5
 mongo < explorer.mongo
 sudo /etc/init.d/cron start
 screen npm start
