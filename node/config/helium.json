@@ -1,0 +1,14 @@
+{
+  "target": "helium",
+  "rpcport": 16453,
+  "p2pport": 16452,
+  "coinname": "HeliumCoin",
+  "daemonname": "HeliumCoind",
+  "symbol": "HEL",
+  "useexplorer": 0,
+  "usep2pool": 0,
+  "walletbucket": "s3://beirdo-coin-wallets",
+  "grabwallet": 0,
+  "grabsnapshot": 0,
+  "cpuminer": "cpuminer-blake2s"
+}
