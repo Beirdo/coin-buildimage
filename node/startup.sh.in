@@ -35,6 +35,8 @@ cd /
 aws s3 cp @WALLETBUCKET@/@COINNAME@/mongodb-snapshot.zip \
 	/tmp/mongodb-snapshot-@COINNAME@.zip
 sudo unzip -ao /tmp/mongodb-snapshot-@COINNAME@.zip
+sudo chown -R mongodb /var/lib/mongodb
+sudo rm /var/lib/mongodb/mongodb.lock
 
 cd /home/coinnode/src/explorer
 
@@ -47,14 +49,14 @@ while true ; do
     sleep 5
 done
 
-while true ; do
-    mongo < explorer.mongo
-    retCode=$?
-    if [ $retCode -eq 0 ] ; then
-	break
-    fi
-    sleep 5
-done
+#while true ; do
+#    mongo < explorer.mongo
+#    retCode=$?
+#    if [ $retCode -eq 0 ] ; then
+#	break
+#    fi
+#    sleep 5
+#done
 
 sudo /etc/init.d/cron start
 screen npm start
