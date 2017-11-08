@@ -31,6 +31,11 @@ aws s3 cp @WALLETBUCKET@/@COINNAME@/logo.png \
 =%
 %=- USEEXPLORER 1
 # Start mongodb and the explorer (if using the explorer)
+cd /
+aws s3 cp @WALLETBUCKET@/@COINNAME@/mongodb-snapshot.zip \
+	/tmp/mongodb-snapshot-@COINNAME@.zip
+sudo unzip -ao /tmp/mongodb-snapshot-@COINNAME@.zip
+
 cd /home/coinnode/src/explorer
 
 while true ; do

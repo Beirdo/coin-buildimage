@@ -6,9 +6,9 @@
   "qtwin32": "HeliumCoin-qt-mxe32.pro",
   "qtwin64": "HeliumCoin-qt-mxe64.pro",
   "qtlinux": "HeliumCoin-qt.pro",
-  "win32qt": 0,
+  "win32qt": 1,
   "win64qt": 0,
   "linuxqt": 0,
-  "linuxdaemon": 1,
+  "linuxdaemon": 0,
   "rpidaemon": 0
 }
