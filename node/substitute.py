@@ -99,7 +99,7 @@ if args.pool:
 
 subst = convertConfig(config)
 
-if args.coin == 'coiniumserv':
+if args.coin == 'coiniumserv' or args.coin == 'yiimp':
     result = requests.get("http://169.254.169.254/latest/meta-data/local-ipv4")
     subst.update(convertConfig({"hostip": result.text}))
 else:
@@ -144,6 +144,8 @@ else:
 # Create the Dockerfile
 if args.coin == 'coiniumserv':
     infile = "Dockerfile.coiniumserv.in"
+elif args.coin == 'yiimp':
+    infile = "Dockerfile.yiimp.in"
 else:
     infile = "Dockerfile.in"
 outfile = os.path.join(buildDir, "Dockerfile")
@@ -160,6 +162,8 @@ substituteFile(infile, outfile, subst)
 # Create the startup script
 if args.coin == 'coiniumserv':
     infile = "startup.sh-coiniumserv.in"
+elif args.coin == 'yiimp':
+    infile = "startup.sh-yiimp.in"
 else:
     infile = "startup.sh.in"
 
@@ -191,6 +195,10 @@ port = config.get('coiniumservport', None)
 if port:
     ports.append(port)
 
+port = config.get('yiimpport', None)
+if port:
+    ports.append(port)
+
 poolports = config.get('stratumports', None)
 if poolports:
     if not isinstance(poolports, list):
@@ -210,7 +218,7 @@ with open(outfile, "w") as f:
     f.write(ports)
 
 # Copy over the daemon
-if args.daemon and args.coin != 'coiniumserv':
+if args.daemon and args.coin != 'coiniumserv' and args.coin != 'yiimp':
     infile = os.path.join("..", "build", "artifacts", config["coinname"],
                           "linux", config['daemonname'])
     copyfile(args.coin, infile, config['daemonname'])
@@ -219,6 +227,11 @@ if config.get('useexplorer', False):
     # Create the Explorer settings file
     infile = "explorer-settings.json.in"
     outfile = os.path.join(buildDir, "explorer-settings.json")
+    substituteFile(infile, outfile, subst)
+
+    # Create the Explorer layout template
+    infile = "explorer-layout.jade.in"
+    outfile = os.path.join(buildDir, "explorer-layout.jade")
     substituteFile(infile, outfile, subst)
 
     # Copy over the mongo init script and the crontab for explorer

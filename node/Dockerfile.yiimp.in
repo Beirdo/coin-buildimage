@@ -1,0 +1,56 @@
+FROM beirdo/coin-buildimage:base
+MAINTAINER gjhurlbu@gmail.com
+USER root
+
+# Setup base system
+RUN apt-get update && apt-get install -y \
+	software-properties-common
+RUN add-apt-repository ppa:bitcoin/bitcoin
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	-o Dpkg::Options::="--force-overwrite" \
+	awscli \
+	bsdutils \
+	mysql-client \
+	net-tools \
+	netcat \
+	psmisc \
+	screen \
+	sudo \
+	zip
+
+# User creation
+WORKDIR /
+RUN useradd -m -c "Coin Node" -d /home/coinnode coinnode
+RUN mkdir -p /home/coinnode/src
+
+# Setup environment
+ENV srcDir /home/coinnode/src
+ENV PATH /home/coinnode/bin:${PATH}
+ENV USER root
+
+# Install CoiniumServ
+ARG CACHE_DATE=never
+RUN git clone https://github.com/MyCryptoCoins/yiimp_install_script.git \
+	/tmp/yiimp_install_script -b master
+WORKDIR /tmp/yiimp_install_script
+RUN chmod 755 install.sh && ./install.sh
+
+# Startup script and sudo
+ADD startup-node.sh /home/coinnode/startup.sh
+RUN chmod 755 /home/coinnode/startup.sh
+ADD sudoers-coinnode /etc/sudoers.d/sudoers-coinnode
+RUN chmod 400 /etc/sudoers.d/sudoers-coinnode
+
+# Install coin-cli script
+ADD coin-cli /usr/local/bin/coin-cli
+RUN chmod 755 /usr/local/bin/coin-cli
+
+# Fix permissions for coinnode
+RUN chown -R coinnode /home/coinnode
+
+# Cleanup
+RUN rm -rf /tmp ; mkdir /tmp ; chmod 1777 /tmp
+RUN apt-get clean
+
+WORKDIR /home/coinnode
+USER coinnode

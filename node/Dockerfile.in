@@ -167,6 +167,7 @@ RUN npm install --production --unsafe
 ADD explorer.mongo ${srcDir}/explorer/explorer.mongo
 ADD explorer-settings.json ${srcDir}/explorer/settings.json
 ADD explorer-crontab ${srcDir}/explorer/crontab
+ADD explorer-layout.jade ${srcDir}/explorer/view/layout.jade
 =%
 
 # Startup script and sudo

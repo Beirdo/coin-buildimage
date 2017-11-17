@@ -6,9 +6,9 @@
   "qtwin32": "Saturn2Coin-qt-mxe32.pro",
   "qtwin64": "Saturn2Coin-qt-mxe64.pro",
   "qtlinux": "Saturn2Coin-qt.pro",
-  "linuxdaemon": 1,
+  "linuxdaemon": 0,
   "rpidaemon": 0,
   "linuxqt": 0,
-  "win32qt": 0,
+  "win32qt": 1,
   "win64qt": 0
 }

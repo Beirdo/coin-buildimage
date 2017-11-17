@@ -3,7 +3,7 @@ all:
 .PHONY: FORCE
 
 COINS := coiniumserv mudcoin peercoin flappycoin buzzcash alexandrite
-COINS += satori saturn2coin helium
+COINS += satori saturn2coin helium yiimp
 
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 NODEDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.node, ${COINS}))
@@ -14,7 +14,7 @@ KILLNODES = $(addsuffix -node-kill, ${COINS})
 
 ${DOCKERFILES}:: Dockerfile.in
 ${NODEDOCKERFILES}:: Dockerfile.node.in
-${POOLDOCKERFILES}:: Dockerfile.node.in
+${POOLDOCKERFILES}:: Dockerfile.coiniumserv.in Dockerfile.yiimp.in
 
 ${COINS}:: FORCE
 	mkdir -p build/$@ build/cache

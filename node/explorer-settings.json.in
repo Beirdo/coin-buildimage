@@ -63,7 +63,7 @@
     "api": false,
     "markets": true,
     "richlist": true,
-    "twitter": true,
+    "twitter": false,
     "facebook": false,
     "googleplus": false,
     "search": true,

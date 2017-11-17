@@ -5,7 +5,7 @@
   "coinname": "Saturn2Coin",
   "daemonname": "Saturn2Coind",
   "symbol": "SAT2",
-  "useexplorer": 1,
+  "useexplorer": 0,
   "confirmations": 30,
   "cointype": "Hybrid",
   "genesisblock": "0000084c67cd772d4c1a426d1666a10e6b102fcf4e0fa5e85ebab826f0da5e5c",
@@ -15,7 +15,9 @@
   "nethashunits": "M",
   "explorerport": 8088,
   "explorerserver": "explorer.saturn2coin.mycryptocoins.net",
+  "donationsaddy": "SSk9mgTu9bTLvCjyGUhkbFFeQH6agYTUiF",
   "walletbucket": "s3://beirdo-coin-wallets",
   "grabsnapshot": 1,
-  "grablogo": 1
+  "grablogo": 1,
+  "useopreturn": 1
 }

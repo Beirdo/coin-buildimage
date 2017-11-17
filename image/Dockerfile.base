@@ -56,6 +56,7 @@ RUN apt-get update && apt-get install -y \
         libtool \
 	libtool-bin \
 	libxml-parser-perl \
+	libzip-dev \
 	make \
 	openssl \
 	p7zip-full \

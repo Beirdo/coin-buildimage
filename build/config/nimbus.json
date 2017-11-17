@@ -7,8 +7,8 @@
   "qtwin64": "Nimbus-qt-mxe64.pro",
   "qtlinux": "Nimbus-qt.pro",
   "win32qt": 1,
-  "win64qt": 1,
-  "rpidaemon": 1,
-  "linuxdaemon": 1,
-  "linuxqt": 1
+  "win64qt": 0,
+  "rpidaemon": 0,
+  "linuxdaemon": 0,
+  "linuxqt": 0
 }

@@ -1,0 +1,14 @@
+{
+  "target": "gridcoin",
+  "coinname": "gridcoinresearch",
+  "giturl": "https://github.com/MyCryptoCoins/Gridcoin-Research.git",
+  "branch": "development",
+  "qtwin32": "Nimbus-qt-mxe32.pro",
+  "qtwin64": "Nimbus-qt-mxe64.pro",
+  "qtlinux": "Nimbus-qt.pro",
+  "win32qt": 0,
+  "win64qt": 0,
+  "rpidaemon": 0,
+  "linuxdaemon": 1,
+  "linuxqt": 0
+}

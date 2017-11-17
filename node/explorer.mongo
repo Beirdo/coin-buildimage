@@ -1,2 +1,6 @@
 use explorerdb
 db.createUser({user: "iquidus", pwd: "exp10d3r", roles: ["readWrite"]})
+db.txes.createIndex({timestamp:-1})
+db.txes.createIndex({txid:"hashed"})
+db.txes.createIndex({blockhash:"hashed"})
+db.txes.createIndex({blockindex:"hashed"})

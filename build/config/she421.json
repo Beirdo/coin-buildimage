@@ -6,9 +6,9 @@
   "qtwin32": "She421-qt-mxe32.pro",
   "qtwin64": "She421-qt-mxe64.pro",
   "qtlinux": "She421-qt.pro",
-  "win32qt": 0,
-  "win64qt": 0,
-  "linuxqt": 0,
-  "linuxdaemon": 0,
+  "win32qt": 1,
+  "win64qt": 1,
+  "linuxqt": 1,
+  "linuxdaemon": 1,
   "rpidaemon": 1
 }
