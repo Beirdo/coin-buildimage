@@ -210,10 +210,10 @@ html
                 span.glyphicon.fa.fa-google-plus
         ul.nav.navbar-nav
           li.pull-left
-            a.navbar-link(href='http://178.251.194.250:3002/') Sat2Coin Backup
+            a.navbar-link(href='http://saturncoin.explorers.outage.nl/') Sat2Coin Backup
         ul.nav.navbar-nav
           li.pull-left
-            a.navbar-link(href='http://178.251.194.250:3001/') FlappyCoin
+            a.navbar-link(href='http://flappycoin.explorers.outage.nl/') FlappyCoin
       .col-md-4
         ul.nav
           li.text-center(style='')
