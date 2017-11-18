@@ -3,7 +3,7 @@ all:
 .PHONY: FORCE
 
 COINS := mudcoin peercoin flappycoin buzzcash alexandrite gaincoin saturn2coin
-COINS += satori nimbus she421 helium gridcoin
+COINS += satori nimbus she421 helium gridcoin segacoin
 
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 

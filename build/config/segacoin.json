@@ -1,0 +1,15 @@
+{
+  "target": "segacoin",
+  "coinname": "segacoin",
+  "giturl": "https://gitlab.beirdo.ca/MyCryptoCoins/segacoin.git",
+  "gitcredentials": 1,
+  "branch": "master",
+  "qtwin32": "segacoin-qt-mxe32.pro",
+  "qtwin64": "segacoin-qt-mxe64.pro",
+  "qtlinux": "segacoin-qt.pro",
+  "linuxdaemon": 0,
+  "rpidaemon": 0,
+  "linuxqt": 1,
+  "win32qt": 0,
+  "win64qt": 0
+}

@@ -6,6 +6,12 @@ USER coinbld
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
 
+# Copy in git config and credentials if needed
+%=- GITCREDENTIALS 1
+ADD gitconfig /home/coinbld/.gitconfig
+ADD git-credentials /home/coinbld/.git-credentials
+=%
+
 # Checkout coin code
 WORKDIR /home/coinbld/src
 ARG CACHE_DATE=never

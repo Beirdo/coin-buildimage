@@ -55,9 +55,12 @@ def substituteFile(infile, outfile, subst):
 
 
 def copyfile(coin, infile, outfile=None):
+    if not os.path.exists(infile):
+        return
     if not outfile:
         outfile = infile
-    outfile = os.path.join(coin, outfile)
+    outfile = os.path.join("build", coin, outfile)
+    print("Copying %s to %s" % (infile, outfile))
     shutil.copyfile(infile, outfile)
 
 
@@ -93,4 +96,14 @@ substituteFile(infile, outfile, subst)
 infile = "Makefile-build.in"
 outfile = os.path.join(buildDir, "Makefile")
 substituteFile(infile, outfile, subst)
+
+# Copy the git config and credentials if needed
+if config.get("gitcredentials", 0):
+    infile = os.path.expanduser("~/.gitconfig")
+    outfile = "gitconfig"
+    copyfile(args.coin, infile, outfile)
+
+    infile = os.path.expanduser("~/.git-credentials")
+    outfile = "git-credentials"
+    copyfile(args.coin, infile, outfile)
 
