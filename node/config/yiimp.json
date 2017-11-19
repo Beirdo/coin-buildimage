@@ -1,6 +1,6 @@
 {
   "target": "yiimp",
-  "poolport": 80,
+  "poolport": 8088,
   "coinname": "Yiimp",
   "walletbucket": "s3://beirdo-coin-wallets",
   "ispool": 1,
