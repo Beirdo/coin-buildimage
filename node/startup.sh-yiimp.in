@@ -1,5 +1,8 @@
 # /bin/bash
 
+/bin/bash
+exit 0
+
 # Grab pool config
 aws s3 cp @WALLETBUCKET@/@COINNAME@/pool-config.zip /tmp/pool-config.zip
 aws s3 cp @WALLETBUCKET@/@COINNAME@/pool-icons.zip /tmp/pool-icons.zip
