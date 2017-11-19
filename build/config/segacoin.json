@@ -7,9 +7,9 @@
   "qtwin32": "segacoin-qt-mxe32.pro",
   "qtwin64": "segacoin-qt-mxe64.pro",
   "qtlinux": "segacoin-qt.pro",
-  "linuxdaemon": 0,
+  "linuxdaemon": 1,
   "rpidaemon": 0,
-  "linuxqt": 1,
+  "linuxqt": 0,
   "win32qt": 0,
   "win64qt": 0
 }

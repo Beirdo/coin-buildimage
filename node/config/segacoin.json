@@ -1,0 +1,13 @@
+{
+  "target": "segacoin",
+  "rpcport": 16800,
+  "p2pport": 16810,
+  "coinname": "segacoin",
+  "daemonname": "segacoind",
+  "symbol": "SEGA",
+  "walletbucket": "s3://beirdo-coin-wallets",
+  "grabsnapshot": 0,
+  "useopreturn": 0,
+  "cpuminer": "cpuminer-pooler",
+  "addnodes": ["13.57.45.106", "52.9.99.244", "34.241.149.180"]
+}

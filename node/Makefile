@@ -3,7 +3,7 @@ all:
 .PHONY: FORCE
 
 COINS := coiniumserv mudcoin peercoin flappycoin buzzcash alexandrite
-COINS += satori saturn2coin helium yiimp
+COINS += satori saturn2coin helium yiimp segacoin
 
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 NODEDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.node, ${COINS}))
