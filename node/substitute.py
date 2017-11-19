@@ -191,11 +191,7 @@ usep2pool = config.get('usep2pool', None)
 if port and usep2pool:
     ports.append(port)
 
-port = config.get('coiniumservport', None)
-if port:
-    ports.append(port)
-
-port = config.get('yiimpport', None)
+port = config.get('poolport', None)
 if port:
     ports.append(port)
 
