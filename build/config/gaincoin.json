@@ -6,5 +6,8 @@
   "qtwin32": "GainCoin-qt-mxe32.pro",
   "qtwin64": "GainCoin-qt-mxe64.pro",
   "qtlinux": "GainCoin-qt.pro",
-  "rpidaemon": 0
+  "rpidaemon": 0,
+  "linuxqt": 0,
+  "win32qt": 0,
+  "win65qt": 0
 }
