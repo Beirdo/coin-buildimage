@@ -195,6 +195,11 @@ port = config.get('poolport', None)
 if port:
     ports.append(port)
 
+if args.pool:
+    port = config.get("rpcport", None)
+    if port:
+        ports.append(port)
+
 poolports = config.get('stratumports', None)
 if poolports:
     if not isinstance(poolports, list):
