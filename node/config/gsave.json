@@ -8,6 +8,7 @@
   "walletbucket": "s3://beirdo-coin-wallets",
   "grabwallet": 1,
   "grabsnapshot": 1,
+  "grablogo": 1,
   "useopreturn": 1,
   "cpuminer": "cpuminer-pooler",
   "useexplorer": 1,
