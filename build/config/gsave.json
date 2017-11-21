@@ -1,0 +1,13 @@
+{
+  "target": "gsave",
+  "coinname": "GSave",
+  "giturl": "https://github.com/MyCryptoCoins/gsave.git",
+  "branch": "master",
+  "qtwin32": "GSave-qt-mxe32.pro",
+  "qtwin64": "GSave-qt-mxe64.pro",
+  "qtlinux": "GSave-qt.pro",
+  "rpidaemon": 0,
+  "linuxqt": 0,
+  "win32qt": 0,
+  "win64qt": 0
+}
