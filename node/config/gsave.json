@@ -10,7 +10,7 @@
   "grabsnapshot": 1,
   "useopreturn": 1,
   "cpuminer": "cpuminer-pooler",
-  "useexplorer": 0,
+  "useexplorer": 1,
   "symbol": "GSAVE",
   "confirmations": 10,
   "cointype": "Hybrid",
