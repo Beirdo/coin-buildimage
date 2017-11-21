@@ -11,7 +11,7 @@
   "grablogo": 1,
   "useopreturn": 1,
   "cpuminer": "cpuminer-pooler",
-  "useexplorer": 1,
+  "useexplorer": 0,
   "symbol": "GSAVE",
   "confirmations": 10,
   "cointype": "Hybrid",
