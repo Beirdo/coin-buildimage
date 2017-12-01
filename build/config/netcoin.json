@@ -1,0 +1,14 @@
+{
+  "target": "netcoin",
+  "coinname": "netcoin",
+  "giturl": "https://github.com/MyCryptoCoins/netcoin.git",
+  "branch": "master",
+  "qtwin32": "netcoin-qt-mxe32.pro",
+  "qtwin64": "netcoin-qt-mxe64.pro",
+  "qtlinux": "netcoin-qt.pro",
+  "linuxdaemon": 1,
+  "linuxqt": 1,
+  "win32qt": 0,
+  "win64qt": 0,
+  "rpidaemon": 0
+}
