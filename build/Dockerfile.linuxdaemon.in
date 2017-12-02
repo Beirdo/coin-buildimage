@@ -21,7 +21,7 @@ RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
 WORKDIR ${srcDir}
 RUN git clean -xdf
 WORKDIR ${srcDir}/src
-RUN make -j4 -f makefile.unix LMODE=static
+RUN make -j4 -f makefile.unix STATIC=1
 RUN install -D @COINNAME@d ${artifactDir}/linux/@COINNAME@d
 
 # Reset user to root

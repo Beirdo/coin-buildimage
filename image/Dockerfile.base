@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y \
 	libdb4.8++-dev \
 	libevent-dev \
 	libffi-dev \
+	libgcc1 \
 	libgdk-pixbuf2.0-dev \
 	libgmp-dev \
 	libltdl-dev \

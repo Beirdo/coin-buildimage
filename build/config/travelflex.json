@@ -1,0 +1,14 @@
+{
+  "target": "travelflex",
+  "coinname": "TravelFlex",
+  "giturl": "https://github.com/MyCryptoCoins/Travelflex.git",
+  "branch": "master",
+  "qtwin32": "TravelFlex-qt-mxe32.pro",
+  "qtwin64": "TravelFlex-qt-mxe64.pro",
+  "qtlinux": "TravelFlex-qt.pro",
+  "linuxdaemon": 1,
+  "linuxqt": 0,
+  "win32qt": 0,
+  "win64qt": 0,
+  "rpidaemon": 0
+}
