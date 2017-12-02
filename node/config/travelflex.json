@@ -10,5 +10,6 @@
   "walletbucket": "s3://beirdo-coin-wallets",
   "grabwallet": 0,
   "grabsnapshot": 0,
-  "cpuminer": "cpuminer-pooler"
+  "cpuminer": "cpuminer-pooler",
+  "addnodes": ["34.241.149.180", "52.9.99.244", "13.57.45.106"]
 }
