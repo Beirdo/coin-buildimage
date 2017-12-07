@@ -9,6 +9,6 @@
   "linuxdaemon": 1,
   "rpidaemon": 0,
   "linuxqt": 0,
-  "win32qt": 0,
+  "win32qt": 1,
   "win64qt": 0
 }
