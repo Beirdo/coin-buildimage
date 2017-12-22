@@ -4,6 +4,7 @@ all:
 
 COINS := coiniumserv mudcoin peercoin flappycoin buzzcash alexandrite
 COINS += satori saturn2coin helium yiimp segacoin gaincoin gsave travelflex
+COINS += ppcoin lemmings
 
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 NODEDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.node, ${COINS}))

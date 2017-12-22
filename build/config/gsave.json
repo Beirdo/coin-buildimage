@@ -6,9 +6,11 @@
   "qtwin32": "GSave-qt-mxe32.pro",
   "qtwin64": "GSave-qt-mxe64.pro",
   "qtlinux": "GSave-qt.pro",
-  "linuxdaemon": 1,
+  "qtosx": "GSave-qt-osxcross.pro",
+  "linuxdaemon": 0,
   "rpidaemon": 0,
   "linuxqt": 0,
-  "win32qt": 1,
-  "win64qt": 0
+  "win32qt": 0,
+  "win64qt": 0,
+  "osxqt": 1
 }

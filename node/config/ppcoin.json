@@ -1,0 +1,11 @@
+{
+  "target": "ppcoin",
+  "rpcport": 18462,
+  "p2pport": 8462,
+  "coinname": "ppcoin",
+  "daemonname": "ppcoind",
+  "useexplorer": 0,
+  "usep2pool": 0,
+  "grabwallet": 1,
+  "useopreturn": 1
+}

@@ -1,0 +1,28 @@
+FROM beirdo/coin-buildimage:osxcross
+MAINTAINER gjhurlbu@gmail.com
+
+# Setup environment
+USER coinbld
+ENV srcDir /home/coinbld/src/@COINNAME@
+ENV artifactDir /home/coinbld/artifacts/@COINNAME@
+
+# Copy in git config and credentials if needed
+%=- GITCREDENTIALS 1
+ADD gitconfig /home/coinbld/.gitconfig
+ADD git-credentials /home/coinbld/.git-credentials
+=%
+
+# Checkout coin code
+WORKDIR /home/coinbld/src
+ARG CACHE_DATE=never
+RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
+
+# Build Linux Qt
+WORKDIR ${srcDir}
+RUN git clean -xdf
+RUN i686-w64-mingw32.static-qmake-qt5 @QTOSX@
+RUN make -j4
+RUN install -D @COINNAME@-qt ${artifactDir}/osx/@COINNAME@-qt
+
+# Reset user to root
+USER root

@@ -1,0 +1,17 @@
+{
+  "target": "om",
+  "coinname": "om",
+  "giturl": "https://github.com/MyCryptoCoins/Om.git",
+  "gitcredentials": 1,
+  "branch": "master",
+  "qtwin32": "Om-qt-mxe32.pro",
+  "qtwin64": "Om-qt-mxe64.pro",
+  "qtlinux": "Om-qt.pro",
+  "qtosx": "Om-qt-osxcross.pro",
+  "linuxdaemon": 1,
+  "rpidaemon": 0,
+  "linuxqt": 1,
+  "win32qt": 0,
+  "win64qt": 0,
+  "osxqt": 0
+}

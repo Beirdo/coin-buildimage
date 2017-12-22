@@ -1,0 +1,13 @@
+{
+  "target": "flappycoin",
+  "rpcport": 11555,
+  "p2pport": 11556,
+  "coinname": "flappycoin",
+  "daemonname": "flappycoind",
+  "useexplorer": 0,
+  "usep2pool": 0,
+  "walletbucket": "s3://beirdo-coin-wallets",
+  "grabwallet": 1,
+  "grabsnapshot": 1,
+  "useopreturn": 1
+}

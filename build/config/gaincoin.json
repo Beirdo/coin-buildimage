@@ -2,12 +2,14 @@
   "target": "gaincoin",
   "coinname": "GainCoin",
   "giturl": "https://github.com/Beirdo/gaincoin.git",
-  "branch": "master",
+  "branch": "no-relay",
   "qtwin32": "GainCoin-qt-mxe32.pro",
   "qtwin64": "GainCoin-qt-mxe64.pro",
   "qtlinux": "GainCoin-qt.pro",
   "rpidaemon": 0,
   "linuxqt": 0,
   "win32qt": 0,
-  "win65qt": 0
+  "win64qt": 0,
+  "linuxdaemon": 1,
+  "osxqt": 0
 }
