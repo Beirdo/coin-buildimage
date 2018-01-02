@@ -1,0 +1,15 @@
+{
+  "target": "litecoinultra",
+  "coinname": "LiteCoinUltra",
+  "giturl": "https://github.com/MyCryptoCoins/LiteCoinUltra.git",
+  "branch": "master",
+  "qtwin32": "netcoin-qt-mxe32.pro",
+  "qtwin64": "netcoin-qt-mxe64.pro",
+  "qtlinux": "LiteCoinUltra-qt.pro",
+  "linuxdaemon": 0,
+  "linuxqt": 1,
+  "win32qt": 0,
+  "win64qt": 0,
+  "rpidaemon": 0,
+  "osxqt": 0
+}

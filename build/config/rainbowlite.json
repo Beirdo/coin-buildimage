@@ -1,0 +1,16 @@
+{
+  "target": "rainbowlite",
+  "coinname": "RainbowLite",
+  "giturl": "https://github.com/MyCryptoCoins/RainbowLite.git",
+  "gitcredentials": 1,
+  "branch": "master",
+  "qtwin32": "RainbowLite-qt-mxe32.pro",
+  "qtwin64": "RainbowLite-qt-mxe64.pro",
+  "qtlinux": "RainbowLite-qt.pro",
+  "linuxdaemon": 1,
+  "linuxqt": 0,
+  "win32qt": 0,
+  "win64qt": 0,
+  "rpidaemon": 0,
+  "osxqt": 0
+}

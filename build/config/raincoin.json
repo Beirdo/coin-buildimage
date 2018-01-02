@@ -1,0 +1,15 @@
+{
+  "target": "raincoin",
+  "coinname": "RainbowGoldCoin",
+  "giturl": "https://github.com/MyCryptoCoins/RainCoin.git",
+  "branch": "testing",
+  "qtwin32": "netcoin-qt-mxe32.pro",
+  "qtwin64": "netcoin-qt-mxe64.pro",
+  "qtlinux": "netcoin-qt.pro",
+  "linuxdaemon": 1,
+  "linuxqt": 0,
+  "win32qt": 0,
+  "win64qt": 0,
+  "rpidaemon": 0,
+  "osxqt": 0
+}

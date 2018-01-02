@@ -1,0 +1,14 @@
+{
+  "target": "rainbowlite",
+  "rpcport": 14122,
+  "p2pport": 14121,
+  "coinname": "RainbowLite",
+  "daemonname": "RainbowLited",
+  "useexplorer": 0,
+  "usep2pool": 0,
+  "walletbucket": "s3://beirdo-coin-wallets",
+  "grabwallet": 1,
+  "grabsnapshot": 1,
+  "useopreturn": 1,
+  "cpuminer": "cpuminer-pooler"
+}
