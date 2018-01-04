@@ -11,6 +11,7 @@ ENV _arch x86_64-apple-darwin14
 ENV PATH $PATH:${_osxcrossprefix}/bin
 
 # Build crossosx for OSX builds
+RUN apt-get update
 RUN git clone https://github.com/tpoechtrager/osxcross.git /tmp/osxcross
 WORKDIR /tmp/osxcross
 RUN sed -i -e 's|-march=native||g' ./build_clang.sh ./wrapper/build.sh
@@ -60,6 +61,7 @@ RUN ../qtbase-everywhere-src-5.10.0/configure \
 	-plugindir ${_osxcrossprefix}/${_arch}/lib/qt/plugins \
 	-sysconfdir ${_osxcrossprefix}/${_arch}/etc \
 	-translationdir ${_osxcrossprefix}/${_arch}/share/qt/translations \
+        QMAKE_MAC_SDK_PATH=${_osxcrossprefix}/SDK/MacOSX${OSXCROSS_SDK_VERSION}.sdk \
 	QMAKE_APPLE_DEVICE_ARCHS=${_arch%%-*} \
 	QMAKE_MACOSX_DEPLOYMENT_TARGET=10.10 \
 	-device-option CROSS_COMPILE=${_arch}- \
