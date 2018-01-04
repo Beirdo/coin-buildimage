@@ -162,6 +162,8 @@ substituteFile(infile, outfile, subst)
 infile = "Dockerfile.node.in"
 if args.pool:
     outfile = os.path.join(buildDir, "Dockerfile.pool")
+elif args.explorer:
+    outfile = os.path.join(buildDir, "Dockerfile.explorer")
 else:
     outfile = os.path.join(buildDir, "Dockerfile.node")
 substituteFile(infile, outfile, subst)
