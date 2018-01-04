@@ -84,6 +84,8 @@ parser.add_argument('--nodaemon', '-D', action="store_false", dest="daemon",
                     help="Don't copy daemon")
 parser.add_argument('--pool', '-p', action="store_true",
                     help="Grab pool wallet")
+parser.add_argument('--explorer', '-e', action="store_true",
+                    help="Use explorer")
 args = parser.parse_args()
 
 buildDir = os.path.join("build", args.coin)
@@ -96,6 +98,11 @@ config = {key.lower(): value for (key, value) in config.items()}
 if args.pool:
     config["poolnode"] = 1
     config.pop("grabwallet", None)
+
+if args.explorer:
+    config['useexplorer'] = 1
+else:
+    config['useexplorer'] = 0
 
 subst = convertConfig(config)
 

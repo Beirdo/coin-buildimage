@@ -9,12 +9,14 @@ COINS += ppcoin lemmings raincoin rainbowlite
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 NODEDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.node, ${COINS}))
 POOLDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.pool, ${COINS}))
+EXPLORERDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.explorer, ${COINS}))
 NODES = $(addsuffix -node, ${COINS})
 POOLNODES = $(addsuffix -node-pool, ${COINS})
 KILLNODES = $(addsuffix -node-kill, ${COINS})
+EXPLORERNODES = $(addsuffix -node-explorer, ${COINS})
 
 ${DOCKERFILES}:: Dockerfile.in
-${NODEDOCKERFILES}:: Dockerfile.node.in
+${NODEDOCKERFILES} ${EXPLORERDOCKERFILES}:: Dockerfile.node.in
 ${POOLDOCKERFILES}:: Dockerfile.coiniumserv.in Dockerfile.yiimp.in
 
 ${COINS}:: FORCE
@@ -36,6 +38,9 @@ ${POOLDOCKERFILES}::
 
 ${NODEDOCKERFILES}::
 	./substitute.py --coin ${@:build/%/Dockerfile.node=%} --nodaemon
+
+${EXPLORERDOCKERFILES}::
+	./substitute.py --coin ${@:build/%/Dockerfile.explorer=%} --nodaemon --explorer
 
 ${COINS}:: %: build/%/Dockerfile
 
@@ -70,8 +75,22 @@ ${POOLNODES}:: FORCE
 		--ulimit core=999999999 --name pool_${COIN} \
 		pool:${COIN} /bin/bash
 
+${EXPLORERNODES}:: COIN = ${@:-node-explorer=}
+${EXPLORERNODES}:: FORCE
+	mkdir -p build/${COIN}
+
+${EXPLORERNODES}:: %-node-explorer: build/%/Dockerfile.explorer
+
+${EXPLORERNODES}:: FORCE
+	docker build -t explorer:${COIN}  ${CACHE} \
+		-f build/${COIN}/Dockerfile.explorer build/${COIN}
+	docker run -d -i -t $(shell cat build/${COIN}/ports.txt) \
+		--ulimit core=999999999 --name explorer_${COIN} \
+		explorer:${COIN} /bin/bash
+
+
 ${KILLNODES}:: COIN = ${@:-node-kill=}
 ${KILLNODES}:: FORCE
-	-docker kill node_${COIN} pool_${COIN}
-	-docker rm node_${COIN} pool_${COIN}
+	-docker kill node_${COIN} pool_${COIN} explorer_${COIN}
+	-docker rm node_${COIN} pool_${COIN} explorer_${COIN}
 

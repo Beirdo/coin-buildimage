@@ -95,7 +95,7 @@ ENV srcDir /home/coinnode/src
 ENV PATH /home/coinnode/bin:${PATH}
 ENV USER root
 
-%=- USEEXPLORER 1
+%=- INSTALLEXPLORER 1
 # Install mongodb
 RUN apt-get install -y \
 	-o Dpkg::Options::="--force-overwrite" \
@@ -159,7 +159,7 @@ ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
 ADD @DAEMONNAME@ /usr/local/bin/@DAEMONNAME@
 RUN chmod 755 /usr/local/bin/@DAEMONNAME@
 
-%=- USEEXPLORER 1
+%=- INSTALLEXPLORER 1
 # Install iquidus explorer
 RUN git clone https://github.com/iquidus/explorer ${srcDir}/explorer
 WORKDIR ${srcDir}/explorer
