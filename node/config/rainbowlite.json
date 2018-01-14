@@ -11,4 +11,17 @@
   "grabsnapshot": 1,
   "useopreturn": 1,
   "cpuminer": "cpuminer-pooler"
+  "installexplorer": 1,
+  "useexplorer": 0,
+  "symbol": "RBL",
+  "confirmations": 10,
+  "cointype": "Hybrid",
+  "genesisblock": "00000711df0d160109d3a1c11a06df954cf9628b2a08d8f587066f49a2f05996",
+  "genesistx": "1575cb9c40fff4150185c8c9575e8445ab2766a5caff4839cb9f37842df880d2",
+  "coinbase": "COINBASE",
+  "nethash": "netmhashps",
+  "nethashunits": "M",
+  "explorerport": 8088,
+  "explorerserver": "explorer.rainbowlite.mycryptocoins.net",
+  "donationsaddy": "rMgoPdbMGeEtAx6jH6bKPt7URWBcTUTXis"
 }
