@@ -10,7 +10,7 @@
   "grabwallet": 1,
   "grabsnapshot": 1,
   "useopreturn": 1,
-  "cpuminer": "cpuminer-pooler"
+  "cpuminer": "cpuminer-pooler",
   "installexplorer": 1,
   "useexplorer": 0,
   "symbol": "RBL",
