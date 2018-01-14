@@ -233,7 +233,7 @@ if args.daemon and args.coin != 'coiniumserv' and args.coin != 'yiimp':
                           "linux", config['daemonname'])
     copyfile(args.coin, infile, config['daemonname'])
 
-if config.get('useexplorer', False):
+if config.get('installexplorer', False):
     # Create the Explorer settings file
     infile = "explorer-settings.json.in"
     outfile = os.path.join(buildDir, "explorer-settings.json")
@@ -248,7 +248,6 @@ if config.get('useexplorer', False):
     copyfile(args.coin, "explorer.mongo")
     copyfile(args.coin, "explorer-crontab")
 
-if config.get('installexplorer', False):
     ## Copy the nodejs archive
     copyfile(args.coin, "build/cache/node-v8.7.0-linux-x64.tar.xz",
              "node-v8.7.0-linux-x64.tar.xz")
