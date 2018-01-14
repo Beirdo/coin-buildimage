@@ -248,6 +248,7 @@ if config.get('useexplorer', False):
     copyfile(args.coin, "explorer.mongo")
     copyfile(args.coin, "explorer-crontab")
 
+if config.get('installexplorer', False):
     ## Copy the nodejs archive
     copyfile(args.coin, "build/cache/node-v8.7.0-linux-x64.tar.xz",
              "node-v8.7.0-linux-x64.tar.xz")
