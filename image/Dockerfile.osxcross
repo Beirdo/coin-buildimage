@@ -1,4 +1,4 @@
-FROM beirdo/coin-buildimage:base
+FROM localhost:5000/coin-buildimage:base
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
@@ -9,6 +9,7 @@ ENV PORTABLE true
 ENV _osxcrossprefix /opt/osxcross
 ENV _arch x86_64-apple-darwin14
 ENV PATH $PATH:${_osxcrossprefix}/bin
+ENV CORES ${CORES}
 
 # Build crossosx for OSX builds
 RUN apt-get update
@@ -68,7 +69,7 @@ RUN ../qtbase-everywhere-src-5.10.0/configure \
 	-device-option QMAKE_MACOSX_STDLIB=libstdc++ \
 	-device-option CROSS_COMPILE_CFLAGS="-fpch-preprocess -stdlib=libstdc++" \
 	-release
-RUN make -j4
+RUN make -j${CORES}
 RUN make install
 
 # Install boost, OpenSSL, zlib, miniupnpnc and db48 from macports

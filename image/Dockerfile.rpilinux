@@ -1,7 +1,8 @@
-FROM beirdo/coin-buildimage:base
+FROM localhost:5000/coin-buildimage:base
 MAINTAINER gjhurlbu@gmail.com
 
-ENV PATH=${PATH}:/opt/cross/bin:/opt/x-tools/pi-crosstool-ng/arm-unknown-linux-gnueabi/bin
+ENV PATH ${PATH}:/opt/cross/bin:/opt/x-tools/pi-crosstool-ng/arm-unknown-linux-gnueabi/bin
+ENV CORES ${CORES}
 
 # Setup crosstool-ng for the Raspberry Pi
 WORKDIR /tmp/src
@@ -9,7 +10,7 @@ RUN wget http://build-artifacts.mycryptocoins.net/crosstool-ng-1.23.0.tar.xz
 RUN tar -xvf crosstool-ng-1.23.0.tar.xz
 WORKDIR /tmp/src/crosstool-ng-1.23.0
 RUN ./configure --prefix=/opt/cross
-RUN make -j4
+RUN make -j${CORES}
 RUN make install
 
 # Setup crosstool-ng for Raspberry Pi
@@ -36,7 +37,7 @@ WORKDIR /tmp/src/db-4.8.30.NC/rpi-build
 RUN ../dist/configure --host=arm-unknown-linux-gnueabi \
 	--prefix=/opt/x-tools/rpi --disable-shared \
 	--disable-replication --enable-cxx
-RUN make -j4
+RUN make -j${CORES}
 RUN make install
 
 # Build openssl for Raspberry Pi
@@ -47,7 +48,7 @@ WORKDIR /tmp/src/openssl-1.0.2l
 ENV CROSS_COMPILE arm-unknown-linux-gnueabi-
 RUN ./Configure --cross-compile-prefix=arm-unknown-linux-gnueabi- \
 	--prefix=/opt/x-tools/rpi linux-armv4
-RUN make -j4
+RUN make -j${CORES}
 RUN make install
 
 # Build zlib for Raspberry Pi
@@ -59,7 +60,7 @@ RUN TARGETMACH=arm-none-linux-gnueabi BUILDMACH=i686-pc-linux-gnu \
 	CROSS=arm-none-linux-gnueabi CC=${CROSS_COMPILE}gcc \
 	LD=${CROSS_COMPILE}ld AS=${CROSS_COMPILE}-as \
 	./configure --prefix=/opt/x-tools/rpi
-RUN make -j4
+RUN make -j${CORES}
 RUN make install
 
 # Build miniupnpc for Raspberry Pi
@@ -67,7 +68,7 @@ WORKDIR /tmp/src
 RUN wget http://build-artifacts.mycryptocoins.net/miniupnpc-1.9.20140610.tar.gz
 RUN tar -xvvf miniupnpc-1.9.20140610.tar.gz
 WORKDIR /tmp/src/miniupnpc-1.9.20140610
-RUN CC=${CROSS_COMPILE}gcc make -j4
+RUN CC=${CROSS_COMPILE}gcc make -j${CORES}
 RUN INSTALLPREFIX=/opt/x-tools/rpi make install
 
 # Cleanup

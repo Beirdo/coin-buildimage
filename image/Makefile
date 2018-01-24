@@ -1,5 +1,9 @@
+calc=$(shell echo $$\(\($(1)\)\))
+
 IMAGES := base mxe rpilinux osxcross
 DONEFILES := $(addprefix done., ${IMAGES})
+CORES := $(call calc,$(shell nproc) \* 3 / 2)
+export CORES
 
 #.PHONY: ${IMAGES}
 
@@ -9,6 +13,7 @@ all:	${IMAGES}
 	touch $<
 
 ${DONEFILES}:	$(@:done.%=Dockerfile.%) $(FORCE)
-	docker build -t beirdo/coin-buildimage:$(@:done.%=%) \
+	@echo Using -j${CORES}
+	docker build -t localhost:5000/coin-buildimage:$(@:done.%=%) \
 		-f $(@:done.%=Dockerfile.%) ${CACHE} .
-	docker push beirdo/coin-buildimage:$(@:done.%=%)
+	docker push localhost:5000/coin-buildimage:$(@:done.%=%)
