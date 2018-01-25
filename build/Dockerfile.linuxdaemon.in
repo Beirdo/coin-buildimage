@@ -1,10 +1,11 @@
-FROM beirdo/coin-buildimage:base
+FROM localhost:5000/coin-buildimage:base
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
 USER coinbld
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
+ENV CORES ${CORES}
 
 # Copy in git config and credentials if needed
 %=- GITCREDENTIALS 1
@@ -21,7 +22,7 @@ RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
 WORKDIR ${srcDir}
 RUN git clean -xdf
 WORKDIR ${srcDir}/src
-RUN make -j4 -f makefile.unix STATIC=1
+RUN make -j${CORES} -f makefile.unix STATIC=1
 RUN install -D @COINNAME@d ${artifactDir}/linux/@COINNAME@d
 
 # Reset user to root

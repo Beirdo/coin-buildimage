@@ -9,9 +9,9 @@
   "qtlinux": "RainbowLite-qt.pro",
   "qtosx": "RainbowLite-qt-osxcross.pro",
   "linuxdaemon": 1,
-  "linuxqt": 1,
+  "linuxqt": 0,
   "win32qt": 1,
-  "win64qt": 1,
+  "win64qt": 0,
   "rpidaemon": 1,
   "osxqt": 0
 }
