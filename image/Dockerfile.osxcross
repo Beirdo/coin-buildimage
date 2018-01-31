@@ -2,13 +2,13 @@ FROM localhost:5000/coin-buildimage:base
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
-ENV OSXCROSS_SDK_VERSION 10.10
-ENV MACOSX_DEPLOYMENT_TARGET 10.10
+ENV OSXCROSS_SDK_VERSION 10.11
+ENV MACOSX_DEPLOYMENT_TARGET 10.11
 ENV UNATTENDED 1
 ENV PORTABLE true
 ENV _osxcrossprefix /opt/osxcross
-ENV _arch x86_64-apple-darwin14
-ENV PATH $PATH:${_osxcrossprefix}/bin
+ENV _arch x86_64-apple-darwin15
+ENV PATH ${_osxcrossprefix}/bin:${PATH}
 ENV CORES ${CORES}
 
 # Build crossosx for OSX builds
@@ -22,57 +22,13 @@ RUN ./build.sh
 RUN ./build_gcc.sh
 RUN rsync -avt /tmp/osxcross/target/ ${_osxcrossprefix}/
 
-# Build Qt5 for OSX (cross-compiling)
+# Install a prebuilt QT5 cross-compile
 WORKDIR /tmp
-RUN wget http://build-artifacts.mycryptocoins.net/qtbase-everywhere-src-5.10.0.tar.xz
-RUN wget http://build-artifacts.mycryptocoins.net/qt5-osxcross.tar.gz
-WORKDIR /tmp/src
-RUN tar xf /tmp/qtbase-everywhere-src-5.10.0.tar.xz
-WORKDIR /tmp/src/qtbase-everywhere-src-5.10.0
-RUN tar xf /tmp/qt5-osxcross.tar.gz
-RUN for i in *.patch ; do patch -p1 < $i ; done
-ADD qt5-osx-sdk-fix.sh /tmp/src/qtbase-everywhere-src-5.10.0
-RUN chmod 755 /tmp/src/qtbase-everywhere-src-5.10.0/qt5-osx-sdk-fix.sh
-RUN ./qt5-osx-sdk-fix.sh ${_osxcrossprefix}
-WORKDIR /tmp/src/build-${_arch}
-RUN ../qtbase-everywhere-src-5.10.0/configure \
-	-static \
-	-xplatform macx-clang \
-	-securetransport \
-	-optimized-qmake \
-	-verbose \
-	-opensource \
-	-confirm-license \
-	-force-debug-info \
-	-sql-sqlite \
-	-no-glib \
-	-nomake examples \
-	-make tools \
-	-hostprefix ${_osxcrossprefix}/${_arch} \
-	-hostdatadir ${_osxcrossprefix}/${_arch}/lib/qt \
-	-hostbindir ${_osxcrossprefix}/${_arch}/lib/qt/bin \
-	-prefix ${_osxcrossprefix}/${_arch} \
-	-bindir ${_osxcrossprefix}/${_arch}/bin \
-	-archdatadir ${_osxcrossprefix}/${_arch}/lib/qt \
-	-datadir ${_osxcrossprefix}/${_arch}/share/qt \
-	-docdir ${_osxcrossprefix}/${_arch}/share/doc/qt \
-	-examplesdir ${_osxcrossprefix}/${_arch}/share/qt/examples \
-	-headerdir ${_osxcrossprefix}/${_arch}/include/qt \
-	-libdir ${_osxcrossprefix}/${_arch}/lib \
-	-plugindir ${_osxcrossprefix}/${_arch}/lib/qt/plugins \
-	-sysconfdir ${_osxcrossprefix}/${_arch}/etc \
-	-translationdir ${_osxcrossprefix}/${_arch}/share/qt/translations \
-        QMAKE_MAC_SDK_PATH=${_osxcrossprefix}/SDK/MacOSX${OSXCROSS_SDK_VERSION}.sdk \
-	QMAKE_APPLE_DEVICE_ARCHS=${_arch%%-*} \
-	QMAKE_MACOSX_DEPLOYMENT_TARGET=10.10 \
-	-device-option CROSS_COMPILE=${_arch}- \
-	-device-option QMAKE_MACOSX_STDLIB=libstdc++ \
-	-device-option CROSS_COMPILE_CFLAGS="-fpch-preprocess -stdlib=libstdc++" \
-	-release
-RUN make -j${CORES}
-RUN make install
+RUN wget http://build-artifacts.mycryptocoins.net/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
+RUN tar -C / -xvf /tmp/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
 
 # Install boost, OpenSSL, zlib, miniupnpnc and db48 from macports
+COPY macport-mirror ${_osxcrossprefix}/macports/MIRROR
 RUN osxcross-macports install boost
 RUN osxcross-macports install openssl
 RUN osxcross-macports install zlib

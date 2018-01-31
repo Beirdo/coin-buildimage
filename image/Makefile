@@ -2,7 +2,8 @@ calc=$(shell echo $$\(\($(1)\)\))
 
 IMAGES := base mxe rpilinux osxcross
 DONEFILES := $(addprefix done., ${IMAGES})
-CORES := $(call calc,$(shell nproc) \* 3 / 2)
+#CORES := $(call calc,$(shell nproc) \* 3 / 2)
+CORES := $(call calc,$(shell nproc) / 2)
 export CORES
 
 #.PHONY: ${IMAGES}
