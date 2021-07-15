@@ -1,5 +1,5 @@
 #FROM localhost:5000/ubuntu:17.10
-FROM ubuntu:17.10
+FROM ubuntu:18.04
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup base system

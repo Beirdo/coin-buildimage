@@ -1,10 +1,10 @@
 FROM localhost:5000/coin-buildimage:base
 MAINTAINER gjhurlbu@gmail.com
 
-ENV PATH ${PATH}:/opt/cross/bin:/opt/x-tools/pi-crosstool-ng/arm-unknown-linux-gnueabi/bin
+ENV PATH ${PATH}:/opt/cross/bin:/opt/x-tools/arm64-crosstool-ng/aarch64-unknown-linux-gnueabi/bin
 ENV CORES ${CORES}
 
-# Setup crosstool-ng for the Raspberry Pi
+# Setup crosstool-ng for ARM64 Linux
 WORKDIR /tmp/src
 RUN wget http://build-artifacts.mycryptocoins.net/crosstool-ng-1.23.0.tar.xz
 RUN tar -xvf crosstool-ng-1.23.0.tar.xz
@@ -13,57 +13,57 @@ RUN ./configure --prefix=/opt/cross
 RUN make -j${CORES}
 RUN make install
 
-# Setup crosstool-ng for Raspberry Pi
-WORKDIR /tmp/src/crosstool-pi
-ADD crosstool-ng-config-pi .config
+# Setup crosstool-ng for ARM64 Linux
+WORKDIR /tmp/src/crosstool-arm64
+ADD crosstool-ng-config-arm64 .config
 RUN ct-ng oldconfig
 RUN ct-ng build
 
-# Setup boost for Raspberry Pi
+# Setup boost for ARM64
 WORKDIR /tmp/src
 RUN wget http://build-artifacts.mycryptocoins.net/boost_1_65_1.tar.bz2
 RUN tar -xvf boost_1_65_1.tar.bz2
 WORKDIR /tmp/src/boost_1_65_1
 RUN ./bootstrap.sh
-ADD boost-project-config-rpi.jam project-config.jam
-RUN ./bjam install toolset=gcc-arm --prefix=/opt/x-tools/rpi link=static \
+ADD boost-project-config-arm64.jam project-config.jam
+RUN ./bjam install toolset=gcc-arm --prefix=/opt/x-tools/arm64 link=static \
 	variant=release threading=multi -a -q --reconfigure --without-python
 
-# Build Berkeley DB 4.8 for Raspberry Pi
+# Build Berkeley DB 4.8 for ARM64
 WORKDIR /tmp/src
 RUN wget http://build-artifacts.mycryptocoins.net/db-4.8.30.NC.tar.gz
 RUN tar -xvf db-4.8.30.NC.tar.gz
 WORKDIR /tmp/src/db-4.8.30.NC/rpi-build
-RUN ../dist/configure --host=arm-unknown-linux-gnueabi \
+RUN ../dist/configure --host=aarch64-unknown-linux-gnueabi \
 	--prefix=/opt/x-tools/rpi --disable-shared \
 	--disable-replication --enable-cxx
 RUN make -j${CORES}
 RUN make install
 
-# Build openssl for Raspberry Pi
+# Build openssl for ARM64
 WORKDIR /tmp/src
 RUN wget http://build-artifacts.mycryptocoins.net/openssl-1.0.2l.tar.gz
 RUN tar -xvf openssl-1.0.2l.tar.gz
 WORKDIR /tmp/src/openssl-1.0.2l
-ENV CROSS_COMPILE arm-unknown-linux-gnueabi-
-RUN ./Configure --cross-compile-prefix=arm-unknown-linux-gnueabi- \
-	--prefix=/opt/x-tools/rpi linux-armv4
+ENV CROSS_COMPILE aarch64-unknown-linux-gnueabi-
+RUN ./Configure --cross-compile-prefix=aarch64-unknown-linux-gnueabi- \
+	--prefix=/opt/x-tools/rpi linux-aarch64
 RUN make #-j${CORES}
 RUN make install
 
-# Build zlib for Raspberry Pi
+# Build zlib for ARM64
 WORKDIR /tmp/src
 RUN wget http://build-artifacts.mycryptocoins.net/zlib-1.2.11.tar.gz
 RUN tar -xvf zlib-1.2.11.tar.gz
 WORKDIR /tmp/src/zlib-1.2.11
-RUN TARGETMACH=arm-none-linux-gnueabi BUILDMACH=i686-pc-linux-gnu \
-	CROSS=arm-none-linux-gnueabi CC=${CROSS_COMPILE}gcc \
+RUN TARGETMACH=aarch64-none-linux-gnueabi BUILDMACH=i686-pc-linux-gnu \
+	CROSS=aarch64-none-linux-gnueabi CC=${CROSS_COMPILE}gcc \
 	LD=${CROSS_COMPILE}ld AS=${CROSS_COMPILE}-as \
 	./configure --prefix=/opt/x-tools/rpi
 RUN make -j${CORES}
 RUN make install
 
-# Build miniupnpc for Raspberry Pi
+# Build miniupnpc for ARM64
 WORKDIR /tmp/src
 RUN wget http://build-artifacts.mycryptocoins.net/miniupnpc-1.9.20140610.tar.gz
 RUN tar -xvvf miniupnpc-1.9.20140610.tar.gz

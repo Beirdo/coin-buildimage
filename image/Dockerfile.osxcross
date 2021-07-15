@@ -2,12 +2,12 @@ FROM localhost:5000/coin-buildimage:base
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
-ENV OSXCROSS_SDK_VERSION 10.11
-ENV MACOSX_DEPLOYMENT_TARGET 10.11
+ENV OSXCROSS_SDK_VERSION 10.13
+ENV MACOSX_DEPLOYMENT_TARGET 10.13
 ENV UNATTENDED 1
 ENV PORTABLE true
 ENV _osxcrossprefix /opt/osxcross
-ENV _arch x86_64-apple-darwin15
+ENV _arch x86_64-apple-darwin17
 ENV PATH ${_osxcrossprefix}/bin:${PATH}
 ENV CORES ${CORES}
 
@@ -15,17 +15,17 @@ ENV CORES ${CORES}
 RUN apt-get update
 RUN git clone https://github.com/tpoechtrager/osxcross.git /tmp/osxcross
 WORKDIR /tmp/osxcross
-RUN sed -i -e 's|-march=native||g' ./build_clang.sh ./wrapper/build.sh
+RUN ./build_clang.sh
 RUN ./tools/get_dependencies.sh
 RUN wget http://build-artifacts.mycryptocoins.net/MacOSX${OSXCROSS_SDK_VERSION}.sdk.tar.xz -O tarballs/MacOSX${OSXCROSS_SDK_VERSION}.sdk.tar.xz
 RUN ./build.sh
 RUN ./build_gcc.sh
 RUN rsync -avt /tmp/osxcross/target/ ${_osxcrossprefix}/
 
-# Install a prebuilt QT5 cross-compile
-WORKDIR /tmp
-RUN wget http://build-artifacts.mycryptocoins.net/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
-RUN tar -C / -xvf /tmp/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
+## Install a prebuilt QT5 cross-compile
+#WORKDIR /tmp
+#RUN wget http://build-artifacts.mycryptocoins.net/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
+#RUN tar -C / -xvf /tmp/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
 
 # Install boost, OpenSSL, zlib, miniupnpnc and db48 from macports
 COPY macport-mirror ${_osxcrossprefix}/macports/MIRROR
