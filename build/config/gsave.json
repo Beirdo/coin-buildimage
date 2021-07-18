@@ -9,8 +9,9 @@
   "qtosx": "GSave-qt-osxcross.pro",
   "linuxdaemon": 0,
   "rpidaemon": 0,
-  "linuxqt": 0,
+  "arm64daemon": 0,
+  "linuxqt": 1,
   "win32qt": 0,
   "win64qt": 0,
-  "osxqt": 1
+  "osxqt": 0
 }

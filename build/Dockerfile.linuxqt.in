@@ -1,28 +1,35 @@
-FROM localhost:5000/coin-buildimage:base
+FROM localhost:5000/coin-buildimage:x86_64-linux
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
 USER coinbld
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
-#ENV CORES ${CORES}
-ENV CORES 4
+ENV CORES ${CORES}
+ENV CROSS_TRIPLE x86_64-linux-gnu
+ENV PREFIX /opt/crossbuild/${CROSS_TRIPLE}
 
-# Copy in git config and credentials if needed
 %=- GITCREDENTIALS 1
+# Copy in git config and credentials if needed
 ADD gitconfig /home/coinbld/.gitconfig
 ADD git-credentials /home/coinbld/.git-credentials
-=%
 
+=%
 # Checkout coin code
 WORKDIR /home/coinbld/src
 ARG CACHE_DATE=never
 RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
 
+# Hack to get uic working
+USER root
+RUN ln -s ${PREFIX}/bin/uic /usr/local/bin/uic
+USER coinbld
+
 # Build Linux Qt
 WORKDIR ${srcDir}
 RUN git clean -xdf
-RUN qmake @QTLINUX@
+RUN qmake BOOST_INCLUDE_PATH=${PREFIX}/include BOOST_LIB_PATH=${PREFIX}/lib \
+	@QTLINUX@
 RUN make ${srcDir}/build/build.h
 RUN make -j${CORES}
 RUN install -D @COINNAME@-qt ${artifactDir}/linux/@COINNAME@-qt

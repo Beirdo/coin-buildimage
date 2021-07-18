@@ -1,5 +1,4 @@
-#FROM localhost:5000/ubuntu:17.10
-FROM ubuntu:18.04
+FROM localhost:5000/ubuntu:18.04
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup base system
@@ -32,9 +31,9 @@ RUN apt-get update && apt-get install -y \
 	libboost-filesystem-dev \
 	libboost-program-options-dev \
 	libboost-system-dev \
-	libboost-thread-dev libssl-dev \
+	libboost-thread-dev \
 	libc6-dev-i386 \
-	libcurl4-openssl-dev \
+	#libcurl-openssl1.0-dev \
 	libdb4.8++-dev \
 	libevent-dev \
 	libffi-dev \
@@ -54,13 +53,13 @@ RUN apt-get update && apt-get install -y \
 	libqt5dbus5 \
 	libqt5gui5 \
 	libqt5webkit5-dev \
-	libssl-dev \
+	libssl1.0-dev \
         libtool \
 	libtool-bin \
 	libxml-parser-perl \
 	libzip-dev \
 	make \
-	openssl \
+	openssl1.0 \
 	p7zip-full \
 	patch \
 	perl \

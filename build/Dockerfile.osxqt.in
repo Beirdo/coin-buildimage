@@ -21,7 +21,8 @@ RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
 # Build Linux Qt
 WORKDIR ${srcDir}
 RUN git clean -xdf
-RUN i686-w64-mingw32.static-qmake-qt5 @QTOSX@
+ADD qdevice.pri.osx /opt/osxcross/x86_64-apple-darwin15/lib/qt/mkspecs/qdevice.pri
+RUN x86_64-apple-darwin15-qmake-qt5 GSave-qt-osxcross.pro
 RUN make -j${CORES}
 RUN install -D @COINNAME@-qt ${artifactDir}/osx/@COINNAME@-qt
 

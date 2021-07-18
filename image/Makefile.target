@@ -1,0 +1,28 @@
+CROSS_TRIPLE := x86_64-linux-gnu
+
+DIRS  = db-4.8.30.NC libpng-1.6.37 openssl-1.0.2l qrencode-3.4.4 zlib-1.2.11
+DIRS += miniupnpc-1.9.20140610 boost_1_65_1 qtbase-opensource-src-5.9.3
+
+.PHONY:	force
+
+all: ${DIRS}
+
+${DIRS}:: force
+	echo $@
+
+db-4.8.30.NC::
+
+libpng-1.6.37::
+
+openssl-1.0.2l::
+       
+qrencode-3.4.4::
+
+zlib-1.2.11::
+
+miniupnpc-1.9.20140610::
+       
+boost_1_65_1::
+
+qtbase-opensource-src-5.9.3::
+

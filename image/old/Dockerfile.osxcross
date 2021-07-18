@@ -23,9 +23,9 @@ RUN ./build_gcc.sh
 RUN rsync -avt /tmp/osxcross/target/ ${_osxcrossprefix}/
 
 ## Install a prebuilt QT5 cross-compile
-#WORKDIR /tmp
-#RUN wget http://build-artifacts.mycryptocoins.net/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
-#RUN tar -C / -xvf /tmp/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
+WORKDIR /tmp
+RUN wget http://build-artifacts.mycryptocoins.net/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
+RUN tar -C / -xvf /tmp/apple-darwin-qt5-base-5.9.1-1-x86_64.pkg.tar.xz
 
 # Install boost, OpenSSL, zlib, miniupnpnc and db48 from macports
 COPY macport-mirror ${_osxcrossprefix}/macports/MIRROR

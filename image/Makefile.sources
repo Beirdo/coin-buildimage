@@ -1,0 +1,78 @@
+calc=$(shell echo $$\(\($(1)\)\))
+CORES := $(call calc,$(shell nproc) / 2)
+export CORES
+
+include /opt/sources/Makefile.def
+
+PREFIX := /opt/crossbuild/${CROSS_TRIPLE}
+
+DIRS += boost_1_65_1
+DIRS += db-4.8.30.NC
+DIRS += zlib-1.2.11
+DIRS += libpng-1.6.37
+DIRS += openssl-1.0.2l
+DIRS += qrencode-3.4.4
+DIRS += miniupnpc-1.9.20140610
+DIRS += qtbase-opensource-src-5.9.3
+
+.PHONY:	force
+
+all: ${DIRS}
+
+${DIRS}: force
+	@echo ===== Building $@ =====
+	${MAKE} -C $@ -f ../Makefile build-$@
+
+build-db-4.8.30.NC:
+	cd build_unix && \
+		../dist/configure --build=${CROSS_DOUBLE} --disable-shared \
+			--disable-replication --enable-cxx --prefix=${PREFIX}
+	${MAKE} -C build_unix -j${CORES}
+	${MAKE} -C build_unix install
+
+build-libpng-1.6.37:
+	LDFLAGS="-L${PREFIX}/lib" CPPFLAGS="-I${PREFIX}/include" \
+		./configure --enable-static --host=${CROSS_TRIPLE} \
+		--disable-shared --prefix=${PREFIX}
+	${MAKE} -j ${CORES}
+	${MAKE} install
+
+build-openssl-1.0.2l:
+	./Configure zlib no-shared --prefix=${PREFIX} -L${PREFIX}/lib \
+	       -I${PREFIX}/include --cross-compile-prefix=${CROSS_TRIPLE}- \
+	       ${CROSS_REVDOUBLE}
+	${MAKE} -j ${CORES}
+	${MAKE} install_sw
+       
+build-qrencode-3.4.4:
+	./configure --enable-static --host=${CROSS_TRIPLE} --disable-shared \
+		--without-tools --prefix=${PREFIX}
+	${MAKE} -j ${CORES}
+	${MAKE} install
+
+build-zlib-1.2.11:
+	TARGETMACH=${CROSS_TRIPLE} BUILDMACH=x86_64-linux-gnu \
+		CROSS=${CROSS_TRIPLE} CC=${CROSS_TRIPLE}-gcc \
+		LD=${CROSS_TRIPLE}-ld AS=${CROSS_TRIPLE}-as \
+		AR=${CROSS_TRIPLE}-ar \
+		./configure --static --prefix=${PREFIX}
+	${MAKE} -j ${CORES}
+	${MAKE} install
+
+build-miniupnpc-1.9.20140610:
+	${MAKE} -j ${CORES} CC=${CROSS_TRIPLE}-gcc AR=${CROSS_TRIPLE}-ar
+	${MAKE} install INSTALLPREFIX=${PREFIX}
+       
+build-boost_1_65_1:
+	CC=${CROSS_TRIPLE}-gcc CXX=${CROSS_TRIPLE}-g++ ./bootstrap.sh
+	mv boost-config.jam.new project-config.jam
+	./bjam install toolset=${BOOST_TOOLSET} link=static variant=release \
+	       	threading=multi -a -q --reconfigure --without-python
+
+build-qtbase-opensource-src-5.9.3:
+	./configure -opensource -confirm-license -release -static -no-shared \
+		-c++std c++11 -no-opengl -gui -prefix ${PREFIX} \
+		-hostprefix /usr/local -xplatform ${CROSS_XPLATFORM}
+	${MAKE} -j ${CORES}
+	${MAKE} install
+

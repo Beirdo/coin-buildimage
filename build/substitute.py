@@ -11,7 +11,7 @@ import sys
 
 filterRe = re.compile(r'(?P<block>^%=(?P<mode>.)?\s+(?P<label>.*?)\s+(?P<value>[^\s\n$]+)(?:\s*.*?)?^(?P<section>.*?)^=%.*?$)', re.M | re.S)
 
-builds = ["linuxdaemon", "linuxqt", "win32qt", "win64qt", "rpidaemon", "osxqt"]
+builds = ["linuxdaemon", "linuxqt", "win32qt", "win64qt", "rpidaemon", "osxqt", "arm64daemon"]
 
 
 def convertConfig(config):
@@ -96,6 +96,11 @@ substituteFile(infile, outfile, subst)
 infile = "Makefile-build.in"
 outfile = os.path.join(buildDir, "Makefile")
 substituteFile(infile, outfile, subst)
+
+if config.get("osxqt", 1):
+    infile = "qdevice.pri.osx"
+    outfile = os.path.join(buiidDir, "gdevice.pri.osx")
+    copyfile(args.coin, infile, outfile)
 
 # Copy the git config and credentials if needed
 if config.get("gitcredentials", 0):

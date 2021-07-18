@@ -1,0 +1,25 @@
+calc=$(shell echo $$\(\($(1)\)\))
+CORES := $(call calc,$(shell nproc) / 2)
+export CORES
+
+.PHONY:	force
+
+CP := cp
+
+all:	sources done
+
+Dockerfile:	../Dockerfile.image
+	${CP} $< $@
+
+Makefile.sources:	../Makefile.sources
+	${CP} $< $@
+
+done:	Dockerfile Makefile.sources $(FORCE)
+	@echo Using -j${CORES}
+	docker build -t localhost:5000/coin-buildimage:${IMAGE} \
+		-f Dockerfile ${CACHE} --build-arg=LIBC_DEBS="${LIBC_DEBS}" .
+	docker push localhost:5000/coin-buildimage:${IMAGE}
+	touch $@
+
+sources::
+	

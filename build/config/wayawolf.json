@@ -1,0 +1,17 @@
+{
+  "target": "wayawolfcoin",
+  "coinname": "WayaWolfCoin",
+  "giturl": "https://github.com/MyCryptoCoins/WayaWolfCoin.git",
+  "branch": "newcoin",
+  "qtwin32": "WayaWolfCoin-qt-mxe32.pro",
+  "qtwin64": "WayaWolfCoin-qt-mxe64.pro",
+  "qtlinux": "WayaWolfCoin-qt.pro",
+  "qtosx": "WayaWolfCoin-qt-osxcross.pro",
+  "linuxdaemon": 1,
+  "arm64daemon": 0,
+  "rpidaemon": 0,
+  "linuxqt": 1,
+  "win32qt": 0,
+  "win64qt": 0,
+  "osxqt": 0
+}

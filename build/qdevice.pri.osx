@@ -1,0 +1,5 @@
+CROSS_COMPILE = x86_64-apple-darwin17-
+QMAKE_MACOSX_STDLIB = libstdc++
+CROSS_COMPILE_CFLAGS = -fpch-preprocess
+GCC_MACHINE_DUMP =
+

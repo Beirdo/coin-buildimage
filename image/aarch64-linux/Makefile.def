@@ -1,0 +1,5 @@
+CROSS_TRIPLE := aarch64-linux-gnu
+CROSS_DOUBLE := aarch64-linux
+CROSS_REVDOUBLE := linux-aarch64
+CROSS_XPLATFORM := linux-aarch64-gnu-g++
+BOOST_TOOLSET := gcc-aarch65

@@ -10,7 +10,7 @@ all:
 
 COINS := mudcoin peercoin flappycoin netcoin alexandrite gaincoin saturn2coin
 COINS += satori nimbus she421 helium gridcoin segacoin gsave travelflex
-COINS += lemmings om raincoin litecoinultra rainbowlite
+COINS += lemmings om raincoin litecoinultra rainbowlite wayawolf
 
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 
