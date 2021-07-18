@@ -1,0 +1,10 @@
+CROSS_TRIPLE := arm-linux-gnueabihf
+
+BDB_HOST := arm-linux					# BerkeleyDB
+OPENSSL_MACH := -march=armv7-a linux-armv4		# OpenSSL
+BOOST_ARCH := armhf					# Boost
+
+# Since Qt needs more specific config here, and we do not really need to
+# have Qt on raspberry Pi, skip it.
+QT_SKIP := 1
+QT_PLATFORM := -xplatform linux-arm-gnueabi-g++		# Qt

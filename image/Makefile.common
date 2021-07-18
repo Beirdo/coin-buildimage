@@ -2,6 +2,8 @@ calc=$(shell echo $$\(\($(1)\)\))
 CORES := $(call calc,$(shell nproc) / 2)
 export CORES
 
+include Makefile.def
+
 .PHONY:	force
 
 CP := cp
@@ -14,7 +16,12 @@ Dockerfile:	../Dockerfile.image
 Makefile.sources:	../Makefile.sources
 	${CP} $< $@
 
-done:	Dockerfile Makefile.sources $(FORCE)
+boost-project-config.jam:	../boost-project-config.jam.in Makefile.def
+	cat ../boost-project-config.jam.in | \
+		sed -e 's/@BOOST_ARCH@/${BOOST_ARCH}/g' \
+			-e 's/@CROSS_TRIPLE@/${CROSS_TRIPLE}/g' > $@
+
+done:	boost-project-config.jam Dockerfile Makefile.sources $(FORCE)
 	@echo Using -j${CORES}
 	docker build -t localhost:5000/coin-buildimage:${IMAGE} \
 		-f Dockerfile ${CACHE} --build-arg=LIBC_DEBS="${LIBC_DEBS}" .

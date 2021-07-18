@@ -9,7 +9,7 @@ import feature ;
 # file.
 if ! gcc in [ feature.values <toolset> ]
 {
-    using gcc : aarch64 : aarch64-linux-gnu-gcc : --std=c++11 ;
+    using gcc : @BOOST_ARCH@ : @CROSS_TRIPLE@-gcc : --std=c++11 ;
 }
 
 project : default-build <toolset>gcc ;
@@ -29,10 +29,10 @@ libraries =  ;
 
 # These settings are equivivalent to corresponding command-line
 # options.
-option.set prefix : /opt/crossbuild/aarch64-linux-gnu ;
-option.set exec-prefix : /opt/crossbuild/aarch64-linux-gnu ;
-option.set libdir : /opt/crossbuild/aarch64-linux-gnu/lib ;
-option.set includedir : /opt/crossbuild/aarch64-linux-gnu/include ;
+option.set prefix : /opt/crossbuild/@CROSS_TRIPLE@ ;
+option.set exec-prefix : /opt/crossbuild/@CROSS_TRIPLE@ ;
+option.set libdir : /opt/crossbuild/@CROSS_TRIPLE@/lib ;
+option.set includedir : /opt/crossbuild/@CROSS_TRIPLE@/include ;
 
 # Stop on first error
 option.set keep-going : false ;

@@ -25,7 +25,7 @@ ${DIRS}: force
 
 build-db-4.8.30.NC:
 	cd build_unix && \
-		../dist/configure --build=${CROSS_DOUBLE} --disable-shared \
+		../dist/configure --build=${BDB_HOST} --disable-shared \
 			--disable-replication --enable-cxx --prefix=${PREFIX}
 	${MAKE} -C build_unix -j${CORES}
 	${MAKE} -C build_unix install
@@ -40,7 +40,7 @@ build-libpng-1.6.37:
 build-openssl-1.0.2l:
 	./Configure zlib no-shared --prefix=${PREFIX} -L${PREFIX}/lib \
 	       -I${PREFIX}/include --cross-compile-prefix=${CROSS_TRIPLE}- \
-	       ${CROSS_REVDOUBLE}
+	       ${OPENSSL_MACH}
 	${MAKE} -j ${CORES}
 	${MAKE} install_sw
        
@@ -66,13 +66,18 @@ build-miniupnpc-1.9.20140610:
 build-boost_1_65_1:
 	CC=${CROSS_TRIPLE}-gcc CXX=${CROSS_TRIPLE}-g++ ./bootstrap.sh
 	mv boost-config.jam.new project-config.jam
-	./bjam install toolset=${BOOST_TOOLSET} link=static variant=release \
+	./bjam install toolset=gcc-${BOOST_ARCH} link=static variant=release \
 	       	threading=multi -a -q --reconfigure --without-python
 
+ifeq ($(QT_SKIP),1)
+build-qtbase-opensource-src-5.9.3:
+	@echo Cowardly refusing to build Qt for ARM32, sorry
+else
 build-qtbase-opensource-src-5.9.3:
 	./configure -opensource -confirm-license -release -static -no-shared \
 		-c++std c++11 -no-opengl -gui -prefix ${PREFIX} \
-		-hostprefix /usr/local -xplatform ${CROSS_XPLATFORM}
+		-hostprefix /usr/local ${QT_PLATFORM}
 	${MAKE} -j ${CORES}
 	${MAKE} install
+endif
 
