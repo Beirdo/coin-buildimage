@@ -1,0 +1,16 @@
+CROSS_TRIPLE := i686-w64-mingw32
+
+BDB_HOST := i686-mingw32				# BerkeleyDB
+BDB_EXTRA := --enable-mingw				# BerkeleyDB
+BDB_BUILD := build_windows				# BerkeleyDB
+OPENSSL_MACH := mingw					# OpenSSL
+QT_PLATFORM := -xplatform win32-g++ 
+QT_PLATFORM := ${QT_PLATFORM} -no-use-gold-linker	# Qt
+QT_PLATFORM := ${QT_PLATFORM} -platform linux-g++-64 -no-icu
+QT_PLATFORM := ${QT_PLATFORM} -device-option CROSS_COMPILE=${CROSS_TRIPLE}-
+QT_PLATFORM := ${QT_PLATFORM} -nomake examples -nomake tests
+QT_PLATFORM := ${QT_PLATFORM} -I /usr/share/mingw-w64/include
+BOOST_ARCH := mingw					# Boost
+BOOST_EXTRA := target-os=windows threadapi=win32 abi=ms address-model=32 
+BOOST_EXTRA := ${BOOST_EXTRA} architecture=x86 binary-format=pe
+UPNP_MAKEFILE := Makefile.mingw
