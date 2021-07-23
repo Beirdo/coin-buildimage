@@ -2,3 +2,4 @@ Dockerfile
 Makefile.sources
 boost-project-config.jam
 done
+*.patch
