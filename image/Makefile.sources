@@ -5,6 +5,7 @@ export CORES
 include /opt/sources/Makefile.def
 
 PREFIX := /opt/crossbuild/${CROSS_TRIPLE}
+BUILD_PREFIX := /usr/${CROSS_TRIPLE}
 
 DIRS += boost_1_65_1
 DIRS += db-4.8.30.NC
@@ -24,11 +25,13 @@ ${DIRS}: force
 	${MAKE} -C $@ -f ../Makefile build-$@
 
 build-db-4.8.30.NC:
-	cd build_unix && \
-		../dist/configure --build=${BDB_HOST} --disable-shared \
-			--disable-replication --enable-cxx --prefix=${PREFIX}
-	${MAKE} -C build_unix -j${CORES}
-	${MAKE} -C build_unix install
+	cd ${BDB_BUILD} && \
+		crossbuild ../dist/configure --host=x86_64-linux \
+			--build=${BDB_HOST} --disable-shared \
+			--disable-replication --enable-cxx --prefix=${PREFIX} \
+			${BDB_EXTRA}
+	crossbuild ${MAKE} -C ${BDB_BUILD} -j${CORES}
+	crossbuild ${MAKE} -C ${BDB_BUILD} install
 
 build-libpng-1.6.37:
 	LDFLAGS="-L${PREFIX}/lib" CPPFLAGS="-I${PREFIX}/include" \
@@ -60,23 +63,33 @@ build-zlib-1.2.11:
 	${MAKE} install
 
 build-miniupnpc-1.9.20140610:
-	${MAKE} -j ${CORES} CC=${CROSS_TRIPLE}-gcc AR=${CROSS_TRIPLE}-ar
-	${MAKE} install INSTALLPREFIX=${PREFIX}
+	patch -p0 < /tmp/miniupnpc-install.patch
+	CC=${CROSS_TRIPLE}-gcc CXX=${CROSS_TRIPLE}-g++ AS=${CROSS_TRIPLE}-as  \
+	${MAKE} -j ${CORES} CC=${CROSS_TRIPLE}-gcc \
+		AR=${CROSS_TRIPLE}-ar RANLIB=${CROSS_TRIPLE}-ranlib \
+		DLLWRAP=${CROSS_TRIPLE}-dllwrap libminiupnpc.a
+	${MAKE} install INSTALLPREFIX=${PREFIX} FILESTOINSTALL=libminiupnpc.a
        
 build-boost_1_65_1:
-	CC=${CROSS_TRIPLE}-gcc CXX=${CROSS_TRIPLE}-g++ ./bootstrap.sh
+	CC=${CROSS_TRIPLE}-gcc CXX=${CROSS_TRIPLE}-g++ AS=${CROSS_TRIPLE}-as  \
+	./bootstrap.sh --with-toolset=gcc || cat bootstrap.log
 	mv boost-config.jam.new project-config.jam
-	./bjam install toolset=gcc-${BOOST_ARCH} link=static variant=release \
-	       	threading=multi -a -q --reconfigure --without-python
+	CC=${CROSS_TRIPLE}-gcc CXX=${CROSS_TRIPLE}-g++ AS=${CROSS_TRIPLE}-as  \
+	crossbuild ./b2 install toolset=gcc-${BOOST_ARCH} link=static \
+       		variant=release threading=multi -a -q --reconfigure \
+		--without-python ${BOOST_EXTRA}
 
 ifeq ($(QT_SKIP),1)
 build-qtbase-opensource-src-5.9.3:
-	@echo Cowardly refusing to build Qt for ARM32, sorry
+	@echo Cowardly refusing to build Qt, sorry
 else
 build-qtbase-opensource-src-5.9.3:
+	patch -p0 < /tmp/qt5-windows.patch
 	./configure -opensource -confirm-license -release -static -no-shared \
 		-c++std c++11 -no-opengl -gui -prefix ${PREFIX} \
-		-hostprefix /usr/local ${QT_PLATFORM}
+		-I ${BUILD_PREFIX}/include \
+		-L ${BUILD_PREFIX}/lib \
+		-hostprefix ${BUILD_PREFIX} ${QT_PLATFORM}
 	${MAKE} -j ${CORES}
 	${MAKE} install
 endif

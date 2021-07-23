@@ -1,0 +1,28 @@
+--- Makefile.orig       2021-07-19 03:55:18.555599710 +0000
++++ Makefile    2021-07-19 03:56:12.624729962 +0000
+@@ -195,25 +195,6 @@
+ 	$(INSTALL) -m 644 $(HEADERS) $(DESTDIR)$(INSTALLDIRINC)
+ 	$(INSTALL) -d $(DESTDIR)$(INSTALLDIRLIB)
+ 	$(INSTALL) -m 644 $(LIBRARY) $(DESTDIR)$(INSTALLDIRLIB)
+-ifneq ($(OS), AmigaOS)
+-	$(INSTALL) -m 644 $(SHAREDLIBRARY) $(DESTDIR)$(INSTALLDIRLIB)/$(SONAME)
+-	ln -fs $(SONAME) $(DESTDIR)$(INSTALLDIRLIB)/$(SHAREDLIBRARY)
+-endif
+-	$(INSTALL) -d $(DESTDIR)$(INSTALLDIRBIN)
+-ifeq ($(OS), AmigaOS)
+-	$(INSTALL) -m 755 upnpc-static $(DESTDIR)$(INSTALLDIRBIN)/upnpc
+-else
+-	$(INSTALL) -m 755 upnpc-shared $(DESTDIR)$(INSTALLDIRBIN)/upnpc
+-endif
+-	$(INSTALL) -m 755 external-ip.sh $(DESTDIR)$(INSTALLDIRBIN)/external-ip
+-ifneq ($(OS), AmigaOS)
+-	$(INSTALL) -d $(DESTDIR)$(INSTALLDIRMAN)/man3
+-	$(INSTALL) man3/miniupnpc.3 $(DESTDIR)$(INSTALLDIRMAN)/man3/miniupnpc.3
+-ifeq ($(OS), Linux)
+-	gzip $(DESTDIR)$(INSTALLDIRMAN)/man3/miniupnpc.3
+-endif
+-endif
+-
+
+ cleaninstall:
+ 	$(RM) -r $(DESTDIR)$(INSTALLDIRINC)

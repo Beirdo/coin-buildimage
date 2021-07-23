@@ -8,12 +8,15 @@ include Makefile.def
 
 CP := cp
 
+COPY_FILES := Makefile.sources miniupnpc-install.patch
+COPY_FILES := ${COPY_FILES} qt5-windows.patch
+
 all:	sources done
 
-Dockerfile:	../Dockerfile.image
+${COPY_FILES}: %: ../%
 	${CP} $< $@
 
-Makefile.sources:	../Makefile.sources
+Dockerfile:	../Dockerfile.image
 	${CP} $< $@
 
 boost-project-config.jam:	../boost-project-config.jam.in Makefile.def
@@ -21,7 +24,7 @@ boost-project-config.jam:	../boost-project-config.jam.in Makefile.def
 		sed -e 's/@BOOST_ARCH@/${BOOST_ARCH}/g' \
 			-e 's/@CROSS_TRIPLE@/${CROSS_TRIPLE}/g' > $@
 
-done:	boost-project-config.jam Dockerfile Makefile.sources $(FORCE)
+done:	${COPY_FILES} Dockerfile $(FORCE)
 	@echo Using -j${CORES}
 	docker build -t localhost:5000/coin-buildimage:${IMAGE} \
 		-f Dockerfile ${CACHE} --build-arg=LIBC_DEBS="${LIBC_DEBS}" .
