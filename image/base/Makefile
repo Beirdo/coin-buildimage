@@ -1,3 +1,4 @@
-IMAGE := aarch64-linux
-
 include ../Makefile.common
+
+IMAGE := base
+

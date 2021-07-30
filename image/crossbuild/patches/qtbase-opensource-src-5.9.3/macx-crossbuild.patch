@@ -1,0 +1,19 @@
+--- mkspecs/macx-g++/qmake.conf.orig    2021-07-25 14:12:35.701052109 +0000
++++ mkspecs/macx-g++/qmake.conf 2021-07-25 14:14:14.667084096 +0000
+@@ -18,4 +18,16 @@
+ include(../common/gcc-base-mac.conf)
+ include(../common/g++-macx.conf)
+
++# modifications to g++.conf
++QMAKE_CC                = x86_64-apple-darwin15-gcc
++QMAKE_CXX               = x86_64-apple-darwin15-g++
++QMAKE_LINK              = x86_64-apple-darwin15-g++
++QMAKE_LINK_SHLIB        = x86_64-apple-darwin15-g++
++
++# modifications to linux.conf
++QMAKE_AR                = x86_64-apple-darwin15-ar cqs
++QMAKE_OBJCOPY           = x86_64-apple-darwin15-objcopy
++QMAKE_NM                = x86_64-apple-darwin15-nm -P
++QMAKE_STRIP             = x86_64-apple-darwin15-strip
++
+ load(qt_config)

@@ -1,8 +1,19 @@
 CROSS_TRIPLE := aarch64-linux-gnu
 
-BDB_HOST := aarch64-linux				# BerkeleyDB
+# Berkeley DB 4.8
+BDB_HOST := aarch64-linux
 BDB_BUILD := build_unix
-OPENSSL_MACH := linux-aarch64				# OpenSSL
-QT_PLATFORM := -xplatform linux-aarch64-gnu-g++		# Qt
-BOOST_ARCH := aarch64					# Boost
+
+# OpenSSL
+OPENSSL_MACH := linux-aarch64
+OPENSSL_EXTRA :=
+
+# Qt5
+QT_PLATFORM := -xplatform linux-aarch64-gnu-g++
+QT_PLATFORM += -I /usr/include/c++/6.3.0
+
+# Boost
+BOOST_ARCH := aarch64
+
+# miniupnpc
 UPNP_MAKEFILE := Makefile

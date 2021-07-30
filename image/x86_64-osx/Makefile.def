@@ -1,0 +1,42 @@
+DARWIN_VERSION := 15
+export DARWIN_VERSION
+CROSS_TRIPLE := x86_64-apple-darwin${DARWIN_VERSION}
+DARWIN_INC_BASE := /usr/x86_64-linux-gnu/${CROSS_TRIPLE}/include
+
+CROSS_BUILD := CROSS_TRIPLE=${CROSS_TRIPLE}
+CROSS_CC := "${CROSS_TRIPLE}-cc -arch x86_64"
+
+# BerkeleyDB 4.8
+BDB_HOST := x86_64-darwin${DARWIN_VERSION}
+BDB_BUILD := build_unix	
+
+BDB_INCLUDE_PATH := ${DARWIN_INC_BASE}
+BDB_INCLUDE_PATH += ${DARWIN_INC_BASE}/c++/4.2.1
+BDB_INCLUDE_PATH += ${DARWIN_INC_BASE}/mach
+BDB_CPPFLAGS := $(patsubst %,-I%,${BDB_INCLUDE_PATH})
+BDB_CPPFLAGS += -DHAVE_CXX_STDHEADERS
+BDB_ENVVARS := CPPFLAGS="${BDB_CPPFLAGS}"
+BDB_ENVVARS += CXX=clang++
+
+# OpenSSL
+OPENSSL_MACH := darwin64-x86_64-cc
+OPENSSL_EXTRA :=
+
+# MiniUPNPc
+UPNP_INCLUDE_PATH := ${DARWIN_INC_BASE}
+UPNP_INCLUDE_PATH += ${DARWIN_INC_BASE}/c++/4.2.1
+UPNP_INCLUDE_PATH += ${DARWIN_INC_BASE}/mach
+UPNP_CPPFLAGS := $(patsubst %,-I%,${UPNP_INCLUDE_PATH})
+UPNP_ENVVARS := CPPFLAGS="${UPNP_CPPFLAGS}"
+UPNP_MAKEFILE := Makefile
+
+# Qt5
+QT_PLATFORM := -xplatform macx-clang
+QT_PLATFORM += -no-use-gold-linker -sdk macosx
+QT_PLATFORM += -platform linux-g++-64 -no-icu
+QT_PLATFORM += -nomake examples -nomake tests
+
+# Boost
+BOOST_TOOLSET := clang-darwin
+BOOST_EXTRA := --without-context --without-coroutine --without-mpi
+BOOST_EXTRA += cxxflags="-std=gnu++11" --without-fiber

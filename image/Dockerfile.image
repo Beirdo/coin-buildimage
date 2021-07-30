@@ -1,29 +1,26 @@
 FROM localhost:5000/coin-buildimage:crossbuild
 MAINTAINER gjhurlbu@gmail.com
 
-USER root
-ARG LIBC_DEBS
-RUN apt-get install -y ${LIBC_DEBS}
-
 USER coinbld
 ADD Makefile.sources /opt/sources/Makefile
 ADD Makefile.def /opt/sources/Makefile.def
-ADD boost-project-config.jam /opt/sources/boost_1_65_1/boost-config.jam.new
-ADD miniupnpc-install.patch /tmp/miniupnpc-install.patch
-ADD qt5-windows.patch /tmp/qt5-windows.patch
+ADD boost-project-config.jam /opt/sources/boost_1_76_0/boost-config.jam.new
+
+ENV OSXCROSS_SDK_VERSION 10.11
+ENV MACOSX_DEPLOYMENT_TARGET 10.6
 
 USER root
 WORKDIR /opt/sources
-RUN make db-4.8.30.NC
+#RUN make db-4.8.30.NC
 RUN make zlib-1.2.11
-RUN make boost_1_65_1
+#RUN make boost_1_76_0
 RUN make libpng-1.6.37
 RUN make openssl-1.0.2l
-RUN make qrencode-3.4.4
-RUN make miniupnpc-1.9.20140610
+#RUN make qrencode-3.4.4
+#RUN make miniupnpc-2.2.2
 RUN make qtbase-opensource-src-5.9.3
 
-ENV PATH ${PATH}:/opt/crossbuild/${CROSS_TRIPLE}/bin
-WORKDIR /home/coinbld
-RUN rm -rf /opt/sources /tmp/*.patch
-USER coinbld
+#ENV PATH ${PATH}:/opt/crossbuild/${CROSS_TRIPLE}/bin
+#WORKDIR /home/coinbld
+#RUN rm -rf /opt/sources /tmp/*.patch
+#USER coinbld

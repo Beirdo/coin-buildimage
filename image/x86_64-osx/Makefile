@@ -1,3 +1,3 @@
-IMAGE := aarch64-linux
+IMAGE := x86_64-osx
 
 include ../Makefile.common

@@ -1,5 +1,6 @@
 calc=$(shell echo $$\(\($(1)\)\))
-CORES := $(call calc,$(shell nproc) / 2)
+TOTALCORES := $(shell nproc)
+CORES := $(call calc,"${TOTALCORES} * 3 / 4")
 export CORES
 
 include Makefile.def
@@ -7,11 +8,14 @@ include Makefile.def
 .PHONY:	force
 
 CP := cp
-
-COPY_FILES := Makefile.sources miniupnpc-install.patch
-COPY_FILES := ${COPY_FILES} qt5-windows.patch
+RM := rm
 
 all:	sources done
+
+ifneq (${CROSSBUILD},1)
+COPY_FILES := Makefile.sources
+
+DEPS := ${COPY_FILES} Dockerfile boost-project-config.jam
 
 ${COPY_FILES}: %: ../%
 	${CP} $< $@
@@ -23,13 +27,16 @@ boost-project-config.jam:	../boost-project-config.jam.in Makefile.def
 	cat ../boost-project-config.jam.in | \
 		sed -e 's/@BOOST_ARCH@/${BOOST_ARCH}/g' \
 			-e 's/@CROSS_TRIPLE@/${CROSS_TRIPLE}/g' > $@
+endif
 
-done:	${COPY_FILES} boost-project-config.jam Dockerfile $(FORCE)
+done:	${DEPS} Makefile Makefile.def ../Makefile.common Dockerfile $(FORCE)
 	@echo Using -j${CORES}
 	docker build -t localhost:5000/coin-buildimage:${IMAGE} \
-		-f Dockerfile ${CACHE} --build-arg=LIBC_DEBS="${LIBC_DEBS}" .
+		-f Dockerfile ${CACHE} .
 	docker push localhost:5000/coin-buildimage:${IMAGE}
 	touch $@
 
 sources::
 	
+clean:	force
+	-${RM} -f ${DEPS} done

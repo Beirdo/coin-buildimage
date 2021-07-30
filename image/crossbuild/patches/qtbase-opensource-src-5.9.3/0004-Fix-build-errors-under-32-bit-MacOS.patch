@@ -1,0 +1,26 @@
+--- src/plugins/platforms/cocoa/cocoa.pro
++++ src/plugins/platforms/cocoa/cocoa.pro
+@@ -114,6 +114,8 @@
+     QT += widgets-private printsupport-private
+ }
+ 
++DEFINES += NS_BUILD_32_LIKE_64
++
+ OTHER_FILES += cocoa.json
+ 
+ # Acccessibility debug support
+diff --git a/src/widgets/styles/styles.pri b/src/widgets/styles/styles.pri
+index 481123f0d4..c72d75b407 100644
+--- src/widgets/styles/styles.pri
++++ src/widgets/styles/styles.pri
+@@ -43,6 +43,7 @@ qtConfig(style-mac) {
+         styles/qmacstyle_mac_p_p.h
+     OBJECTIVE_SOURCES += styles/qmacstyle_mac.mm
+     LIBS_PRIVATE += -framework Carbon
++    DEFINES += NS_BUILD_32_LIKE_64
+ }
+ 
+ qtConfig(style-windowsvista) {
+-- 
+2.13.4
+

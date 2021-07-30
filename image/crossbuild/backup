@@ -1,4 +1,4 @@
-FROM localhost:5000/coin-buildimage:base
+FROM localhost:5000/multiarch/crossbuild:latest
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup base system
@@ -25,8 +25,7 @@ RUN apt-get install -y -o Dpkg::Options::="--force-overwrite" \
         file \
 	flex \
 	g++ \
-#	gcc-multilib \
-#	g++-multilib \
+	g++-multilib \
 	gawk \
 	gettext \
         git \
@@ -34,13 +33,10 @@ RUN apt-get install -y -o Dpkg::Options::="--force-overwrite" \
 	help2man \
 	intltool \
 	libgcc1 \
-	libc-dev:amd64 \
+	#libc-dev:amd64 \
 	libc6-dev \
 	libc6-dev:arm64 \
 	libc6-dev:armhf \
-	libc++-dev \
-	libc++-dev:arm64 \
-	libc++-dev:armhf \
         # libtool \
 	# libtool-bin \
 	libxml-parser-perl \
@@ -82,23 +78,10 @@ WORKDIR /opt/sources
 RUN for i in $(cat archive/sourcearchives.txt); do tar xvf archive/$i ; done
 
 USER root
-RUN ln -s /usr/osxcross/bin/xcrun /usr/bin
-ADD gcc-darwin /usr/osxcross/bin/x86_64-apple-darwin15-gcc
-ADD g++-darwin /usr/osxcross/bin/x86_64-apple-darwin15-g++
-
 RUN cp libpng-1.6.37/config.guess db-4.8.30.NC/dist/config.guess
 RUN cp libpng-1.6.37/config.sub db-4.8.30.NC/dist/config.sub
 RUN chown -R coinbld db-4.8.30.NC/dist
 
 ADD patches/ /tmp/patches/
-RUN for i in /tmp/patches/* ; \
-	do echo "Patching ${i#/tmp/patches/}" ; \
-	cd ${i#/tmp/patches/} ; \
-	cat $i/*.patch | patch -p0; \
-	cd .. ; \
-done
+RUN for i in /tmp/patches/* ; do pushd $i ; cat *.patch | patch -p0; popd ; done
 RUN rm -rf /tmp/patches
-ENV PATH=/usr/osxcross/bin:${PATH}
-#RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/x86_64-apple-darwin15/include
-#RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/x86_64h-apple-darwin15/include
-#RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/i386-apple-darwin15/include
