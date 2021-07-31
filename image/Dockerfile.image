@@ -11,16 +11,19 @@ ENV MACOSX_DEPLOYMENT_TARGET 10.6
 
 USER root
 WORKDIR /opt/sources
-#RUN make db-4.8.30.NC
+RUN make db-4.8.30.NC
 RUN make zlib-1.2.11
-#RUN make boost_1_76_0
+RUN make boost_1_76_0
 RUN make libpng-1.6.37
 RUN make openssl-1.0.2l
-#RUN make qrencode-3.4.4
-#RUN make miniupnpc-2.2.2
+RUN make qrencode-3.4.4
+RUN make miniupnpc-2.2.2
 RUN make qtbase-opensource-src-5.9.3
 
-#ENV PATH ${PATH}:/opt/crossbuild/${CROSS_TRIPLE}/bin
-#WORKDIR /home/coinbld
-#RUN rm -rf /opt/sources /tmp/*.patch
-#USER coinbld
+ENV PATH ${PATH}:/opt/crossbuild/${CROSS_TRIPLE}/bin
+WORKDIR /home/coinbld
+RUN rm -rf /opt/sources /tmp/*.patch
+USER coinbld
+
+CMD /bin/bash
+

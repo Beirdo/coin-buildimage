@@ -29,10 +29,24 @@ boost-project-config.jam:	../boost-project-config.jam.in Makefile.def
 			-e 's/@CROSS_TRIPLE@/${CROSS_TRIPLE}/g' > $@
 endif
 
-done:	${DEPS} Makefile Makefile.def ../Makefile.common Dockerfile $(FORCE)
+done:	${DEPS} image squash push
+	touch $@
+
+image:	$(FORCE) Makefile Makefile.def ../Makefile.common Dockerfile
 	@echo Using -j${CORES}
-	docker build -t localhost:5000/coin-buildimage:${IMAGE} \
-		-f Dockerfile ${CACHE} .
+	docker build -t coin-buildimage:${IMAGE} -f Dockerfile ${CACHE} .
+	touch $@
+
+CONTAINER = $(shell docker container create coin-buildimage:${IMAGE})
+
+squash:	$(FORCE) image
+	docker export -o /tmp/docker-dump.tar ${CONTAINER}
+	docker import /tmp/docker-dump.tar \
+		localhost:5000/coin-buildimage:${IMAGE}
+	rm /tmp/docker-dump.tar
+	touch $@
+
+push:	$(FORCE) squash
 	docker push localhost:5000/coin-buildimage:${IMAGE}
 	touch $@
 

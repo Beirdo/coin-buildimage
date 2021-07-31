@@ -25,8 +25,6 @@ RUN apt-get install -y -o Dpkg::Options::="--force-overwrite" \
         file \
 	flex \
 	g++ \
-#	gcc-multilib \
-#	g++-multilib \
 	gawk \
 	gettext \
         git \
@@ -41,13 +39,12 @@ RUN apt-get install -y -o Dpkg::Options::="--force-overwrite" \
 	libc++-dev \
 	libc++-dev:arm64 \
 	libc++-dev:armhf \
-        # libtool \
-	# libtool-bin \
 	libxml-parser-perl \
 	linux-libc-dev \
 	linux-libc-dev:arm64 \
 	linux-libc-dev:armhf \
 	make \
+	mingw-w64-x86-64-dev \
 	p7zip-full \
 	patch \
 	perl \
@@ -56,7 +53,6 @@ RUN apt-get install -y -o Dpkg::Options::="--force-overwrite" \
 	psmisc \
         python \
 	python3 \
-	# python3-dev \
 	rsync \
 	ruby \
 	scons \
@@ -102,3 +98,6 @@ ENV PATH=/usr/osxcross/bin:${PATH}
 #RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/x86_64-apple-darwin15/include
 #RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/x86_64h-apple-darwin15/include
 #RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/i386-apple-darwin15/include
+
+CMD ["/bin/bash"]
+
