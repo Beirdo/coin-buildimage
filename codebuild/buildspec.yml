@@ -1,0 +1,47 @@
+version: 0.2
+batch:
+  fast-fail: false
+  build-list:
+    - identifier: linux-armhf-daemon
+      buildspec: codebuild/build.yml
+      env:
+        variables:
+          ARCH: armhf-linux
+          BUILD: rpidaemon
+      ignore-failure: false
+    - identifier: linux-aarch64-daemon
+      buildspec: codebuild/build.yml
+      env:
+        variables:
+          ARCH: aarch64-linux
+          BUILD: arm64daemon
+      ignore-failure: false
+    - identifier: linux-x86_64-daemon
+      buildspec: codebuild/build.yml
+      env:
+        variables:
+          ARCH: x86_64-linux
+          BUILD: linuxdaemon
+      ignore-failure: false
+    - identifier: linux-x86_64-qt
+      buildspec: codebuild/build.yml
+      env:
+        variables:
+          ARCH: x86_64-linux
+          BUILD: linuxqt
+      ignore-failure: false
+    - identifier: windows-x86_64-qt
+      buildspec: codebuild/build.yml
+      env:
+        variables:
+          ARCH: x86_64-windows
+          BUILD: win64qt
+      ignore-failure: false
+    - identifier: windows-i686-qt
+      buildspec: codebuild/build.yml
+      env:
+        variables:
+          ARCH: i686-windows
+          BUILD: win32qt
+      ignore-failure: false
+
