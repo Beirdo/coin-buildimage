@@ -1,7 +1,6 @@
 calc=$(shell echo $$\(\($(1)\)\))
-#CORES := $(call calc,$(shell nproc) \* 3 / 2)
-CORES := $(call calc,$(shell nproc) / 2)
-#CORES := $(shell nproc)
+TOTALCORES := $(shell nproc)
+CORES := $(call calc,"${TOTALCORES} * 3 / 4")
 export CORES
 
 all:
