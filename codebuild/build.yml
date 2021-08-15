@@ -9,7 +9,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - cd build && make ${COIN} BUILDS=${BUILD}
+      - cd build && make ${COIN} BUILDS=${BUILD} CODEBUILD=1
   post_build:
     commands:
       - echo Build completed on `date`

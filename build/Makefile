@@ -1,6 +1,9 @@
 calc=$(shell echo $$\(\($(1)\)\))
 TOTALCORES := $(shell nproc)
 CORES := $(call calc,"${TOTALCORES} * 3 / 4")
+ifeq (${CODEBUILD},1)
+CORES := 1
+endif
 export CORES
 
 all:
