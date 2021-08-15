@@ -1,8 +1,9 @@
+CODEBUILD ?= 0
 calc=$(shell echo $$\(\($(1)\)\))
 TOTALCORES := $(shell nproc)
 CORES := $(call calc,"${TOTALCORES} * 3 / 4")
 ifeq (${CODEBUILD},1)
-CORES := 1
+CORES := 4
 endif
 export CORES
 
@@ -24,4 +25,4 @@ ${DOCKERFILES}:: FORCE
 ${COINS}:: %: build/%/Dockerfile
 
 ${COINS}:: FORCE
-	${MAKE} -C build/$@ BUILDS=${BUILDS}
+	${MAKE} -C build/$@ BUILDS=${BUILDS} CODEBUILD=${CODEBUILD}

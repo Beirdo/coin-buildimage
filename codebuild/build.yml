@@ -17,3 +17,4 @@ phases:
 artifacts:
   files:
     - build/artifacts/${COINNAME}/${ARCH}/*
+  base-directory: build/artifacts
