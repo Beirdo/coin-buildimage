@@ -45,3 +45,7 @@ batch:
           BUILD: win32qt
       ignore-failure: false
 
+artifacts:
+  files:
+    - '**/*'
+  base-directory: '*/Output'
