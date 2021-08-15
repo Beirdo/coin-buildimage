@@ -22,4 +22,4 @@ ${DOCKERFILES}:: FORCE
 ${COINS}:: %: build/%/Dockerfile
 
 ${COINS}:: FORCE
-	${MAKE} -C build/$@
+	${MAKE} -C build/$@ BUILDS=${BUILDS}

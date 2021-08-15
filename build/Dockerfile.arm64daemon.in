@@ -1,4 +1,5 @@
-FROM localhost:5000/coin-buildimage:aarch64-linux
+#FROM localhost:5000/coin-buildimage:aarch64-linux
+FROM 890058568674.dkr.ecr.us-west-2.amazonaws.com/coin-buildimage:aarch64-linux
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment

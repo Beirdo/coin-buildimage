@@ -1,11 +1,11 @@
-BUILDS = @BUILDS@
+BUILDS ?= @BUILDS@
 ARTIFACTDIR = $(shell cd ../.. ; pwd)/artifacts
 
 all::
 	mkdir -p ${ARTIFACTDIR}
 
 all::	${BUILDS}
-	aws s3 sync /var/www/html/ s3://beirdo-coin-wallets/builds/
+	# aws s3 sync artifacts/ s3://beirdo-coin-wallets/builds/
 
 ${BUILDS}:
 	docker build --build-arg CACHE_DATE="$(shell date)" \

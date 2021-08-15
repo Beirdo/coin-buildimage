@@ -10,6 +10,8 @@ include Makefile.def
 CP := cp
 RM := rm
 
+ECR := 890058568674.dkr.ecr.us-west-2.amazonaws.com
+
 all:	sources done
 
 ifneq (${CROSSBUILD},1)
@@ -49,6 +51,9 @@ squash:	$(FORCE) image
 
 push:	$(FORCE) squash
 	docker push localhost:5000/coin-buildimage:${IMAGE}
+	docker tag localhost:5000/coin-buildimage:${IMAGE} \
+		${ECR}/coin-buildimage:${IMAGE}
+	docker push ${ECR}/coin-buildimage:${IMAGE}
 	touch $@
 
 sources::

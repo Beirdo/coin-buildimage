@@ -1,4 +1,5 @@
-FROM localhost:5000/coin-buildimage:osxcross
+#FROM localhost:5000/coin-buildimage:osxcross
+FROM 890058568674.dkr.ecr.us-west-2.amazonaws.com/coin-buildimage:osxcross
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment

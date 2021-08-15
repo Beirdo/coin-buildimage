@@ -1,4 +1,5 @@
-FROM localhost:5000/coin-buildimage:x86_64-windows
+#FROM localhost:5000/coin-buildimage:x86_64-windows
+FROM 890058568674.dkr.ecr.us-west-2.amazonaws.com/coin-buildimage:x86_64-windows
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
