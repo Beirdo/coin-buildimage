@@ -2,12 +2,21 @@ FROM localhost:5000/coin-buildimage:x86_64-linux
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
-USER coinbld
+USER root
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
 ENV CORES ${CORES}
 ENV CROSS_TRIPLE x86_64-linux-gnu
-ENV PREFIX /opt/crossbuild/${CROSS_TRIPLE}
+ENV CROSS_PREFIX ${CROSS_TRIPLE}-
+ENV CROSS_PATH /opt/crossbuild/${CROSS_TRIPLE}
+ENV BOOST_INCLUDE_PATH ${CROSS_PATH}/include
+ENV BOOST_LIB_PATH ${CROSS_PATH}/lib
+ENV PATH ${CROSS_PATH}/bin:/usr/${CROSS_TRIPLE}/bin:${PATH}
+ENV QT_SELECT qt5-x86_64-linux-gnu
+
+RUN ln -s /usr/bin/lrelease ${CROSS_PATH}/bin/lrelease
+
+USER coinbld
 
 %=- GITCREDENTIALS 1
 # Copy in git config and credentials if needed
@@ -20,19 +29,16 @@ WORKDIR /home/coinbld/src
 ARG CACHE_DATE=never
 RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
 
-# Hack to get uic working
-USER root
-RUN ln -s ${PREFIX}/bin/uic /usr/local/bin/uic
-USER coinbld
-
 # Build Linux Qt
 WORKDIR ${srcDir}
 RUN git clean -xdf
-RUN qmake BOOST_INCLUDE_PATH=${PREFIX}/include BOOST_LIB_PATH=${PREFIX}/lib \
-	@QTLINUX@
+WORKDIR ${srcDir}/src/qt/locale
+RUN lrelease *.ts
+WORKDIR ${srcDir}
+RUN qmake @QTLINUX@
 RUN make ${srcDir}/build/build.h
 RUN make -j${CORES}
-RUN install -D @COINNAME@-qt ${artifactDir}/linux/@COINNAME@-qt
+RUN install -D @COINNAME@-qt ${artifactDir}/x86_64-linux/@COINNAME@-qt
 
 # Reset user to root
 USER root

@@ -17,3 +17,16 @@
 +QMAKE_STRIP             = x86_64-apple-darwin15-strip
 +
  load(qt_config)
+--- mkspecs/features/mac/sdk.prf.orig        2017-11-16 05:15:28.000000000 +0000
++++ mkspecs/features/mac/sdk.prf        2021-08-03 10:45:24.273127082 +0000
+@@ -1,3 +1,10 @@
++QMAKE_MAC_SDK.macosx.Path = /usr/osxcross/SDK/MacOSX10.11.sdk
++QMAKE_MAC_SDK.macosx.--show-sdk-path = /usr/osxcross/SDK/MacOSX10.11.sdk
++QMAKE_MAC_SDK.macosx.SDKVersion = 10.11
++QMAKE_MAC_SDK.macosx.--show-sdk-version = 10.11
++QMAKE_MAC_SDK.macosx.PlatformPath = /usr/osxcross
++QMAKE_MAC_SDK.macosx.--show-sdk-platform-path = /usr/osxcross
++
+
+ isEmpty(QMAKE_MAC_SDK): \
+     error("QMAKE_MAC_SDK must be set when using CONFIG += sdk.")

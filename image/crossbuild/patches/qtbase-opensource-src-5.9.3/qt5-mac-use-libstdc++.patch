@@ -1,0 +1,14 @@
+--- mkspecs/common/clang-mac.conf.orig  2021-08-06 09:03:40.744961928 +0000
++++ mkspecs/common/clang-mac.conf       2021-08-06 09:25:37.868440975 +0000
+@@ -6,8 +6,9 @@
+
+ QMAKE_XCODE_GCC_VERSION = com.apple.compilers.llvm.clang.1_0
+
+-QMAKE_CXXFLAGS += -stdlib=libc++
+-QMAKE_LFLAGS   += -stdlib=libc++
++QMAKE_CXXFLAGS += -stdlib=libstdc++
++QMAKE_CFLAGS   += -stdlib=libstdc++
++QMAKE_LFLAGS   += -stdlib=libstdc++
+ QMAKE_AR_LTCG  = libtool -static -o
+
+ QMAKE_CFLAGS_APPLICATION_EXTENSION  = -fapplication-extension

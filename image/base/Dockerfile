@@ -137,6 +137,11 @@ RUN mkdir -p /usr/x86_64-linux-gnu;                                             
 # we need to use default clang binary to avoid a bug in osxcross that recursively call himself
 # with more and more parameters
 
+RUN update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
+RUN update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
+RUN update-alternatives --set i686-w64-mingw32-g++ /usr/bin/i686-w64-mingw32-g++-posix
+RUN update-alternatives --set i686-w64-mingw32-gcc /usr/bin/i686-w64-mingw32-gcc-posix
+
 RUN apt-get remove -y libssl-dev && \
 	apt-get clean
 

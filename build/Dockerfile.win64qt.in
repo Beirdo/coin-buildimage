@@ -1,12 +1,18 @@
-FROM localhost:5000/coin-buildimage:mxe
+FROM localhost:5000/coin-buildimage:x86_64-windows
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
 USER coinbld
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
-#ENV CORES ${CORES}
-ENV CORES 1
+ENV CORES ${CORES}
+ENV CROSS_TRIPLE x86_64-w64-mingw32
+ENV CROSS_PREFIX ${CROSS_TRIPLE}-
+ENV CROSS_PATH /opt/crossbuild/${CROSS_TRIPLE}
+ENV BOOST_INCLUDE_PATH ${CROSS_PATH}/include
+ENV BOOST_LIB_PATH ${CROSS_PATH}/lib
+ENV PATH ${CROSS_PATH}/bin:/usr/${CROSS_TRIPLE}/bin:${PATH}
+ENV QT_SELECT qt5-x86_64-linux-gnu
 
 # Copy in git config and credentials if needed
 %=- GITCREDENTIALS 1
@@ -22,9 +28,12 @@ RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
 # Build Win64 exe
 WORKDIR ${srcDir}
 RUN git clean -xdf
-RUN x86_64-w64-mingw32.static-qmake-qt5 @QTWIN64@
+WORKDIR ${srcDir}/src/qt/locale
+RUN lrelease *.ts
+WORKDIR ${srcDir}
+RUN qmake @QTWIN64@
 RUN make -j${CORES}
-RUN install -D release/@COINNAME@-qt.exe ${artifactDir}/win64/@COINNAME@-qt.exe
+RUN install -D release/@COINNAME@-qt.exe ${artifactDir}/x86_64-windows/@COINNAME@-qt.exe
 
 # Reset user to root
 USER root

@@ -1,0 +1,16 @@
+--- src/corelib/configure.json.orig     2021-08-04 06:18:32.749906242 +0000
++++ src/corelib/configure.json  2021-08-04 06:53:25.741743230 +0000
+@@ -774,13 +774,6 @@
+             "condition": "input.doubleconversion == 'no' && !tests.xlocalescanprint",
+             "message": "Your C library does not provide sscanf_l or snprintf_l.
+ You need to use libdouble-conversion for double/string conversion."
+-        },
+-        {
+-            "type": "error",
+-            "condition": "!tests.atomicfptr",
+-            "message": "detected a std::atomic implementation that fails for function pointers.
+-Please apply the patch corresponding to your Standard Library vendor, found in
+-  qtbase/config.tests/atomicfptr"
+         }
+     ],
+

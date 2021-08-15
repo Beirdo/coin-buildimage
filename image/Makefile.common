@@ -34,7 +34,8 @@ done:	${DEPS} image squash push
 
 image:	$(FORCE) Makefile Makefile.def ../Makefile.common Dockerfile
 	@echo Using -j${CORES}
-	docker build -t coin-buildimage:${IMAGE} -f Dockerfile ${CACHE} .
+	docker build -t coin-buildimage:${IMAGE} -f Dockerfile \
+	       --build-arg=CROSS_TRIPLE=${CROSS_TRIPLE} ${CACHE} .
 	touch $@
 
 CONTAINER = $(shell docker container create coin-buildimage:${IMAGE})

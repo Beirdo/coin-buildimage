@@ -9,6 +9,7 @@ BUILD_PREFIX := /usr/${CROSS_TRIPLE}
 CROSS_BUILD += crossbuild
 
 CROSS_CC ?= ${CROSS_TRIPLE}-gcc
+CROSS_CPP ?= ${CROSS_TRIPLE}-cpp
 CROSS_CXX ?= ${CROSS_TRIPLE}-g++
 CROSS_AR ?= ${CROSS_TRIPLE}-ar
 CROSS_LD ?= ${CROSS_TRIPLE}-ld
@@ -18,6 +19,7 @@ CROSS_STRIP ?= ${CROSS_TRIPLE}-strip
 
 CROSS_TOOLVARS := CC=${CROSS_CC} AR=${CROSS_AR} LD=${CROSS_LD} CXX=${CROSS_CXX}
 CROSS_TOOLVARS += RANLIB=${CROSS_RANLIB} AS=${CROSS_AS} STRIP=${CROSS_STRIP}
+CROSS_TOOLVARS += CPP=${CROSS_CPP}
 
 ZLIB_ENVVARS += TARGETMACH=${CROSS_TRIPLE} BUILDMACH=x86_64-linux-gnu
 ZLIB_ENVVARS += CROSS=${CROSS_TRIPLE}
@@ -108,6 +110,7 @@ build-qtbase-opensource-src-5.9.3:
 else
 build-qtbase-opensource-src-5.9.3:
 	./configure -opensource -confirm-license -release -static \
+		-feature-translation \
 	       	-no-shared -c++std c++11 -no-opengl -gui -prefix ${PREFIX} \
 		-I ${BUILD_PREFIX}/include \
 		-L ${BUILD_PREFIX}/lib \

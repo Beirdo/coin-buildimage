@@ -8,6 +8,11 @@ ADD boost-project-config.jam /opt/sources/boost_1_76_0/boost-config.jam.new
 
 ENV OSXCROSS_SDK_VERSION 10.11
 ENV MACOSX_DEPLOYMENT_TARGET 10.6
+ARG CROSS_TRIPLE
+ENV CROSS_TRIPLE ${CROSS_TRIPLE}
+ENV OSXCROSS_ROOT /usr/osxcross
+ENV PATH ${OSXCROSS_ROOT}/bin:${PATH}
+ENV LD_LIBRARY_PATH ${OSXCROSS_ROOT}/lib:
 
 USER root
 WORKDIR /opt/sources
@@ -20,10 +25,7 @@ RUN make qrencode-3.4.4
 RUN make miniupnpc-2.2.2
 RUN make qtbase-opensource-src-5.9.3
 
-ENV PATH ${PATH}:/opt/crossbuild/${CROSS_TRIPLE}/bin
-WORKDIR /home/coinbld
 RUN rm -rf /opt/sources /tmp/*.patch
-USER coinbld
 
 CMD /bin/bash
 

@@ -9,6 +9,7 @@ OPENSSL_MACH := linux-aarch64
 OPENSSL_EXTRA :=
 
 # Qt5
+QT_SKIP := 1
 QT_PLATFORM := -xplatform linux-aarch64-gnu-g++
 QT_PLATFORM += -I /usr/include/c++/6.3.0
 

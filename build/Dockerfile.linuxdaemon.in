@@ -7,7 +7,11 @@ ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
 ENV CORES ${CORES}
 ENV CROSS_TRIPLE x86_64-linux-gnu
-ENV PREFIX /opt/crossbuild/${CROSS_TRIPLE}
+ENV CROSS_PREFIX ${CROSS_TRIPLE}-
+ENV CROSS_PATH /opt/crossbuild/${CROSS_TRIPLE}
+ENV BOOST_INCLUDE_PATH ${CROSS_PATH}/include
+ENV BOOST_LIB_PATH ${CROSS_PATH}/lib
+ENV PATH ${CROSS_PATH}/bin:/usr/${CROSS_TRIPLE}/bin:${PATH}
 
 %=- GITCREDENTIALS 1
 # Copy in git config and credentials if needed
@@ -25,7 +29,7 @@ WORKDIR ${srcDir}
 RUN git clean -xdf
 WORKDIR ${srcDir}/src
 RUN make -j${CORES} -f makefile.unix STATIC=1
-RUN install -D @COINNAME@d ${artifactDir}/linux/@COINNAME@d
+RUN install -D @COINNAME@d ${artifactDir}/x86_64-linux/@COINNAME@d
 
 # Reset user to root
 USER root

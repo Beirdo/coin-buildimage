@@ -1,4 +1,4 @@
-FROM localhost:5000/coin-buildimage:rpilinux
+FROM localhost:5000/coin-buildimage:armhf-linux
 MAINTAINER gjhurlbu@gmail.com
 
 # Setup environment
@@ -6,24 +6,30 @@ USER coinbld
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
 ENV CORES ${CORES}
+ENV CROSS_TRIPLE arm-linux-gnueabihf
+ENV CROSS_PREFIX ${CROSS_TRIPLE}-
+ENV CROSS_PATH /opt/crossbuild/${CROSS_TRIPLE}
+ENV BOOST_INCLUDE_PATH ${CROSS_PATH}/include
+ENV BOOST_LIB_PATH ${CROSS_PATH}/lib
+ENV PATH ${CROSS_PATH}/bin:/usr/${CROSS_TRIPLE}/bin:${PATH}
 
-# Copy in git config and credentials if needed
 %=- GITCREDENTIALS 1
+# Copy in git config and credentials if needed
 ADD gitconfig /home/coinbld/.gitconfig
 ADD git-credentials /home/coinbld/.git-credentials
-=%
 
+=%
 # Checkout coin code
 WORKDIR /home/coinbld/src
 ARG CACHE_DATE=never
 RUN git clone @GITURL@ ${srcDir} -b @BRANCH@
 
-# Build Raspberry Pi daemon
+# Build Linux daemon
 WORKDIR ${srcDir}
 RUN git clean -xdf
 WORKDIR ${srcDir}/src
-RUN make -j${CORES} -f makefile.rpi
-RUN install -D @COINNAME@d ${artifactDir}/raspberry-pi/@COINNAME@d
+RUN make -j${CORES} -f makefile.unix STATIC=1
+RUN install -D @COINNAME@d ${artifactDir}/armhf-linux/@COINNAME@d
 
 # Reset user to root
 USER root

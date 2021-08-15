@@ -53,6 +53,8 @@ RUN apt-get install -y -o Dpkg::Options::="--force-overwrite" \
 	psmisc \
         python \
 	python3 \
+	qtchooser \
+        qttools5-dev-tools \
 	rsync \
 	ruby \
 	scons \
@@ -81,6 +83,7 @@ USER root
 RUN ln -s /usr/osxcross/bin/xcrun /usr/bin
 ADD gcc-darwin /usr/osxcross/bin/x86_64-apple-darwin15-gcc
 ADD g++-darwin /usr/osxcross/bin/x86_64-apple-darwin15-g++
+ADD cpp-darwin /usr/osxcross/bin/x86_64-apple-darwin15-cpp
 
 RUN cp libpng-1.6.37/config.guess db-4.8.30.NC/dist/config.guess
 RUN cp libpng-1.6.37/config.sub db-4.8.30.NC/dist/config.sub
@@ -94,7 +97,8 @@ RUN for i in /tmp/patches/* ; \
 	cd .. ; \
 done
 RUN rm -rf /tmp/patches
-ENV PATH=/usr/osxcross/bin:${PATH}
+
+#ENV PATH=/usr/osxcross/bin:${PATH}
 #RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/x86_64-apple-darwin15/include
 #RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/x86_64h-apple-darwin15/include
 #RUN ln -s /usr/osxcross/SDK/MacOSX10.11.sdk/usr/include /usr/i386-apple-darwin15/include
