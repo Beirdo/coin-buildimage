@@ -6,6 +6,7 @@ MAINTAINER gjhurlbu@gmail.com
 USER root
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
+ARG CORES=1
 ENV CORES ${CORES}
 ENV CROSS_TRIPLE x86_64-linux-gnu
 ENV CROSS_PREFIX ${CROSS_TRIPLE}-

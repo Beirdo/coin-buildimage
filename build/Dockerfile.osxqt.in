@@ -6,6 +6,7 @@ MAINTAINER gjhurlbu@gmail.com
 USER coinbld
 ENV srcDir /home/coinbld/src/@COINNAME@
 ENV artifactDir /home/coinbld/artifacts/@COINNAME@
+ARG CORES=1
 ENV CORES ${CORES}
 
 # Copy in git config and credentials if needed

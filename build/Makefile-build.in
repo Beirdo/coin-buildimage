@@ -1,5 +1,6 @@
 BUILDS ?= @BUILDS@
 ARTIFACTDIR = $(shell cd ../.. ; pwd)/artifacts
+CORES ?= 1
 
 all::
 	mkdir -p ${ARTIFACTDIR}
@@ -9,6 +10,7 @@ all::	${BUILDS}
 
 ${BUILDS}:
 	docker build --build-arg CACHE_DATE="$(shell date)" \
+		--build-arg CORES=${CORES} \
 		-f Dockerfile.$@ -t @TARGET@-$@:latest ${CACHE} .
 	docker run --rm -i -v ${ARTIFACTDIR}:/artifacts @TARGET@-$@:latest \
 		bash -s < pull-artifacts
