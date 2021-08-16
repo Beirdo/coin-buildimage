@@ -1,11 +1,12 @@
 all:
 
-.PHONY: FORCE
+.PHONY: force
 
 COINS := coiniumserv mudcoin peercoin flappycoin buzzcash alexandrite
 COINS += satori saturn2coin helium yiimp segacoin gaincoin gsave travelflex
-COINS += ppcoin lemmings raincoin rainbowlite
+COINS += ppcoin lemmings raincoin rainbowlite wayawolf
 
+MAKEFILES = $(addprefix build/, $(addsuffix /Makefile, ${COINS} base))
 DOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile, ${COINS}))
 NODEDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.node, ${COINS}))
 POOLDOCKERFILES = $(addprefix build/, $(addsuffix /Dockerfile.pool, ${COINS}))
@@ -15,11 +16,12 @@ POOLNODES = $(addsuffix -node-pool, ${COINS})
 KILLNODES = $(addsuffix -node-kill, ${COINS})
 EXPLORERNODES = $(addsuffix -node-explorer, ${COINS})
 
-${DOCKERFILES}:: Dockerfile.in
-${NODEDOCKERFILES} ${EXPLORERDOCKERFILES}:: Dockerfile.node.in
-${POOLDOCKERFILES}:: Dockerfile.coiniumserv.in Dockerfile.yiimp.in
+${MAKEFILES}:: templates/Makefile.in
+${DOCKERFILES}:: templates/Dockerfile.in
+${NODEDOCKERFILES} ${EXPLORERDOCKERFILES}:: templates/Dockerfile.node.in
+${POOLDOCKERFILES}:: templates/Dockerfile.coiniumserv.in templates/Dockerfile.yiimp.in
 
-${COINS}:: FORCE
+${COINS} base:: $(FORCE)
 	mkdir -p build/$@ build/cache
 
 NODEJS = node-v8.7.0-linux-x64.tar.xz
@@ -30,67 +32,51 @@ build/cache/${NODEJS}:
 
 ${DOCKERFILES}:: build/cache/${NODEJS}
 
-${DOCKERFILES}::
+${DOCKERFILES}:: $(FORCE)
 	./substitute.py --coin ${@:build/%/Dockerfile=%}
 
-${POOLDOCKERFILES}::
+${POOLDOCKERFILES}:: $(FORCE)
 	./substitute.py --coin ${@:build/%/Dockerfile.pool=%} --nodaemon --pool
 
-${NODEDOCKERFILES}::
+${NODEDOCKERFILES}:: $(FORCE)
 	./substitute.py --coin ${@:build/%/Dockerfile.node=%} --nodaemon
 
-${EXPLORERDOCKERFILES}::
+${EXPLORERDOCKERFILES}:: $(FORCE)
 	./substitute.py --coin ${@:build/%/Dockerfile.explorer=%} --nodaemon --explorer
 
-${COINS}:: %: build/%/Dockerfile
+${MAKEFILES}:: $(FORCE)
+	./substitute.py --coin ${@:build/%/Makefile=%} --makefile
 
-${COINS}:: FORCE
-	docker build --build-arg CACHE_DATE="$(shell date)" \
-		-t beirdo/coinnode:$@ ${CACHE} build/$@
-	docker push beirdo/coinnode:$@
+build/base/Dockerfile::	Dockerfile.base $(FORCE)
+	cp $< $@
 
-${NODES}:: COIN = ${@:-node=}
-${NODES}:: FORCE
+${COINS}:: base
+
+${COINS} base:: %: build/%/Dockerfile build/%/Makefile
+${COINS} base:: %: $(FORCE)
+	${MAKE} -C build/$@ image-done CACHE=${CACHE} FORCE=${FORCE}
+
+${NODES}:: COIN = ${@:%-node=%}
+${NODES}:: %-node: % build/%/Dockerfile.node build/%/Makefile
+${NODES}:: %-node: $(FORCE)
 	mkdir -p build/${COIN}
+	${MAKE} -C build/${COIN} node CACHE=${CACHE} FORCE=${FORCE}
 
-${NODES}:: %-node: build/%/Dockerfile.node
-
-${NODES}:: FORCE
-	docker build -t node:${COIN}  ${CACHE} \
-		-f build/${COIN}/Dockerfile.node build/${COIN}
-	docker run -d -i -t $(shell cat build/${COIN}/ports.txt) \
-		--ulimit core=999999999 --name node_${COIN} \
-		node:${COIN} /bin/bash
-
-${POOLNODES}:: COIN = ${@:-node-pool=}
-${POOLNODES}:: FORCE
+${POOLNODES}:: COIN = ${@:%-node-pool=%}
+${POOLNODES}:: %-node-pool: % build/%/Dockerfile.pool build/%/Makefile
+${POOLNODES}:: %-node-pool: $(FORCE)
 	mkdir -p build/${COIN}
+	${MAKE} -C build/${COIN} node-pool CACHE=${CACHE} FORCE=${FORCE}
 
-${POOLNODES}:: %-node-pool: build/%/Dockerfile.pool
 
-${POOLNODES}:: FORCE
-	docker build -t pool:${COIN}  ${CACHE} \
-		-f build/${COIN}/Dockerfile.pool build/${COIN}
-	docker run -d -i -t $(shell cat build/${COIN}/ports.txt) \
-		--ulimit core=999999999 --name pool_${COIN} \
-		pool:${COIN} /bin/bash
-
-${EXPLORERNODES}:: COIN = ${@:-node-explorer=}
-${EXPLORERNODES}:: FORCE
+${EXPLORERNODES}:: COIN = ${@:%-node-explorer=%}
+${EXPLORERNODES}:: %-node-explorer: % build/%/Dockerfile.explorer build/%/Makefile
+${EXPLORERNODES}:: %-node-explorer: $(FORCE)
 	mkdir -p build/${COIN}
-
-${EXPLORERNODES}:: %-node-explorer: build/%/Dockerfile.explorer
-
-${EXPLORERNODES}:: FORCE
-	docker build -t explorer:${COIN}  ${CACHE} \
-		-f build/${COIN}/Dockerfile.explorer build/${COIN}
-	docker run -d -i -t $(shell cat build/${COIN}/ports.txt) \
-		--ulimit core=999999999 --name explorer_${COIN} \
-		explorer:${COIN} /bin/bash
+	${MAKE} -C build/${COIN} node-explorer CACHE=${CACHE} FORCE=${FORCE}
 
 
 ${KILLNODES}:: COIN = ${@:-node-kill=}
-${KILLNODES}:: FORCE
-	-docker kill node_${COIN} pool_${COIN} explorer_${COIN}
-	-docker rm node_${COIN} pool_${COIN} explorer_${COIN}
+${KILLNODES}:: $(FORCE)
+	${MAKE} -C build/${COIN} kill-nodes FORCE=${FORCE}
 

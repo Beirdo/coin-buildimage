@@ -1,0 +1,56 @@
+all:
+
+.PHONY: force
+
+ECR := 890058568674.dkr.ecr.us-west-2.amazonaws.com
+
+image-done: push $(FORCE)
+	touch $@
+
+image: $(FORCE)
+	docker build --build-arg CACHE_DATE="$(shell date)" \
+		-t coinnode:${COIN} ${CACHE} .
+	touch $@
+
+
+squash:	image $(FORCE)
+	docker export -o /tmp/docker-dump.tar \
+		`docker container create coinnode:${COIN}`
+	docker import /tmp/docker-dump.tar \
+		localhost:5000/coin-nodes:${COIN}
+	rm /tmp/docker-dump.tar
+	touch $@
+
+push: squash $(FORCE)
+	aws ecr get-login-password --region us-west-2 | \
+	       	docker login --username AWS --password-stdin ${ECR}
+	docker tag localhost:5000/coin-nodes:${COIN} ${ECR}/coin-nodes:${COIN}
+	docker push ${ECR}/coin-nodes:${COIN}
+	touch $@
+
+login: $(FORCE)
+	aws ecr get-login-password --region us-west-2 | \
+	       	docker login --username AWS --password-stdin ${ECR}
+
+node:: Dockerfile.node $(FORCE)
+	docker build -t node:${COIN} ${CACHE} -f Dockerfile.node .
+	docker run -d -i -t $(shell cat build/${COIN}/ports.txt) \
+		--ulimit core=999999999 --name node_${COIN} \
+		node:${COIN} /bin/bash
+
+node-pool:: Dockerfile.pool $(FORCE)
+	docker build -t pool:${COIN} ${CACHE} -f Dockerfile.pool .
+	docker run -d -i -t $(shell cat ports.txt) \
+		--ulimit core=999999999 --name pool_${COIN} \
+		pool:${COIN} /bin/bash
+
+node-explorer:: Dockerfile.explorer $(FORCE)
+	docker build -t explorer:${COIN} ${CACHE} -f Dockerfile.explorer .
+	docker run -d -i -t $(shell cat ports.txt) \
+		--ulimit core=999999999 --name explorer_${COIN} \
+		explorer:${COIN} /bin/bash
+
+kill-nodes:: $(FORCE)
+	-docker kill node_${COIN} pool_${COIN} explorer_${COIN}
+	-docker rm node_${COIN} pool_${COIN} explorer_${COIN}
+

@@ -1,10 +1,14 @@
-FROM beirdo/coinnode:@TARGET@
+FROM 890058568674.dkr.ecr.us-west-2.amazonaws.com/coin-nodes:@TARGET@
 MAINTAINER gjhurlbu@gmail.com
 USER coinnode
 
 # Setup environment
 ENV srcDir /home/coinnode/src
+ENV PATH /home/coinnode/bin:${PATH}
 ENV TERM screen
+%=- INSTALLEXPLORER 1
+ENV NVM_DIR "/home/coinnode/.nvm"
+=%
 
 # Expose the ports
 %=+ ISPOOL 0
@@ -42,10 +46,6 @@ USER coinnode
 %=- BACKUPFILE 1
 # If there is a backup file, add it
 ADD backup.tar.gz /home/coinnode/.@COINNAME@
-=%
-
-%=- COPYAWSCREDS 1
-ADD aws-credentials /home/coinnode/.aws/credentials
 =%
 
 WORKDIR /home/coinnode

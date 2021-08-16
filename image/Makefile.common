@@ -53,8 +53,14 @@ push:	$(FORCE) squash
 	docker push localhost:5000/coin-buildimage:${IMAGE}
 	docker tag localhost:5000/coin-buildimage:${IMAGE} \
 		${ECR}/coin-buildimage:${IMAGE}
+	aws ecr get-login-password --region us-west-2 | \
+	       	docker login --username AWS --password-stdin ${ECR}
 	docker push ${ECR}/coin-buildimage:${IMAGE}
 	touch $@
+
+login: $(FORCE)
+	aws ecr get-login-password --region us-west-2 | \
+	       	docker login --username AWS --password-stdin ${ECR}
 
 sources::
 	

@@ -1,94 +1,6 @@
-FROM ubuntu:17.04
+FROM 890058568674.dkr.ecr.us-west-2.amazonaws.com/coin-nodes:base
 MAINTAINER gjhurlbu@gmail.com
 USER root
-
-# Setup base system
-RUN apt-get update && apt-get install -y \
-	software-properties-common
-RUN add-apt-repository ppa:bitcoin/bitcoin
-RUN apt-get update && apt-get install -y \
-	-o Dpkg::Options::="--force-overwrite" \
-	autoconf \
-	automake \
-	autopoint \
-	awscli \
-	bash \
-	bison \
-	bitcoind \
-	build-essential \
-	bzip2 \
-	cmake \
-	curl \
-	flex \
-	g++ \
-        gdb \
-	gettext \
-	git \
-	g++-multilib libc6-dev-i386 \
-	gperf \
-	intltool \
-	libboost-all-dev \
-	libboost-dev \
-	libboost-filesystem-dev \
-	libboost-program-options-dev \
-	libboost-system-dev \
-	libboost-thread-dev libssl-dev \
-	libcurl4-openssl-dev \
-	libdb4.8++-dev \
-	libevent-dev \
-	libffi-dev \
-	libgdk-pixbuf2.0-dev \
-	libgmp-dev \
-	libjansson-dev \
-	libkrb5-dev \
-	libltdl-dev \
-	libminiupnpc-dev \
-	libncurses5-dev \
-	libpng-dev \
-	libprotobuf-dev \
-	libqrencode-dev \
-	libqt5core5a \
-	libqt5dbus5 \
-	libqt5gui5 \
-	libqt5webkit5-dev \
-	libssl-dev \
-	libtool \
-	libtool-bin \
-	libxml-parser-perl \
-	make \
-	net-tools \
-	netcat \
-	openssl \
-	p7zip-full \
-	patch \
-	perl \
-	pkg-config \
-	protobuf-compiler \
-	psmisc \
-	psutils \
-	python3 \
-	python-pip \
-	qrencode \
-	qttools5-dev \
-	qttools5-dev-tools \
-	rsync \
-	ruby \
-	scons \
-	screen \
-	sed \
-	sudo \
-	unzip \
-	vim-tiny \
-	wget \
-	xz-utils \
-	yasm \
-	zip \
-	zlib1g-dev
-
-# User creation
-WORKDIR /
-RUN useradd -m -c "Coin Node" -d /home/coinnode coinnode
-RUN mkdir -p /home/coinnode/src
 
 # Setup environment
 ENV srcDir /home/coinnode/src
@@ -156,7 +68,16 @@ RUN make install
 ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
 
 # Install the daemon
-ADD @DAEMONNAME@ /usr/local/bin/@DAEMONNAME@
+%=- COPYAWSCREDS 1
+ADD aws-credentials /home/coinnode/.aws/credentials
+USER coinnode
+RUN aws s3 cp s3://beirdo-coin-builds/linux_aarch64_daemon/Output/@COINNAME@/aarch64-linux/@DAEMONNAME@ /tmp/
+USER root
+RUN cp /tmp/@DAEMONNAME@ /usr/local/bin/
+=%
+%=+ COPYAWSCREDS 0
+RUN wget https://beirdo-coin-builds.s3.us-west-2.amazonaws.com/linux_aarch64_daemon/Output/@COINNAME@/aarch64-linux/@DAEMONNAME@ -O /usr/local/bin/@DAEMONNAME@
+=%
 RUN chmod 755 /usr/local/bin/@DAEMONNAME@
 
 %=- INSTALLEXPLORER 1
@@ -202,3 +123,4 @@ RUN chown -R coinnode /home/coinnode
 # Cleanup
 RUN rm -rf /tmp ; mkdir /tmp ; chmod 1777 /tmp
 RUN apt-get clean
+ENTRYPOINT /bin/bash

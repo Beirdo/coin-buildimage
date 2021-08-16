@@ -1,4 +1,4 @@
-#! /usr/bin/env python3.5
+#! /usr/bin/env python3
 # vim:ts=4:sw=4:ai:et:si:sts=4
 
 import argparse
@@ -29,6 +29,9 @@ def substituteFile(infile, outfile, subst):
     if infile == "stdin":
         text = sys.stdin.read()
     else:
+        if not os.path.exists(infile):
+            infile = os.path.join("templates", infile)
+
         with open(infile, "r") as f:
             text = f.read()
 
@@ -86,6 +89,8 @@ parser.add_argument('--pool', '-p', action="store_true",
                     help="Grab pool wallet")
 parser.add_argument('--explorer', '-e', action="store_true",
                     help="Use explorer")
+parser.add_argument('--makefile', '-m', action="store_true",
+                    help="Build Makefile")
 args = parser.parse_args()
 
 buildDir = os.path.join("build", args.coin)
@@ -105,6 +110,14 @@ else:
     config['useexplorer'] = 0
 
 subst = convertConfig(config)
+
+# Create Makefile (only)
+if args.makefile:
+    infile = "Makefile.in"
+    outfile = "Makefile"
+    outfile = os.path.join("build", args.coin, outfile)
+    substituteFile(infile, outfile, subst)
+    sys.exit(0)
 
 if args.coin == 'coiniumserv' or args.coin == 'yiimp':
     result = requests.get("http://169.254.169.254/latest/meta-data/local-ipv4")
@@ -227,12 +240,6 @@ outfile = os.path.join(buildDir, "ports.txt")
 with open(outfile, "w") as f:
     f.write(ports)
 
-# Copy over the daemon
-if args.daemon and args.coin != 'coiniumserv' and args.coin != 'yiimp':
-    infile = os.path.join("..", "build", "artifacts", config["coinname"],
-                          "linux", config['daemonname'])
-    copyfile(args.coin, infile, config['daemonname'])
-
 if config.get('installexplorer', False):
     # Create the Explorer settings file
     infile = "explorer-settings.json.in"
@@ -259,5 +266,5 @@ copyfile(args.coin, "sudoers-coinnode")
 copyfile(args.coin, "coin-cli")
 
 if config.get('copyawscreds', False):
-    copyfile(args.coin, os.path.expanduser("~/.aws/credentials"),
+    copyfile(args.coin, os.path.expanduser("~/.aws/credentials-coinnode"),
              "aws-credentials")
