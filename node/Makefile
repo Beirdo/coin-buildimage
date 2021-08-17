@@ -50,7 +50,7 @@ ${MAKEFILES}:: $(FORCE)
 build/base/Dockerfile::	Dockerfile.base $(FORCE)
 	cp $< $@
 
-ifneq (${CODEBUILD},1}
+ifneq (${CODEBUILD},1)
 ${COINS}:: base
 endif
 
