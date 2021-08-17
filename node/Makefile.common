@@ -32,23 +32,44 @@ login: $(FORCE)
 	aws ecr get-login-password --region us-west-2 | \
 	       	docker login --username AWS --password-stdin ${ECR}
 
+node:: push
 node:: Dockerfile.node $(FORCE)
 	docker build -t node:${COIN} ${CACHE} -f Dockerfile.node .
+	docker tag node:${COIN} ${ECR}/coin-nodes:${COIN}-node
+	docker push ${ECR}/coin-nodes:${COIN}-node
+
+ifneq (${CODEBUILD},1)
+node:: $(FORCE)
 	docker run -d -i -t $(shell cat build/${COIN}/ports.txt) \
 		--ulimit core=999999999 --name node_${COIN} \
 		node:${COIN} /bin/bash
+endif
 
+node-pool:: push
 node-pool:: Dockerfile.pool $(FORCE)
 	docker build -t pool:${COIN} ${CACHE} -f Dockerfile.pool .
+	docker tag pool:${COIN} ${ECR}/coin-nodes:${COIN}-pool
+	docker push ${ECR}/coin-nodes:${COIN}-pool
+
+ifneq (${CODEBUILD},1)
+node-pool:: $(FORCE)
 	docker run -d -i -t $(shell cat ports.txt) \
 		--ulimit core=999999999 --name pool_${COIN} \
 		pool:${COIN} /bin/bash
+endif
 
+node-explorer:: push
 node-explorer:: Dockerfile.explorer $(FORCE)
 	docker build -t explorer:${COIN} ${CACHE} -f Dockerfile.explorer .
+	docker tag explorer:${COIN} ${ECR}/coin-nodes:${COIN}-explorer
+	docker push ${ECR}/coin-nodes:${COIN}-explorer
+
+ifneq (${CODEBUILD},1)
+node-explorer:: $(FORCE)
 	docker run -d -i -t $(shell cat ports.txt) \
 		--ulimit core=999999999 --name explorer_${COIN} \
 		explorer:${COIN} /bin/bash
+endif
 
 kill-nodes:: $(FORCE)
 	-docker kill node_${COIN} pool_${COIN} explorer_${COIN}
