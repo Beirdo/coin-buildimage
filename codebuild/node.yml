@@ -23,5 +23,5 @@ phases:
 
 artifacts:
   files:
-    - ${COINNAME}/ports.txt
-  base-directory: node/build
+    - ports.txt
+  base-directory: node/build/${COIN}
