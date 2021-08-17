@@ -9,7 +9,7 @@
   "grabwallet": 1,
   "grabsnapshot": 1,
   "useopreturn": 1,
-  "copyawscreds": 1,
+  "copyawscreds": 0,
   "cpuminer": "cpuminer-pooler",
   "installexplorer": 0,
   "useexplorer": 0,
