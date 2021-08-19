@@ -32,7 +32,10 @@ login: $(FORCE)
 	aws ecr get-login-password --region us-west-2 | \
 	       	docker login --username AWS --password-stdin ${ECR}
 
+ifneq (${CODEBUILD},1)
 node:: push
+endif
+
 node:: Dockerfile.node $(FORCE)
 	docker build -t node:${COIN} ${CACHE} -f Dockerfile.node .
 	docker tag node:${COIN} ${ECR}/coin-nodes:${COIN}-node
