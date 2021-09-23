@@ -35,7 +35,7 @@ ADD startup-node.sh /home/coinnode/startup.sh
 
 %=- POOLNODE 1
 # Update the config
-ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
+ADD @COINNAME@.conf /home/coinnode/.@COINDIR@/@COINNAME@.conf
 ADD startup-pool.sh /home/coinnode/startup.sh
 =%
 
@@ -45,7 +45,7 @@ USER coinnode
 
 %=- BACKUPFILE 1
 # If there is a backup file, add it
-ADD backup.tar.gz /home/coinnode/.@COINNAME@
+ADD backup.tar.gz /home/coinnode/.@COINDIR@
 =%
 
 WORKDIR /home/coinnode

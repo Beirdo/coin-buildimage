@@ -65,7 +65,7 @@ RUN make install
 =%
 
 # Install config file
-ADD @COINNAME@.conf /home/coinnode/.@COINNAME@/@COINNAME@.conf
+ADD @COINNAME@.conf /home/coinnode/.@COINDIR@/@COINNAME@.conf
 
 # Install the daemon
 %=- COPYAWSCREDS 1

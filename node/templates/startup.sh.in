@@ -2,21 +2,21 @@
 
 %=- POOLNODE 1
 # Download the pool wallet
-mkdir -p /home/coinnode/.@COINNAME@
+mkdir -p /home/coinnode/.@COINDIR@
 aws s3 cp @WALLETBUCKET@/@COINNAME@/pool-wallet.dat \
-	/home/coinnode/.@COINNAME@/wallet.dat
+	/home/coinnode/.@COINDIR@/wallet.dat
 =%
 %=- GRABWALLET 1
 # Download the wallet
-mkdir -p /home/coinnode/.@COINNAME@
+mkdir -p /home/coinnode/.@COINDIR@
 aws s3 cp @WALLETBUCKET@/@COINNAME@/wallet.dat \
-	/home/coinnode/.@COINNAME@/wallet.dat
+	/home/coinnode/.@COINDIR@/wallet.dat
 =%
 %=- GRABSNAPSHOT 1
 # Download the wallet
-mkdir -p /home/coinnode/.@COINNAME@
+mkdir -p /home/coinnode/.@COINDIR@
 aws s3 cp @WALLETBUCKET@/@COINNAME@/snapshot.zip /tmp/snapshot-@COINNAME@.zip
-cd /home/coinnode/.@COINNAME@
+cd /home/coinnode/.@COINDIR@
 unzip -ao /tmp/snapshot-@COINNAME@.zip
 cd /home/coinnode
 rm /tmp/snapshot-@COINNAME@.zip
