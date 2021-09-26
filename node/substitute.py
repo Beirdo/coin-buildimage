@@ -16,7 +16,7 @@ subItemRe = re.compile(r'@_@')
 
 
 def convertConfig(config):
-    config = {key.lower: value for (key, value) in config.items()}
+    config = {key.lower(): value for (key, value) in config.items()}
     if "coindir" not in config:
         config["coindir"] = config.get("coinname", None)
     keys = list(config.keys())
