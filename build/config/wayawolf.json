@@ -2,7 +2,7 @@
   "target": "wayawolfcoin",
   "coinname": "WayaWolfCoin",
   "giturl": "https://github.com/MyCryptoCoins/WayaWolfCoin.git",
-  "branch": "newcoin",
+  "branch": "master",
   "qtwin32": "WayaWolfCoin-qt.pro",
   "qtwin64": "WayaWolfCoin-qt.pro",
   "qtlinux": "WayaWolfCoin-qt.pro",
