@@ -16,9 +16,6 @@ subItemRe = re.compile(r'@_@')
 
 
 def convertConfig(config):
-    config = {key.lower(): value for (key, value) in config.items()}
-    if "coindir" not in config:
-        config["coindir"] = config.get("coinname", None)
     keys = list(config.keys())
     regexes = list(map(lambda x: re.compile(r"@%s@" % x, re.I), keys))
     values = list(config.values())
@@ -111,6 +108,9 @@ if args.explorer:
     config['useexplorer'] = 1
 else:
     config['useexplorer'] = 0
+
+if "coindir" not in config:
+    config["coindir"] = config.get("coinname", None)
 
 subst = convertConfig(config)
 
