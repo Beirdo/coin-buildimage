@@ -1,7 +1,7 @@
 {
   "target": "wayawolf",
-  "rpcport": 8912,
-  "p2pport": 8911,
+  "rpcport": 9912,
+  "p2pport": 9911,
   "coinname": "WayaWolfCoin",
   "coindir": "WayaWolfV2",
   "daemonname": "WayaWolfCoind",
